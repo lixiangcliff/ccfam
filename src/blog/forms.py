@@ -4,8 +4,10 @@ from .models import Album
 
 class AlbumForm(forms.ModelForm):
     class Meta:
+        model = Album
         fields = [
             'title',
             'description',
-            'draft',
+            'image',
+            'draft'
         ]

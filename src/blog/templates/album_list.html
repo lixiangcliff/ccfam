@@ -22,12 +22,12 @@
                         <div class="caption">
                             {% if obj.draft %}<h3 style="color:red">Draft</h3> {% endif %}
                             <h3><a href='{{ obj.get_absolute_url }}'>{{ obj.title }}</a>
-                                <small>{{ obj.publish }} ({{ obj.publish | timesince }} ago)</small>
+                                <small>{{ obj.updated_time }} ({{ obj.updated_time | timesince }} ago)</small>
                             </h3>
                             {% if obj.user.get_full_name %}
                                 <p>Author: {{ obj.user.get_full_name }}</p>
                             {% endif %}
-                            <p>{{ obj.content | linebreaks | truncatechars:120 }}</p>
+                            <p>{{ obj.description | linebreaks | truncatechars:120 }}</p>
                             <p><a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">View</a>
                                 {% if user_can_edit %}<a
                                         href="{{ obj.get_absolute_url_edit }}" class="btn btn-default"

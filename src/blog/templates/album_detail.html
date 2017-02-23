@@ -13,14 +13,14 @@
             {% if instance.draft %}
                 <span style="color:red;">Draft</span>
             {% endif %}
-            <small>{{ instance.publish }} ({{ instance.publish | timesince }} ago)</small>
+            <small>{{ instance.updated_time }} ({{ instance.updated_time | timesince }} ago)</small>
         </h1>
 
         {% if instance.user.get_full_name %}
             <p>Author: {{ instance.user.get_full_name }}</p>
         {% endif %}
 
-        {{ instance.content | linebreaks }}<br/>
+        {{ instance.description | linebreaks }}<br/>
         <br/>
     </div>
 {% endblock %}

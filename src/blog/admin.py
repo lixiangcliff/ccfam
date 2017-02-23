@@ -10,8 +10,8 @@ class AlbumModelAdmin(admin.ModelAdmin):
     search_fields = ["title", "author", "description"]
 
     form = AlbumForm
-    # class Meta:
-    #     model = Album
+    class Meta:
+        model = Album
 
 
 admin.site.register(Album, AlbumModelAdmin)

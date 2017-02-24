@@ -7,7 +7,7 @@
 {% block content %}
     <div class="col-sm-8 col-sm-offset-2">
         {% if instance.image %}
-            <img src='{{ instance.image.url }}' class="'img-responsive"/>
+            <img src='{{ instance.image.url }}' class="img-responsive img-thumbnail"/>
         {% endif %}
         <h1>{{ title }}
             {% if instance.draft %}

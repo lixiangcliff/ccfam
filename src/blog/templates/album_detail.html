@@ -21,8 +21,8 @@
             print ("test")
         {% endif %}
 
-        {% if instance.user.get_full_name %}
-            <p>Author: {{ instance.user.get_full_name }}</p>
+        {% if instance.author.get_full_name %}
+            <p>Author: {{ instance.author.get_full_name }}</p>
         {% endif %}
 
         {{ instance.description | linebreaks }}<br/>

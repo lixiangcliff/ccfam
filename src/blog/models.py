@@ -43,7 +43,7 @@ class Album(models.Model):
         return reverse("album:update", kwargs={"slug": self.slug})
 
     class Meta:
-        ordering = ["-created_time", "-updated_time"]
+        ordering = ["-updated_time", "-created_time"]
 
 
 def create_slug(instance, new_slug=None):

@@ -53,7 +53,6 @@ def album_list(request):
         user_can_edit = True
 
     query = request.GET.get('q')
-    # print (query)
     if query:
         queryset_list = queryset_list.filter(
             Q(title__icontains=query) |
@@ -61,7 +60,7 @@ def album_list(request):
             Q(user__first_name__icontains=query) |
             Q(user__last_name__icontains=query)
         ).distinct()
-    paginator = Paginator(queryset_list, 2)  # Show 25 contacts per page
+    paginator = Paginator(queryset_list, 9)  # Show 25 contacts per page
     page_request_var = 'page'
     page = request.GET.get(page_request_var)
     try:
@@ -72,8 +71,12 @@ def album_list(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         queryset = paginator.page(paginator.num_pages)
+
+    # context['object_list'] = grouped(Bar.objects.all(), 4)
+
     context = {
         "object_list": queryset,
+        "object_list_group": grouped(queryset, 3),
         "title": "All Albums",
         "page_request_var": page_request_var,
         "user_can_edit": user_can_edit
@@ -110,3 +113,8 @@ def album_delete(request, slug=None):
     instance.delete()
     messages.success(request, "Album Successfully Deleted!")
     return redirect("album:list")
+
+
+def grouped(l, n):
+    for i in range(0, len(l), n):
+        yield l[i:i + n]

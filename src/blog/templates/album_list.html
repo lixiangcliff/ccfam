@@ -1,42 +1,48 @@
 {% extends 'base.html' %}
 
+{% block head_title %}
+    albums | {{ block.super }}
+{% endblock head_title %}
+
 {% block content %}
 
+    <div class="col-md-12">
+        <a href="/album/create" class="btn btn-default" role="button">Create Album</a>
 
-    <a href="/album/create" class="btn btn-default" role="button">Create Album</a>
-
-
-    <div class="col-sm-8 col-sm-offset-2">
         <h1>{{ title }}</h1>
         <form method="GET" action="">
             <input type="text" name="q" placeholder="Search posts" value="{{ request.GET.q }}"/>
             <input type="submit" value="Search"/>
         </form>
-        {% for obj in object_list %}
+        <hr/>
+        {% for obj_group in object_list_group %}
             <div class="row">
-                <div class="col-sm-12">
-                    <div class="thumbnail">
-                        {% if obj.image %}
-                            <img src='{{ obj.image.url }}' class="'img-responsive"/>
-                        {% endif %}
-                        <div class="caption">
-                            {% if obj.draft %}<h3 style="color:red">Draft</h3> {% endif %}
-                            <h3><a href='{{ obj.get_absolute_url }}'>{{ obj.title }}</a>
-                                <small>{{ obj.updated_time }} ({{ obj.updated_time | timesince }} ago)</small>
-                            </h3>
-                            {% if obj.user.get_full_name %}
-                                <p>Author: {{ obj.user.get_full_name }}</p>
+                {% for obj in obj_group %}
+                    <div class="col-sm-4">
+                        <div class="thumbnail">
+                            {% if obj.image %}
+                                <img src='{{ obj.image.url }}' class="'img-responsive"/>
                             {% endif %}
-                            <p>{{ obj.description | linebreaks | truncatechars:120 }}</p>
-                            <p><a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">View</a>
-                                {% if user_can_edit %}<a
-                                        href="{{ obj.get_absolute_url_edit }}" class="btn btn-default"
-                                        role="button">Edit</a>
+                            <div class="caption">
+                                {% if obj.draft %}<h3 style="color:red">Draft</h3> {% endif %}
+                                <h3><a href='{{ obj.get_absolute_url }}'>{{ obj.title }}</a>
+                                    <small>{{ obj.updated_time }} ({{ obj.updated_time | timesince }} ago)</small>
+                                </h3>
+                                {% if obj.user.get_full_name %}
+                                    <p>Author: {{ obj.user.get_full_name }}</p>
                                 {% endif %}
-                            </p>
+                                <p>{{ obj.description | linebreaks | truncatechars:120 }}</p>
+                                <p><a href="{{ obj.get_absolute_url }}" class="btn btn-primary"
+                                      role="button">View</a>
+                                    {% if user_can_edit %}<a
+                                            href="{{ obj.get_absolute_url_edit }}" class="btn btn-default"
+                                            role="button">Edit</a>
+                                    {% endif %}
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                {% endfor %}
             </div>
         {% endfor %}
 
@@ -59,5 +65,6 @@
         </div>
 
     </div>
+
 {% endblock %}
 

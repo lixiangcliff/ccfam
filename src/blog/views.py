@@ -10,11 +10,6 @@ from .models import Album
 from .forms import AlbumForm
 
 
-def home(request):
-    # return HttpResponse("Hello, world. You're at the blog index.")
-    return render(request, 'home.html', {})
-
-
 def album_create(request):
     if not (request.user.is_staff or request.user.is_superuser):
         raise Http404
@@ -57,8 +52,8 @@ def album_list(request):
         queryset_list = queryset_list.filter(
             Q(title__icontains=query) |
             Q(description__icontains=query) |
-            Q(user__first_name__icontains=query) |
-            Q(user__last_name__icontains=query)
+            Q(author__first_name__icontains=query) |
+            Q(author__last_name__icontains=query)
         ).distinct()
     paginator = Paginator(queryset_list, 9)  # Show 25 contacts per page
     page_request_var = 'page'

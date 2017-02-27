@@ -17,13 +17,16 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
-from blog import views
+#from blog import views
+from ccfam import views as ccfam_views
 
 urlpatterns = [
-    url(r'^$', views.home, name='home'),
     url(r'^admin/', admin.site.urls),
-    #url(r'^blog/', include('blog.urls'))
-    url(r'^album/', include('blog.urls', namespace='album'))
+    url(r'^$', ccfam_views.home, name='home'),
+    url(r'^home/$', ccfam_views.home, name='home'),
+    url(r'^about/$', ccfam_views.about, name='about'),
+    url(r'^contact/$', ccfam_views.contact, name='contact'),
+    url(r'^album/', include('blog.urls', namespace='album')),
 
 ]
 

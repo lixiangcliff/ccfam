@@ -10,10 +10,14 @@
         <a href="/album/create" class="btn btn-default" role="button">Create Album</a>
 
         <h1>{{ title }}</h1>
-        <form method="GET" action="">
-            <input type="text" name="q" placeholder="Search posts" value="{{ request.GET.q }}"/>
-            <input type="submit" value="Search"/>
-        </form>
+        <div class="row">
+            <div class="pull-right">
+                <form method="GET" action="">
+                    <input type="text" name="q" placeholder="Search albums" value="{{ request.GET.q }}"/>
+                    <input type="submit" value="Search"/>
+                </form>
+            </div>
+        </div>
         <hr/>
         {% for obj_group in object_list_group %}
             <div class="row">
@@ -28,7 +32,12 @@
                                 {% if obj.draft %}<h5 style="color:red">Draft</h5> {% endif %}
                                 <h4><a href='{{ obj.get_absolute_url }}'>{{ obj.title }}</a></h4>
                                 <h5>
-                                    <small>Last updated: {{ obj.updated_time }} ({{ obj.updated_time | timesince }}
+                                    <small>Created: {{ obj.created_time }} ({{ obj.created_time | timesince }}
+                                        ago)
+                                    </small>
+                                </h5>
+                                <h5>
+                                    <small>Updated: {{ obj.updated_time }} ({{ obj.updated_time | timesince }}
                                         ago)
                                     </small>
                                 </h5>

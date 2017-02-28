@@ -31,14 +31,28 @@
                     </ul>
                 </li>{% endcomment %}
             </ul>
+
+
             <ul class="nav navbar-nav navbar-right">
-{% comment %}                {% if request.user.is_authenticated %}
-                    <li><a href="{% url 'logout' %}">Logout</a></li>
-                {% else %}
-                    <li><a href="{% url 'login' %}">Login</a></li>
-                {% endif %}{% endcomment %}
-                {#                <li><a href="../navbar-fixed-top/">Fixed top</a></li>#}
+                {% if request.user.is_authenticated %}
+                    <li class="nav navbar-nav"><a href="#">{{ request.user.get_full_name }}</a></li>
+                    <li class="nav navbar-nav"><a href="{% url 'auth_logout' %}">Logout</a></li>
+                {% endif %}
             </ul>
+
+            {% if not request.user.is_authenticated and not "/accounts/login" in request.get_full_path %}
+                <form class='navbar-form navbar-right' method='POST' action='{% url "auth_login" %}'>{% csrf_token %}
+                    <div class='form-group'>
+                        <input type='text' class='form-control' name='username' placeholder='Username'/>
+                    </div>
+                    <div class='form-group'>
+                        <input type='password' class='form-control' name='password' placeholder='Password'/>
+                    </div>
+                    <button type='submit' class='btn btn-default'>Login</button>
+                </form>
+            {% endif %}
+
+
         </div><!--/.nav-collapse -->
     </div>
 </nav>

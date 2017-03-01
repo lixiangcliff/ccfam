@@ -9,10 +9,6 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../static/img/favicons/favicon.png">
-    {#    <link rel="icon" type="image/jpg" href="/static/favicons/favicon-310x240.jpg" sizes="310x240">#}
-
-    <title>{% block head_title %}{% endblock %} CCFam</title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -22,18 +18,33 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
+
+    <link rel="icon" href="../static/img/favicons/favicon.png">
+    {#    <link rel="icon" type="image/jpg" href="/static/favicons/favicon-310x240.jpg" sizes="310x240">#}
+
+    <title>{% block head_title %}{% endblock %} CCFam</title>
+
+    {% include 'head_css.html' %}
+
+    <style>
+        {% block style %}
+
+        {% endblock %}
+    </style>
+
+
 </head>
 <body>
 {% include 'messages_display.html' %}
 {% include 'navbar.html' %}
 
-<div class="container">
 
-    {% block jumbotron %}
 
-    {% endblock %}
 
-</div> <!-- /container -->
+{% block jumbotron %}
+
+{% endblock %}
+
 
 <div class='container'>
     {% block content %}

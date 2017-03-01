@@ -18,8 +18,12 @@ body {
   color: #777;
 }
 
+.navbar-default .navbar-nav>li>a {
+  color: #FFF;
+}
+
 .navbar-default .navbar-nav>li>a:hover {
-  color: #EEE;
+  color: #777;
 }
 
 .navbar-default .navbar-toggle {

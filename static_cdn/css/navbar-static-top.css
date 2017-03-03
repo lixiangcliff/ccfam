@@ -4,5 +4,36 @@ body {
 
 .navbar-static-top {
     margin-bottom: 19px;
+    background-image: none;
     background-color: #da7627;
+    border-color: #e89b5d;
+}
+
+
+.navbar-default .navbar-brand {
+  color: #FFF;
+}
+
+.navbar-default .navbar-brand:hover {
+  color: #777;
+}
+
+.navbar-default .navbar-nav>li>a {
+  color: #FFF;
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+  color: #777;
+}
+
+.navbar-default .navbar-toggle {
+ border-color: transparent !important;
+}
+
+.navbar-toggle:hover {
+	background-color: #e89b5d !important;
+}
+
+.navbar-toggle {
+	background-color: #da7627 !important;
 }

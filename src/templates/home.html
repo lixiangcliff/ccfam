@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load staticfiles %}
+
 {% block head_title %} Homepage | {% endblock %}
 
 <style>
@@ -21,7 +23,7 @@
     <!-- Main component for a primary marketing message or call to action -->
     <div class="jumbotron">
         <div class="container">
-            <div class="row1">
+            <div class="row">
                 <div class="col-sm-6">
                     <h1>Navbar example</h1>
                     <p>This example is a quick exercise to illustrate how the default, static and fixed to top navbar
@@ -36,8 +38,10 @@
                 </div>
 
                 <div class="col-sm-6">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/HbwhE-I9Kdc" frameborder="0"
-                            allowfullscreen></iframe>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/HbwhE-I9Kdc" frameborder="0"
+                                allowfullscreen></iframe>
+                    </div>
                 </div>
 
 
@@ -49,5 +53,4 @@
 {% block content %}
 
     <h1> Welcome!</h1>
-    <i class="fa fa-camera-retro fa-lg"></i> fa-lg
 {% endblock %}

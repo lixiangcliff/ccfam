@@ -1,13 +1,12 @@
 from django.contrib import messages
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
-from django.http import Http404
-from django.http import HttpResponsePermanentRedirect
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
-# Create your views here.
-from .models import Album
+from django.http import Http404, HttpResponsePermanentRedirect
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.text import slugify
+
 from .forms import AlbumForm
+from .models import Album, create_slug
 
 
 def album_create(request):
@@ -16,7 +15,7 @@ def album_create(request):
     form = AlbumForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=False)
-        instance.user = request.user
+        instance.author = request.user
         instance.save()
         messages.success(request, "Album Successfully Created!")
         return HttpResponsePermanentRedirect(instance.get_absolute_url())
@@ -83,9 +82,14 @@ def album_update(request, slug=None):
     if not (request.user.is_staff or request.user.is_superuser):
         raise Http404
     instance = get_object_or_404(Album, slug=slug)
+    if instance:
+        title = instance.title
     form = AlbumForm(request.POST or None, request.FILES or None, instance=instance)
     if form.is_valid():
         instance = form.save(commit=False)
+        # change slug if title updated
+        if instance.title != title:
+            instance.slug = create_slug(instance)
         instance.save()
         messages.success(request, "Album Successfully Updated!")
         return HttpResponsePermanentRedirect(instance.get_absolute_url())

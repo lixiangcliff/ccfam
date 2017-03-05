@@ -5,6 +5,7 @@ from django.db import models
 from django.db.models.signals import pre_save
 from django.urls import reverse
 from django.utils.text import slugify
+from .util import time
 
 
 class AlbumManager(models.Manager):
@@ -46,15 +47,24 @@ class Album(models.Model):
         ordering = ["-created_time", "-updated_time"]
 
 
-def create_slug(instance, new_slug=None):
+# def create_slug(instance, new_slug=None):
+#     slug = slugify(instance.title)
+#     if new_slug is not None:
+#         slug = new_slug
+#     qs = Album.objects.filter(slug=slug).order_by('-id')
+#     exists = qs.exists()
+#     if exists:
+#         new_slug = '%s-%s' % (slug, qs.first().id)
+#         return create_slug(instance, new_slug=new_slug)
+#     return slug
+
+def create_slug(instance):
     slug = slugify(instance.title)
-    if new_slug is not None:
-        slug = new_slug
-    qs = Album.objects.filter(slug=slug).order_by('-id')
+    qs = Album.objects.filter(slug=slug)
     exists = qs.exists()
+    # if it is a duplicated title, add timestamp at the end of slug
     if exists:
-        new_slug = '%s-%s' % (slug, qs.first().id)
-        return create_slug(instance, new_slug=new_slug)
+        slug = '%s-%s' % (slug, time.slugify_time())
     return slug
 
 

@@ -4,8 +4,7 @@ from django.db import models
 # Create your models here.
 from django.db.models.signals import pre_save
 from django.urls import reverse
-from django.utils.text import slugify
-from .util import time
+from .util.slug import create_slug
 
 
 class AlbumManager(models.Manager):
@@ -45,27 +44,6 @@ class Album(models.Model):
 
     class Meta:
         ordering = ["-created_time", "-updated_time"]
-
-
-# def create_slug(instance, new_slug=None):
-#     slug = slugify(instance.title)
-#     if new_slug is not None:
-#         slug = new_slug
-#     qs = Album.objects.filter(slug=slug).order_by('-id')
-#     exists = qs.exists()
-#     if exists:
-#         new_slug = '%s-%s' % (slug, qs.first().id)
-#         return create_slug(instance, new_slug=new_slug)
-#     return slug
-
-def create_slug(instance):
-    slug = slugify(instance.title)
-    qs = Album.objects.filter(slug=slug)
-    exists = qs.exists()
-    # if it is a duplicated title, add timestamp at the end of slug
-    if exists:
-        slug = '%s-%s' % (slug, time.slugify_time())
-    return slug
 
 
 def pre_save_album_receiver(sender, instance, *args, **kwargs):

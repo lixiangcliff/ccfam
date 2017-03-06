@@ -5,7 +5,7 @@ from .models import Album
 
 
 class AlbumModelAdmin(admin.ModelAdmin):
-    list_display = ["title", "author", "updated_time", "created_time"]
+    list_display = ["title", "author", "slug", "updated_time", "created_time"]
     list_filter = ["author", "updated_time", "created_time"]
     search_fields = ["title", "author", "description"]
 

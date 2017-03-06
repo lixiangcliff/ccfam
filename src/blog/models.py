@@ -33,6 +33,11 @@ class Album(models.Model):
 
     objects = AlbumManager()
 
+    def save(self, *args, **kwargs):
+        if self.slug is None or self.slug == "":
+            self.slug = create_slug(self)
+        super(Album, self).save(*args, **kwargs)
+
     def __str__(self):  # python3
         return self.title
 
@@ -46,9 +51,10 @@ class Album(models.Model):
         ordering = ["-created_time", "-updated_time"]
 
 
-def pre_save_album_receiver(sender, instance, *args, **kwargs):
-    if not instance.slug:
-        instance.slug = create_slug(instance)
-
-
-pre_save.connect(pre_save_album_receiver, sender=Album)
+# a substitute of customized save()
+# def pre_save_album_receiver(sender, instance, *args, **kwargs):
+#     if not instance.slug:
+#         instance.slug = create_slug(instance)
+#
+#
+# pre_save.connect(pre_save_album_receiver, sender=Album)

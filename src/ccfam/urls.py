@@ -20,6 +20,8 @@ from django.contrib import admin
 # from blog import views
 from ccfam import views as ccfam_views
 
+# may need to change per:
+# https://github.com/codingforentrepreneurs/Guides/blob/master/all/common_url_regex.md
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', ccfam_views.home, name='home'),

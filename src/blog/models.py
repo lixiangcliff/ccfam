@@ -8,6 +8,7 @@ from .util.slug import create_slug
 
 
 class AlbumManager(models.Manager):
+    # to show non-draft instance only
     def active(self, *args, **kwargs):
         return super(AlbumManager, self).filter(draft=False)
 

@@ -4,6 +4,15 @@
     albums | {{ block.super }}
 {% endblock head_title %}
 
+<style>
+    {% block style %}
+        body {
+            background-image: url('../static/img/background_image/yellow-Windows-background.jpg');
+        }
+    {% endblock %}
+
+</style>
+
 {% block content %}
 
     <div class="col-md-12">

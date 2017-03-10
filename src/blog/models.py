@@ -52,10 +52,43 @@ class Album(models.Model):
         ordering = ["-created_time", "-updated_time"]
 
 
-# a substitute of customized save()
-# def pre_save_album_receiver(sender, instance, *args, **kwargs):
-#     if not instance.slug:
-#         instance.slug = create_slug(instance)
-#
-#
-# pre_save.connect(pre_save_album_receiver, sender=Album)
+class Photo(models.Model):
+    # required
+    title = models.CharField(max_length=120) # auther+create_time
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+    image = models.ImageField(upload_to=upload_location)
+    slug = models.SlugField(unique=True)
+    created_time = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True, auto_now_add=False)
+    # optional
+    description = models.TextField(blank=True)
+    width_field = models.IntegerField(default=0)
+    height_field = models.IntegerField(default=0)
+    device_make = models.CharField(max_length=120, blank=True)
+    device_model = models.CharField(max_length=120, blank=True)
+    taken_time = models.DateTimeField(auto_now=False, auto_now_add=False, blank=True)
+    latitude = models.DecimalField(default=0.0)
+    longitude = models.DecimalField(default=0.0)
+
+    def save(self, *args, **kwargs):
+        if self.slug is None or self.slug == "":
+            self.slug = create_slug(self)
+        super(Album, self).save(*args, **kwargs)
+
+    def __str__(self):  # python3
+        return self.title
+
+    def get_photo_title(self):
+        pass
+
+    def get_absolute_url(self):
+        return reverse("album:detail", kwargs={"slug": self.slug})
+
+    def get_absolute_url_edit(self):
+        return reverse("album:update", kwargs={"slug": self.slug})
+
+    class Meta:
+        ordering = ["-created_time", "-updated_time"]
+
+
+

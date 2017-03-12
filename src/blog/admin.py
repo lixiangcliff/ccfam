@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from .forms import AlbumForm
-from .models import Album
+from .forms import AlbumForm, PhotoForm
+from .models import Album, Photo
 
 
 class AlbumModelAdmin(admin.ModelAdmin):
@@ -14,4 +14,15 @@ class AlbumModelAdmin(admin.ModelAdmin):
         model = Album
 
 
+class PhotoModelAdmin(admin.ModelAdmin):
+    list_display = ["title", "file_name", "author", "editor", "slug", "updated_time", "created_time"]
+    list_filter = ["author", "editor", "updated_time", "created_time"]
+    search_fields = ["title", "author", "editor", "description"]
+
+    form = PhotoForm
+    class Meta:
+        model = Photo
+
 admin.site.register(Album, AlbumModelAdmin)
+admin.site.register(Photo, PhotoModelAdmin)
+

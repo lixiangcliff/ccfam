@@ -1,12 +1,13 @@
-import PIL.Image
 import PIL.ExifTags
+from PIL import Image
+from PIL.ExifTags import GPSTAGS, TAGS
 
 
 ### http://eran.sandler.co.il/2011/05/20/extract-gps-latitude-and-longitude-data-from-exif-using-python-imaging-library-pil/
 
-from PIL import Image
-from PIL.ExifTags import TAGS, GPSTAGS
-
+def get_exif_data_by_image_path(image_path):
+    image = Image.open(image_path)
+    return get_exif_data(image)
 
 def get_exif_data(image):
     """Returns a dictionary from the exif data of an PIL Image item. Also converts the GPS Tags"""
@@ -75,23 +76,38 @@ def get_lat_lon(exif_data):
                 lon = 0 - lon
 
     return lat, lon
+
+
 ###
+
+def print_exif_data(image_path):
+    image = Image.open(image_path)
+    exif_data = get_exif_data(image)
+    for k, v in exif_data.items():
+        print(k, ':', v)
+
+
+
 image_path = '/Users/Cliff/per/static/pictures/test/iphone_modi.jpg'
 img = PIL.Image.open(image_path)
 exif_data = img._getexif()
 
-#print (exif_data)
+# print (exif_data)
 
-exif = {
-    PIL.ExifTags.TAGS[k]: v
-    for k, v in img._getexif().items()
-    if k in PIL.ExifTags.TAGS
-}
+# print ("#################")
 
-#print ("#################")
+# for k, v in exif.items():
+#     print(k, ':', v)
+# image = Image.open(image_path)
+# exif_data = get_exif_data(image)
+# print (get_lat_lon(exif_data))
 
-for k, v in exif.items():
-    print(k,':', v)
+#print_exif_dict(image_path)
+#print ("##" + (item)['Model'] + "##")
+#print ((item)['GPSInfo'])
+
 image = Image.open(image_path)
 exif_data = get_exif_data(image)
-print (get_lat_lon(exif_data))
+print ((exif_data)['DateTime'])
+#print (get_lat_lon(exif_data)[0])
+#print_exif_data(image_path)

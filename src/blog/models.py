@@ -1,9 +1,8 @@
 from django.conf import settings
 from django.db import models
-
-# Create your models here.
-from django.db.models.signals import pre_save
 from django.urls import reverse
+
+from .util.photo import get_exif_data
 from .util.slug import create_slug
 
 
@@ -52,34 +51,73 @@ class Album(models.Model):
         ordering = ["-created_time", "-updated_time"]
 
 
+def upload_location_photo(instance, filename):
+    author = instance.author
+    return 'photos/%s/%s' % (author, filename)
+
+
+def get_device_make(image):
+    return get_exif_data(image)['Make']
+
+
+def get_photo_title():
+    pass
+
+
 class Photo(models.Model):
     # required
-    title = models.CharField(max_length=120) # auther+create_time
+    title = models.CharField(max_length=120)  # auther+taken_time
+    file_name = models.CharField(max_length=120)  # photo original file name
     author = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
-    image = models.ImageField(upload_to=upload_location)
+    editor = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, related_name="+")
+    image = models.ImageField(upload_to=upload_location_photo, width_field='width_field', height_field='height_field')
+    width_field = models.IntegerField(default=0)
+    height_field = models.IntegerField(default=0)
+    # album = models.ForeignKey(Album, default=None)
     slug = models.SlugField(unique=True)
     created_time = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True, auto_now_add=False)
     # optional
     description = models.TextField(blank=True)
-    width_field = models.IntegerField(default=0)
-    height_field = models.IntegerField(default=0)
-    device_make = models.CharField(max_length=120, blank=True)
-    device_model = models.CharField(max_length=120, blank=True)
-    taken_time = models.DateTimeField(auto_now=False, auto_now_add=False, blank=True)
-    latitude = models.DecimalField(default=0.0)
-    longitude = models.DecimalField(default=0.0)
+
+    # device_make = models.CharField(default=get_device_make(upload_location_photo), max_length=120)
+    # device_model = models.CharField(max_length=120, blank=True)
+    # taken_time = models.DateTimeField(auto_now=False, auto_now_add=False, blank=True)
+    # latitude = models.DecimalField(max_digits=8, decimal_places=6, blank=True, null=True)
+    # longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
 
     def save(self, *args, **kwargs):
+        # create title
+        self.title = self.author.username + ': ' + self.image.name
+        self.file_name = self.image.name
+        # create slug
         if self.slug is None or self.slug == "":
             self.slug = create_slug(self)
-        super(Album, self).save(*args, **kwargs)
+
+        # exif_data = get_exif_data_by_image_path(self.image.url)
+        # print (exif_data['Make'])
+        super(Photo, self).save(*args, **kwargs)
 
     def __str__(self):  # python3
         return self.title
 
-    def get_photo_title(self):
-        pass
+    # def get_device_make(self):
+    #     return get_exif_data(self.image)['Make']
+    #
+    # def get_device_model(self):
+    #     return get_exif_data(self.image)['Model']
+    #
+    # def get_taken_time(self):
+    #     return get_exif_data(self.image)['DateTime']
+    #
+    # def get_latitude(self):
+    #     return get_lat_lon(get_exif_data(self.image))[0]
+    #
+    # def get_longitude(self):
+    #     return get_lat_lon(get_exif_data(self.image))[1]
+    #
+    # def get_photo_title(self):
+    #     pass
 
     def get_absolute_url(self):
         return reverse("album:detail", kwargs={"slug": self.slug})
@@ -89,6 +127,3 @@ class Photo(models.Model):
 
     class Meta:
         ordering = ["-created_time", "-updated_time"]
-
-
-

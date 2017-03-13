@@ -128,15 +128,38 @@ class Photo(models.Model):
     class Meta:
         ordering = ["-created_time", "-updated_time"]
 
+
 from django.utils.translation import ugettext_lazy as _
 
 
-class MyMessage(models.Model):
-    author_name = models.CharField(_('Name'), max_length=255)
-    author_email = models.EmailField(_('Email'))
-    content = models.TextField(_('Content'))
+class Album2(models.Model):
+    title = models.CharField(_('title'), max_length=255)
+    author_email = models.EmailField(_('email'))
+    content = models.TextField(_('content'))
+
+    def __str__(self):  # python3
+        return self.title
+
+
+def upload_location_attachment(instance, filename):
+    title = instance.album.title
+    return 'photos/%s/%s' % (title, filename)
 
 
 class Attachment(models.Model):
-    message = models.ForeignKey(MyMessage, verbose_name=_('Message'))
-    file = models.FileField(_('Attachment'), upload_to='attachments')
+    album = models.ForeignKey(Album2, verbose_name=_('Album2'))
+    file_name = models.CharField(max_length=128)
+
+    file_location = models.CharField(max_length=256)
+    # order matters! file_name and file_location must locates in front of file
+    # otherwise there will be csrf_token issue
+    file = models.FileField(_('Attachment'), upload_to=upload_location_attachment)
+
+
+    def __str__(self):  # python3
+        return self.file_name
+
+    def save(self, *args, **kwargs):
+        self.file_name = self.file.name
+        self.file_location = self.file.url
+        super(Attachment, self).save(*args, **kwargs)

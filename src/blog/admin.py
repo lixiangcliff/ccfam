@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from .forms import AlbumForm, PhotoForm, ContactForm
-from .models import Album, Photo, MyMessage, Attachment
+from .forms import AlbumForm, PhotoForm, Album2Form
+from .models import Album, Photo, Album2, Attachment
 
 
 class AlbumModelAdmin(admin.ModelAdmin):
@@ -23,22 +23,22 @@ class PhotoModelAdmin(admin.ModelAdmin):
     class Meta:
         model = Photo
 
-class ContactModelAdmin(admin.ModelAdmin):
-    list_display = ["author_name", "author_email", "content"]
+class Album2ModelAdmin(admin.ModelAdmin):
+    list_display = ["title", "author_email", "content"]
 
-    form = ContactForm
+    form = Album2Form
     class Meta:
-        model = MyMessage
+        model = Album2
 
 
 class AttachmentModelAdmin(admin.ModelAdmin):
-    list_display = ["message", ]
+    list_display = ["album", "file_name", "file_location"]
 
     class Meta:
         model = Attachment
 
 admin.site.register(Album, AlbumModelAdmin)
 admin.site.register(Photo, PhotoModelAdmin)
-admin.site.register(MyMessage, ContactModelAdmin)
+admin.site.register(Album2, Album2ModelAdmin)
 admin.site.register(Attachment, AttachmentModelAdmin)
 

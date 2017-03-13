@@ -33,18 +33,18 @@ class PhotoForm(forms.ModelForm):
 
 from multiupload.fields import MultiFileField
 
-from .models import MyMessage, Attachment
+from .models import Album2, Attachment
 
 
-class ContactForm(forms.ModelForm):
+class Album2Form(forms.ModelForm):
     class Meta:
-        model = MyMessage
-        fields = ['author_name', 'author_email', 'content']  # not attachments!
+        model = Album2
+        fields = ["title", 'author_email', 'content']  # not attachments!
 
     files = MultiFileField(min_num=1, max_num=3, max_file_size=1024*1024*5)
 
     def save(self, commit=True):
-        instance = super(ContactForm, self).save(commit)
+        instance = super(Album2Form, self).save(commit)
         for each in self.cleaned_data['files']:
-            Attachment.objects.create(file=each, message=instance)
+            Attachment.objects.create(file=each, album=instance)
         return instance

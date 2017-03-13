@@ -123,12 +123,12 @@ def grouped(l, n):
 
 from django.views.generic.edit import FormView, CreateView
 
-from .forms import ContactForm
-from .models import MyMessage
+from .forms import Album2Form
+from .models import Album2
 
 
 class ContactView(CreateView):
-    model = MyMessage
-    form_class = ContactForm
+    model = Album2
+    form_class = Album2Form
     template_name = 'form.html'
     success_url = '?success'

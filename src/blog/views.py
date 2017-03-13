@@ -40,6 +40,8 @@ def album_detail(request, slug):
 
 
 def album_list(request):
+    if Album is None:
+        raise Http404
     queryset_list = Album.objects.active()  # .order_by('-timestamp')
     user_can_edit = False
     if request.user.is_staff or request.user.is_superuser:
@@ -117,3 +119,16 @@ def album_delete(request, slug=None):
 def grouped(l, n):
     for i in range(0, len(l), n):
         yield l[i:i + n]
+
+
+from django.views.generic.edit import FormView, CreateView
+
+from .forms import ContactForm
+from .models import MyMessage
+
+
+class ContactView(CreateView):
+    model = MyMessage
+    form_class = ContactForm
+    template_name = 'form.html'
+    success_url = '?success'

@@ -149,12 +149,10 @@ def upload_location_attachment(instance, filename):
 class Attachment(models.Model):
     album = models.ForeignKey(Album2, verbose_name=_('Album2'))
     file_name = models.CharField(max_length=128)
-
     file_location = models.CharField(max_length=256)
-    # order matters! file_name and file_location must locates in front of file
+    # order matters! file_name and file_location must locate in front of file
     # otherwise there will be csrf_token issue
     file = models.FileField(_('Attachment'), upload_to=upload_location_attachment)
-
 
     def __str__(self):  # python3
         return self.file_name

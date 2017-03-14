@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.text import slugify
 
 from .forms import AlbumForm
-from .models import Album, create_slug
+from .models import Album, create_slug, Photo
 
 
 def album_create(request):
@@ -32,10 +32,29 @@ def album_detail(request, slug):
     if instance.draft:
         if not (request.user.is_staff or request.user.is_superuser):
             raise Http404
+    photos = instance.photo_set.all()
+
+    item_count = 9
+    paginator = Paginator(photos, item_count)  # Show item_count per page
+    page_request_var = 'page'
+    page = request.GET.get(page_request_var)
+    try:
+        queryset = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        queryset = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        queryset = paginator.page(paginator.num_pages)
+
     context = {
         "title": instance.title,
-        "instance": instance
+        "instance": instance,
+        "photos": queryset,
+        "photos_group": grouped(queryset, 3),
+        "page_request_var": page_request_var,
     }
+
     return render(request, "album_detail.html", context)
 
 
@@ -56,7 +75,9 @@ def album_list(request):
             Q(author__first_name__icontains=query) |
             Q(author__last_name__icontains=query)
         ).distinct()
-    paginator = Paginator(queryset_list, 9)  # Show 25 contacts per page
+
+    item_count = 9
+    paginator = Paginator(queryset_list, item_count)  # Show item_count per page
     page_request_var = 'page'
     page = request.GET.get(page_request_var)
     try:

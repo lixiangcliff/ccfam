@@ -31,7 +31,7 @@ class Album(models.Model):
     # width_field = models.IntegerField(default=0)
     # height_field = models.IntegerField(default=0)
     slug = models.SlugField(unique=True)
-    draft = models.BooleanField(default=True)
+    draft = models.BooleanField(default=False)
     created_time = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True, auto_now_add=False)
 
@@ -56,8 +56,10 @@ class Album(models.Model):
 
 
 def upload_location_photo(instance, filename):
-    title = instance.album.title
-    return 'photos/%s/%s' % (title, filename)
+    author = instance.album.author
+    title = instance.album.slug
+    modi_filename = filename.replace(' ', '_')
+    return 'photos/%s/%s/%s' % (author, title, modi_filename)
 
 
 def get_device_make(image):
@@ -100,7 +102,8 @@ class Photo(models.Model):
         # create title
         self.title = '[' + self.author.username + ']: ' + self.image.name
         self.image_name = self.image.name
-        self.image_location = self.image.url
+        self.image_location = upload_location_photo(self, self.image.name)
+        #self.image_location = self.image.url
 
         # create slug
         # if self.slug is None or self.slug == "":
@@ -132,10 +135,11 @@ class Photo(models.Model):
     #     pass
 
     def get_absolute_url(self):
-        return reverse("album:detail", kwargs={"slug": self.slug})
+        #return reverse("album:detail", kwargs={"slug": self.slug})
+        return self.image_location
 
     def get_absolute_url_edit(self):
         return reverse("album:update", kwargs={"slug": self.slug})
 
     class Meta:
-        ordering = ["-created_time", "-updated_time"]
+        ordering = ["image_name", "created_time", "updated_time"]

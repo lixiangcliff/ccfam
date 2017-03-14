@@ -15,28 +15,73 @@
 
 {% block content %}
     <div class="col-sm-8 col-sm-offset-2">
-        <a href="{{ instance.get_absolute_url_edit }}" class="btn btn-default"
-           role="button">Edit</a>
-        {% if instance.image %}
-            <img src='{{ instance.image.url }}' class="img-responsive img-thumbnail"/>
-        {% endif %}
-        <h1>{{ title }}
-            {% if instance.draft %}
-                <span style="color:red;">Draft</span>
+        <div class="row">
+            <a href="{{ instance.get_absolute_url_edit }}" class="btn btn-default"
+               role="button">Edit</a>
+            {% if instance.image %}
+                <img src='{{ instance.image.url }}' class="img-responsive img-thumbnail"/>
             {% endif %}
-            <small>{{ instance.updated_time }} ({{ instance.updated_time | timesince }} ago)</small>
-        </h1>
+            <h1>{{ title }}
+                {% if instance.draft %}
+                    <span style="color:red;">Draft</span>
+                {% endif %}
+                <small>{{ instance.updated_time }} ({{ instance.updated_time | timesince }} ago)</small>
+            </h1>
 
-        {% if instance.user %}
-            <p>Author: {{ instance.user }}</p>
-            print ("test")
-        {% endif %}
+            {% if instance.author.get_full_name %}
+                <p>Author: {{ instance.author.get_full_name }}</p>
+            {% elif instance.author %}
+                <p>Author: {{ instance.author }}</p>
+            {% endif %}
 
-        {% if instance.author.get_full_name %}
-            <p>Author: {{ instance.author.get_full_name }}</p>
-        {% endif %}
-
-        {{ instance.description | linebreaks }}<br/>
-        <br/>
+            {{ instance.description | linebreaks }}<br/>
+            <br/>
+        </div>
     </div>
+
+    <div class="col-md-12">
+        <hr/>
+        {% for photos in photos_group %}
+            <div class="row">
+                {% for photo in photos %}
+                    <div class="col-sm-4">
+                        <div class="thumbnail">
+                            {% if photo.image %}
+                                <a href="{{ photo.image.url }}"><img src='{{ photo.image.url }}'
+                                                                            class="'img-responsive"/></a>
+                            {% endif %}
+                            <div class="caption">
+                                <h4><a href='{{ photo.image.url }}'>{{ photo.image_name }}</a></h4>
+                                {% if photo.description %}
+                                    <hr/>
+                                    <p>{{ photo.description | linebreaks | truncatechars:60 }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <hr>
+
+        <div class="pagination">
+            <span class="step-links">
+                {% if photos.has_previous %}
+                    <a href="?{{ page_request_var }}={{ photos.previous_page_number }}
+                    {% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ photos.number }} of {{ photos.paginator.num_pages }}.
+                </span>
+
+                {% if photos.has_next %}
+                    <a href="?{{ page_request_var }}={{ photos.next_page_number }}
+                    {% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">next</a>
+                {% endif %}
+            </span>
+        </div>
+
+    </div>
+
 {% endblock %}

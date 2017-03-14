@@ -1,19 +1,28 @@
 from django import forms
+from multiupload.fields import MultiFileField
 
 from .models import Album, Photo
 
 
 class AlbumForm(forms.ModelForm):
-
     class Meta:
         model = Album
         fields = [
             'title',
             'author',
+            'editor',
+            'cover_photo',
             'description',
-            'image',
             'draft',
         ]
+
+    images = MultiFileField(min_num=1, max_num=9999, max_file_size=1024 * 1024 * 20)
+
+    def save(self, commit=True):
+        instance = super(AlbumForm, self).save(commit)
+        for each in self.cleaned_data['images']:
+            Photo.objects.create(image=each, album=instance)
+        return instance
 
 
 class PhotoForm(forms.ModelForm):
@@ -22,29 +31,10 @@ class PhotoForm(forms.ModelForm):
     class Meta:
         model = Photo
         fields = [
-            #'title',
+            'title',
             'author',
             'editor',
-            'image',
+            'image_name',
+            'image_location',
             'description',
-            #'device_make',
         ]
-
-
-from multiupload.fields import MultiFileField
-
-from .models import Album2, Attachment
-
-
-class Album2Form(forms.ModelForm):
-    class Meta:
-        model = Album2
-        fields = ["title", 'author_email', 'content']  # not attachments!
-
-    files = MultiFileField(min_num=1, max_num=3, max_file_size=1024*1024*5)
-
-    def save(self, commit=True):
-        instance = super(Album2Form, self).save(commit)
-        for each in self.cleaned_data['files']:
-            Attachment.objects.create(file=each, album=instance)
-        return instance

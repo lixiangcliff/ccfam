@@ -14,8 +14,8 @@ def album_create(request):
         raise Http404
     form = AlbumForm(request.POST or None, request.FILES or None)
     if form.is_valid():
-        instance = form.save(commit=False)
-        instance.author = request.user
+        instance = form.save(commit=True)
+        #instance.editor = request.user
         instance.save()
         messages.success(request, "Album Successfully Created!")
         return HttpResponsePermanentRedirect(instance.get_absolute_url())
@@ -119,16 +119,3 @@ def album_delete(request, slug=None):
 def grouped(l, n):
     for i in range(0, len(l), n):
         yield l[i:i + n]
-
-
-from django.views.generic.edit import FormView, CreateView
-
-from .forms import Album2Form
-from .models import Album2
-
-
-class ContactView(CreateView):
-    model = Album2
-    form_class = Album2Form
-    template_name = 'form.html'
-    success_url = '?success'

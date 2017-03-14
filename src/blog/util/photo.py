@@ -88,26 +88,10 @@ def print_exif_data(image_path):
 
 
 
-image_path = '/Users/Cliff/per/static/pictures/test/iphone_modi.jpg'
-img = PIL.Image.open(image_path)
-exif_data = img._getexif()
-
-# print (exif_data)
-
-# print ("#################")
-
-# for k, v in exif.items():
-#     print(k, ':', v)
+# image_path = '/Users/Cliff/per/static/pictures/test/iphone_modi.jpg'
+# img = PIL.Image.open(image_path)
+# exif_data = img._getexif()
+#
 # image = Image.open(image_path)
 # exif_data = get_exif_data(image)
-# print (get_lat_lon(exif_data))
-
-#print_exif_dict(image_path)
-#print ("##" + (item)['Model'] + "##")
-#print ((item)['GPSInfo'])
-
-image = Image.open(image_path)
-exif_data = get_exif_data(image)
-print ((exif_data)['DateTime'])
-#print (get_lat_lon(exif_data)[0])
-#print_exif_data(image_path)
+# print ((exif_data)['DateTime'])

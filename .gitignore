@@ -1,4 +1,5 @@
 node_modules
+media_cdn/*
 .DS_Store*
 .hubot_history
 .idea/

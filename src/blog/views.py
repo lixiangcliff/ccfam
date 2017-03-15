@@ -137,6 +137,21 @@ def album_delete(request, slug=None):
     return redirect("album:list")
 
 
+def photo_detail(request, id):
+    instance = get_object_or_404(Photo, id=id)
+    if instance.album.draft:
+        if not (request.user.is_staff or request.user.is_superuser):
+            raise Http404
+
+    context = {
+        "title": instance.title,
+        "instance": instance,
+    }
+
+    return render(request, "photo_detail.html", context)
+
+
+# this needs to be moved to util module
 def grouped(l, n):
     for i in range(0, len(l), n):
         yield l[i:i + n]

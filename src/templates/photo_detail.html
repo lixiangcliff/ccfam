@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block head_title %}
+    {{ instance.title }} | {{ block.super }}
+{% endblock head_title %}
+
+<style>
+    {% block style %}
+        body {
+            background-image: url('../../static/img/background_image/damask-pattern-background-yellow.jpg');
+        }
+    {% endblock %}
+
+</style>
+
+{% block content %}
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="thumbnail">
+                <img src="{{ instance.image.url }}" class="img-fluid" alt="Responsive image">
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

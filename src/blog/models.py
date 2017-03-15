@@ -135,8 +135,7 @@ class Photo(models.Model):
     #     pass
 
     def get_absolute_url(self):
-        #return reverse("album:detail", kwargs={"slug": self.slug})
-        return self.image_location
+        return reverse("album:photo_detail", kwargs={"id": self.id})
 
     def get_absolute_url_edit(self):
         return reverse("album:update", kwargs={"slug": self.slug})

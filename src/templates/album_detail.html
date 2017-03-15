@@ -4,15 +4,6 @@
     {{ instance.title }} | {{ block.super }}
 {% endblock head_title %}
 
-<style>
-    {% block style %}
-        body {
-            background-image: url('../../static/img/background_image/damask-pattern-background-yellow.jpg');
-        }
-    {% endblock %}
-
-</style>
-
 {% block content %}
     <div class="col-sm-8 col-sm-offset-2">
         <div class="row">
@@ -47,11 +38,10 @@
                     <div class="col-sm-4">
                         <div class="thumbnail">
                             {% if photo.image %}
-                                <a href="{{ photo.image.url }}"><img src='{{ photo.image.url }}'
-                                                                            class="'img-responsive"/></a>
+                                <a href="{% url 'album:photo_detail' photo.id %}"><img src='{{ photo.image.url }}' class="'img-responsive" alt="{{ photo.image_name }}"/></a>
                             {% endif %}
                             <div class="caption">
-                                <h4><a href='{{ photo.image.url }}'>{{ photo.image_name }}</a></h4>
+                                <h4><a href='{% url 'album:photo_detail' photo.id %}'>{{ photo.image_name }}</a></h4>
                                 {% if photo.description %}
                                     <hr/>
                                     <p>{{ photo.description | linebreaks | truncatechars:60 }}</p>

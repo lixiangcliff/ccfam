@@ -2,8 +2,10 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 
-from .util.photo import get_exif_data, get_exif_data_by_image_path, get_lat_lon
+from .util.geo import get_location_by_coordinate
+from .util.photo import get_exif_data_by_image_path, get_lat_lon
 from .util.slug import create_slug
+from .util.time import get_datetime_by_string
 
 
 class AlbumManager(models.Manager):
@@ -19,7 +21,7 @@ def upload_location(instance, filename):
 
 
 class Album(models.Model):
-    title = models.CharField(max_length=120)
+    title = models.CharField(max_length=128)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
     editor = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, related_name="+")
     # recursive definition?
@@ -58,27 +60,20 @@ class Album(models.Model):
 def upload_location_photo(instance, filename):
     author = instance.album.author
     title = instance.album.slug
-    modi_filename = filename.replace(' ', '_')
-    return 'photos/%s/%s/%s' % (author, title, modi_filename)
-
-
-def get_device_make(image):
-    return get_exif_data(image)['Make']
-
-
-def get_photo_title():
-    pass
+    filename = filename.replace(' ', '_')
+    filename = filename.replace(',', '')
+    return 'photos/%s/%s/%s' % (author, title, filename)
 
 
 class Photo(models.Model):
     # required
-    title = models.CharField(max_length=120)  # author + file_name
+    title = models.CharField(max_length=128)  # author + file_name
     author = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
     editor = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, related_name="+")
 
     album = models.ForeignKey(Album, verbose_name='album')
     image_name = models.CharField(max_length=128)  # photo original file name
-    image_location = models.CharField(max_length=256)
+    image_path = models.CharField(max_length=256)
     # order matters! file_name and file_location must locate in front of file
     # otherwise there will be csrf_token issue
     image = models.ImageField('Photo', upload_to=upload_location_photo, width_field='width_field',
@@ -93,26 +88,31 @@ class Photo(models.Model):
     # optional
     description = models.TextField(blank=True)
 
-    device_make = models.CharField(max_length=120, blank=True)
-    device_model = models.CharField(max_length=120, blank=True)
-    # taken_time = models.DateTimeField(auto_now=False, auto_now_add=False, blank=True)
-    latitude = models.DecimalField(max_digits=8, decimal_places=6, blank=True, null=True)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+    device_make = models.CharField(max_length=128, null=True, blank=True)
+    device_model = models.CharField(max_length=128, null=True, blank=True)
+    taken_time = models.DateTimeField(auto_now=False, auto_now_add=False, null=True, blank=True)
+    latitude = models.DecimalField(max_digits=8, decimal_places=6, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    address = models.CharField(max_length=256, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         # create title
         self.title = '[' + self.author.username + ']: ' + self.image.name
         self.image_name = self.image.name
-        self.image_location = upload_location_photo(self, self.image.name)
+        self.image_path = upload_location_photo(self, self.image.name)
         super(Photo, self).save(*args, **kwargs)
 
     def populate_exif_info(self):
-        exif_data = get_exif_data_by_image_path(settings.MEDIA_ROOT + "/" + self.image_location)
+        exif_data = get_exif_data_by_image_path(settings.MEDIA_ROOT + "/" + self.image_path)
         self.device_make = self.get_device_make(exif_data)
         self.device_model = self.get_device_model(exif_data)
+        self.taken_time = self.get_taken_time(exif_data)
         self.latitude = self.get_latitude(exif_data)
         self.longitude = self.get_longitude(exif_data)
-        super(Photo, self).save(update_fields=["device_make", "device_model", "latitude", "longitude"])
+        self.address = self.get_address(exif_data)
+
+        super(Photo, self).save(
+            update_fields=["device_make", "device_model", "taken_time", "latitude", "longitude", "address"])
 
     def __str__(self):  # python3
         return self.title
@@ -123,14 +123,17 @@ class Photo(models.Model):
     def get_device_model(self, exif_data):
         return exif_data.get('Model', None)
 
-    # def get_taken_time(self):
-    #     return get_exif_data(self.image)['DateTime']
+    def get_taken_time(self, exif_data):
+        return get_datetime_by_string(exif_data.get('DateTime', None))
 
     def get_latitude(self, exif_data):
         return get_lat_lon(exif_data)[0]
 
     def get_longitude(self, exif_data):
         return get_lat_lon(exif_data)[1]
+
+    def get_address(self, exif_data):
+        return get_location_by_coordinate(get_lat_lon(exif_data)[0], get_lat_lon(exif_data)[1])
 
     def get_photo_title(self):
         pass

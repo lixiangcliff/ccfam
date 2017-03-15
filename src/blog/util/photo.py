@@ -88,10 +88,8 @@ def print_exif_data(image_path):
 
 
 
-# image_path = '/Users/Cliff/per/static/pictures/test/iphone_modi.jpg'
+# image_path = '/Users/Cliff/per/static/pictures/test/canon_modi.jpg'
 # img = PIL.Image.open(image_path)
-# exif_data = img._getexif()
-#
-# image = Image.open(image_path)
-# exif_data = get_exif_data(image)
-# print ((exif_data)['DateTime'])
+# exif_data = get_exif_data(img)
+# datetime_data = exif_data['DateTime']
+

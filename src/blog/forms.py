@@ -35,6 +35,6 @@ class PhotoForm(forms.ModelForm):
             'author',
             'editor',
             'image_name',
-            'image_location',
+            "image_path",
             'description',
         ]

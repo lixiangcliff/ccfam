@@ -9,9 +9,6 @@
         <div class="row">
             <a href="{{ instance.get_absolute_url_edit }}" class="btn btn-default"
                role="button">Edit</a>
-            {% if instance.image %}
-                <img src='{{ instance.image.url }}' class="img-responsive img-thumbnail"/>
-            {% endif %}
             <h1>{{ title }}
                 {% if instance.draft %}
                     <span style="color:red;">Draft</span>

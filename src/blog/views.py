@@ -18,6 +18,8 @@ def album_create(request):
         #instance.editor = request.user
         instance.save()
         messages.success(request, "Album Successfully Created!")
+        # populate exif info to photos
+        populate_photo_exif_info_in_album(instance)
         return HttpResponsePermanentRedirect(instance.get_absolute_url())
     elif form.errors:
         messages.error(request, "Album NOT Successfully Created!")
@@ -142,7 +144,6 @@ def photo_detail(request, id):
     if instance.album.draft:
         if not (request.user.is_staff or request.user.is_superuser):
             raise Http404
-
     context = {
         "title": instance.title,
         "instance": instance,
@@ -155,3 +156,11 @@ def photo_detail(request, id):
 def grouped(l, n):
     for i in range(0, len(l), n):
         yield l[i:i + n]
+
+
+def populate_photo_exif_info_in_album(album):
+    photos = album.photo_set.all()
+    if photos:
+        for photo in photos:
+            photo.populate_exif_info()
+    print ("finish populate photo exif")

@@ -88,8 +88,9 @@ def print_exif_data(image_path):
 
 
 
-# image_path = '/Users/Cliff/per/static/pictures/test/canon_modi.jpg'
-# img = PIL.Image.open(image_path)
-# exif_data = get_exif_data(img)
-# datetime_data = exif_data['DateTime']
+image_path = '/Users/Cliff/per/static/pictures/test/canon_modi.jpg'
+img = PIL.Image.open(image_path)
+exif_data = get_exif_data(img)
+#datetime_data = exif_data['DateTime']
+print (get_lat_lon(exif_data)[0] is None)
 

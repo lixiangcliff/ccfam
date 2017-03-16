@@ -31,10 +31,9 @@ class PhotoForm(forms.ModelForm):
     class Meta:
         model = Photo
         fields = [
-            'title',
             'author',
             'editor',
-            'image_name',
-            "image_path",
+            'album',
             'description',
+            'image',
         ]

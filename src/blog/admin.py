@@ -16,7 +16,7 @@ class AlbumModelAdmin(admin.ModelAdmin):
 
 
 class PhotoModelAdmin(admin.ModelAdmin):
-    list_display = ["title", "image_name", "image_path", "author", "editor", "updated_time", "created_time",
+    list_display = ["title", "image_name", "width", "height", "image_path", "author", "editor", "updated_time", "created_time",
                     "taken_time", "address", "device_make", "device_model", "latitude", "longitude"]
     list_filter = ["author", "editor", "updated_time", "created_time"]
     search_fields = ["title", "author", "editor", "description"]

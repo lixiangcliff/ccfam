@@ -26,7 +26,7 @@
                         <div class="thumbnail">
                             {% if obj.image %}
                                 <a href="{{ obj.get_absolute_url }}"><img src='{{ obj.image.url }}'
-                                                                          class="'img-responsive"/></a>
+                                                                          class="img-responsive"/></a>
                             {% endif %}
                             <div class="caption">
                                 {% if obj.draft %}<h5 style="color:red">Draft</h5> {% endif %}

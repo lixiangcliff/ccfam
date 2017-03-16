@@ -9,6 +9,8 @@ urlpatterns = [
     url(r'^(?P<slug>[\w-]+)/$', views.album_detail, name='detail'),
     url(r'^(?P<slug>[\w-]+)/edit/$', views.album_update, name='update'),
     url(r'^(?P<slug>[\w-]+)/delete/$', views.album_delete, name='delete'),
+    url(r'^photo/create/$', views.photo_create, name='photo_create'),
     url(r'^photo/(?P<id>[0-9]+)/$', views.photo_detail, name='photo_detail'),
+    url(r'^photo/(?P<id>[0-9]+)/edit$', views.photo_update, name='photo_update'),
 
 ]

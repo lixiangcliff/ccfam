@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block head_title %}
+    upload a photo to album | {{ block.super }}
+{% endblock head_title %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <h1>Photo</h1>
+
+            <form method="POST" , action="" enctype="multipart/form-data"> {% csrf_token %}
+                {{ form | crispy }}
+                <input type="submit" class="btn btn-primary"
+                       value={% if update %}"Update Photo"{% else %}"Upload Photo"{% endif %}/>
+            </form>
+        </div>
+    </div>
+{% endblock %}

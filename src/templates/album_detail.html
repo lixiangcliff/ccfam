@@ -35,7 +35,7 @@
                     <div class="col-sm-4">
                         <div class="thumbnail">
                             {% if photo.image %}
-                                <a href="{% url 'album:photo_detail' photo.id %}"><img src='{{ photo.image.url }}' class="'img-responsive" alt="{{ photo.image_name }}"/></a>
+                                <a href="{% url 'album:photo_detail' photo.id %}"><img src='{{ photo.image.url }}' class="img-responsive" alt="{{ photo.image_name }}"/></a>
                             {% endif %}
                             <div class="caption">
                                 <h4><a href='{% url 'album:photo_detail' photo.id %}'>{{ photo.image_name }}</a></h4>

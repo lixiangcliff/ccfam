@@ -7,6 +7,18 @@ body {
     background-image: url('../img/background_image/gray_background.png');
 }
 
+.img-rotate-90 {
+    transform: rotate(90deg);
+    border: 0.8em solid #f4f4f4;
+    box-shadow: 0.5em 0.5em 1em #ccc;
+}
+
+.img-rotate-270 {
+    transform: rotate(-90deg);
+    border: 0.8em solid #f4f4f4;
+    box-shadow: 0.5em 0.5em 1em #ccc;
+}
+
 /* https://benmarshall.me/responsive-iframes/ */
 
 .intrinsic-container {

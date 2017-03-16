@@ -5,7 +5,7 @@ from django.http import Http404, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.text import slugify
 
-from .forms import AlbumForm
+from .forms import AlbumForm, PhotoForm
 from .models import Album, create_slug, Photo
 
 
@@ -151,6 +151,49 @@ def photo_detail(request, id):
 
     return render(request, "photo_detail.html", context)
 
+
+def photo_create(request):
+    if not (request.user.is_staff or request.user.is_superuser):
+        raise Http404
+    form = PhotoForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        instance = form.save(commit=True)
+        #instance.editor = request.user
+        instance.save()
+        messages.success(request, "Photo Successfully Uploaded!")
+        # populate exif info to photo
+        instance.populate_exif_info()
+        return HttpResponsePermanentRedirect(instance.get_absolute_url())
+    elif form.errors:
+        messages.error(request, "Photo NOT Successfully Uploaded!")
+    context = {
+        "form": form
+    }
+    return render(request, "photo_form.html", context)
+
+
+def photo_update(request, id=id):
+    if not (request.user.is_staff or request.user.is_superuser):
+        raise Http404
+    instance = get_object_or_404(Photo, id=id)
+    if instance:
+        title = instance.title
+    form = PhotoForm(request.POST or None, request.FILES or None, instance=instance)
+    if form.is_valid():
+        instance = form.save(commit=True)
+        instance.save()
+        messages.success(request, "Photo Successfully Updated!")
+        return HttpResponsePermanentRedirect(instance.get_absolute_url())
+    elif form.errors:
+        messages.error(request, "Photo NOT Successfully Updated!")
+    update = True
+    context = {
+        "title": instance.title,
+        "instance": instance,
+        "form": form,
+        "update": update
+    }
+    return render(request, "photo_form.html", context)
 
 # this needs to be moved to util module
 def grouped(l, n):

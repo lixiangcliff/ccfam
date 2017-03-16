@@ -1,3 +1,5 @@
+import os
+
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
@@ -25,13 +27,9 @@ class Album(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
     editor = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, related_name="+")
     # recursive definition?
-    # cover_photo = models.ForeignKey(Photo, verbose_name=_('cover_photo'), blank=True)
+    # cover_photo = models.ForeignKey(Photo, verbose_name=_('cover_photo'), null=True, blank=True)
     cover_photo = models.URLField(blank=True)
     description = models.TextField(blank=True)
-    # image = models.ImageField(upload_to=upload_location, null=True, blank=True, width_field='width_field',
-    #                           height_field='height_field')
-    # width_field = models.IntegerField(default=0)
-    # height_field = models.IntegerField(default=0)
     slug = models.SlugField(unique=True)
     draft = models.BooleanField(default=False)
     created_time = models.DateTimeField(auto_now=False, auto_now_add=True)
@@ -76,11 +74,11 @@ class Photo(models.Model):
     image_path = models.CharField(max_length=256)
     # order matters! file_name and file_location must locate in front of file
     # otherwise there will be csrf_token issue
-    image = models.ImageField('Photo', upload_to=upload_location_photo, width_field='width_field',
-                              height_field='height_field')
+    image = models.ImageField('Photo', upload_to=upload_location_photo, width_field='width',
+                              height_field='height')
 
-    width_field = models.IntegerField(default=0)
-    height_field = models.IntegerField(default=0)
+    width = models.IntegerField(default=0)
+    height = models.IntegerField(default=0)
 
     # slug = models.SlugField(unique=True) # not useful
     created_time = models.DateTimeField(auto_now=False, auto_now_add=True)
@@ -97,9 +95,10 @@ class Photo(models.Model):
 
     def save(self, *args, **kwargs):
         # create title
-        self.title = '[' + self.author.username + ']: ' + self.image.name
-        self.image_name = self.image.name
-        self.image_path = upload_location_photo(self, self.image.name)
+        image_basename = os.path.basename(self.image.name)
+        self.title = '[' + self.author.username + ']: ' + image_basename
+        self.image_name = image_basename
+        self.image_path = upload_location_photo(self, image_basename)
         super(Photo, self).save(*args, **kwargs)
 
     def populate_exif_info(self):
@@ -133,7 +132,10 @@ class Photo(models.Model):
         return get_lat_lon(exif_data)[1]
 
     def get_address(self, exif_data):
-        return get_location_by_coordinate(get_lat_lon(exif_data)[0], get_lat_lon(exif_data)[1])
+        if get_lat_lon(exif_data)[0] is None:
+            return ""
+        else:
+            return get_location_by_coordinate(get_lat_lon(exif_data)[0], get_lat_lon(exif_data)[1])
 
     def get_photo_title(self):
         pass

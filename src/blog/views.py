@@ -117,6 +117,8 @@ def album_update(request, slug=None):
             instance.slug = create_slug(instance)
         instance.save()
         messages.success(request, "Album Successfully Updated!")
+        # populate exif info to photos
+        populate_photo_exif_info_in_album(instance)
         return HttpResponsePermanentRedirect(instance.get_absolute_url())
     elif form.errors:
         messages.error(request, "Album NOT Successfully Updated!")

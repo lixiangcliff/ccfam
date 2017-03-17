@@ -1,4 +1,4 @@
-db.sqlite3
+*.sqlite3
 __ pycache __
 node_modules
 media_cdn/*

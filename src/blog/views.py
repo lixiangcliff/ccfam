@@ -3,7 +3,6 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
 from django.http import Http404, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, redirect, render
-from django.utils.text import slugify
 
 from .forms import AlbumForm, PhotoForm
 from .models import Album, create_slug, Photo

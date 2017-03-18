@@ -4,6 +4,8 @@ from PIL.ExifTags import GPSTAGS, TAGS
 
 
 ### http://eran.sandler.co.il/2011/05/20/extract-gps-latitude-and-longitude-data-from-exif-using-python-imaging-library-pil/
+from src.blog.util.time import get_datetime_by_string
+
 
 def get_exif_data_by_image_path(image_path):
     image = Image.open(image_path)
@@ -88,9 +90,13 @@ def print_exif_data(image_path):
 
 
 
-image_path = '/Users/Cliff/per/static/pictures/test/canon_modi.jpg'
+image_path = '/Users/Cliff/per/static/pictures/test_mobile/a1.jpg'
 img = PIL.Image.open(image_path)
 exif_data = get_exif_data(img)
 #datetime_data = exif_data['DateTime']
-print (get_lat_lon(exif_data)[0] is None)
+# print (get_lat_lon(exif_data)[0] is None)
+#print (exif_data.get('Orientation'))
+#
+# print (get_datetime_by_string(exif_data.get('DateTime')))
+#print_exif_data(image_path)
 

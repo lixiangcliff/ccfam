@@ -74,20 +74,18 @@ class Photo(models.Model):
     image_path = models.CharField(max_length=256)
     # order matters! file_name and file_location must locate in front of file
     # otherwise there will be csrf_token issue
-    image = models.ImageField('Photo', upload_to=upload_location_photo, width_field='width',
-                              height_field='height')
-
-    width = models.IntegerField(default=0)
-    height = models.IntegerField(default=0)
+    image = models.ImageField('Photo', upload_to=upload_location_photo)
 
     # slug = models.SlugField(unique=True) # not useful
     created_time = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True, auto_now_add=False)
     # optional
+    width = models.IntegerField(default=0, null=True, blank=True)
+    height = models.IntegerField(default=0, null=True, blank=True)
     description = models.TextField(blank=True)
-
     device_make = models.CharField(max_length=128, null=True, blank=True)
     device_model = models.CharField(max_length=128, null=True, blank=True)
+    orientation = models.CharField(max_length=2, null=True, blank=True)
     taken_time = models.DateTimeField(auto_now=False, auto_now_add=False, null=True, blank=True)
     latitude = models.DecimalField(max_digits=8, decimal_places=6, null=True, blank=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
@@ -103,24 +101,69 @@ class Photo(models.Model):
 
     def populate_exif_info(self):
         exif_data = get_exif_data_by_image_path(settings.MEDIA_ROOT + "/" + self.image_path)
+        self.width = self.get_width(exif_data)
+        self.height = self.get_height(exif_data)
         self.device_make = self.get_device_make(exif_data)
         self.device_model = self.get_device_model(exif_data)
+        self.orientation = self.get_orientation(exif_data)
         self.taken_time = self.get_taken_time(exif_data)
         self.latitude = self.get_latitude(exif_data)
         self.longitude = self.get_longitude(exif_data)
         self.address = self.get_address(exif_data)
 
         super(Photo, self).save(
-            update_fields=["device_make", "device_model", "taken_time", "latitude", "longitude", "address"])
+            update_fields=["width", "height", "orientation", "device_make", "device_model", "taken_time", "latitude", "longitude", "address"])
+        self.rotate_image()
 
     def __str__(self):  # python3
         return self.title
+
+    # http://stackoverflow.com/questions/22045882/modify-or-delete-exif-tag-orientation-in-python
+    # http://piexif.readthedocs.io/en/latest/sample.html?highlight=orientation
+    def rotate_image(self):
+        filename = self.image
+        from PIL import Image
+        import piexif
+
+        img = Image.open(filename)
+        if "exif" in img.info:
+            exif_dict = piexif.load(img.info["exif"])
+
+            if piexif.ImageIFD.Orientation in exif_dict["0th"]:
+                orientation = exif_dict["0th"].pop(piexif.ImageIFD.Orientation)
+                exif_bytes = piexif.dump(exif_dict)
+
+                if orientation == 2:
+                    img = img.transpose(Image.FLIP_LEFT_RIGHT)
+                elif orientation == 3:
+                    img = img.rotate(180, expand=True)
+                elif orientation == 4:
+                    img = img.rotate(180, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
+                elif orientation == 5:
+                    img = img.rotate(-90, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
+                elif orientation == 6:
+                    img = img.rotate(-90, expand=True)
+                elif orientation == 7:
+                    img = img.rotate(90, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
+                elif orientation == 8:
+                    img = img.rotate(90, expand=True)
+
+                img.save(self.image.file.name, overwrite=True, exif=exif_bytes)
+
+    def get_width(self, exif_data):
+        return exif_data.get('ExifImageWidth', None)
+
+    def get_height(self, exif_data):
+        return exif_data.get('ExifImageHeight', None)
 
     def get_device_make(self, exif_data):
         return exif_data.get('Make', None)
 
     def get_device_model(self, exif_data):
         return exif_data.get('Model', None)
+
+    def get_orientation(self, exif_data):
+        return exif_data.get('Orientation', None)
 
     def get_taken_time(self, exif_data):
         return get_datetime_by_string(exif_data.get('DateTime', None))

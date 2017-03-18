@@ -10,6 +10,9 @@ def slugify_time(tt=None):
     return slug_time
 
 
-def get_datetime_by_string(datetime_str):
-    datetime_object = datetime.strptime(datetime_str, '%Y:%m:%d %H:%M:%S')
-    return datetime_object
+def get_datetime_by_string(datetime_str=None):
+    if datetime_str:
+        datetime_object = datetime.strptime(datetime_str, '%Y:%m:%d %H:%M:%S')
+        return datetime_object
+    return None
+

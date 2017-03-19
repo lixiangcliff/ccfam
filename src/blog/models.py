@@ -74,9 +74,7 @@ class Photo(models.Model):
     image_path = models.CharField(max_length=256)
     # order matters! file_name and file_location must locate in front of file
     # otherwise there will be csrf_token issue
-    image = models.ImageField('Photo', upload_to=upload_location_photo)
-
-    # slug = models.SlugField(unique=True) # not useful
+    image = models.ImageField('Photo', upload_to=upload_location_photo, null=True, blank=True)
     created_time = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True, auto_now_add=False)
     # optional

@@ -90,12 +90,12 @@ def print_exif_data(image_path):
 
 
 
-#image_path = '/Users/Cliff/per/static/pictures/test_mobile/a1.jpg'
+#image_path = '/Users/Cliff/per/static/pictures/test_mobile/a12.jpg'
 #img = PIL.Image.open(image_path)
 #exif_data = get_exif_data(img)
 #datetime_data = exif_data['DateTime']
 # print (get_lat_lon(exif_data)[0] is None)
-#print (exif_data.get('Orientation'))
+#   print (exif_data.get('Orientation'))
 #
 # print (get_datetime_by_string(exif_data.get('DateTime')))
 #print_exif_data(image_path)

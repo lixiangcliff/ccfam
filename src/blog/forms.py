@@ -1,5 +1,5 @@
 from django import forms
-from multiupload.fields import MultiFileField
+from .util.multiupload.multiupload import MultiFileField
 
 from .models import Album, Photo
 
@@ -15,7 +15,7 @@ class AlbumForm(forms.ModelForm):
             'draft',
         ]
 
-    images = MultiFileField(min_num=1, max_num=9999, max_file_size=1024 * 1024 * 20)
+    images = MultiFileField(min_num=0, max_num=9999, max_file_size=1024 * 1024 * 20, required=False)
 
     def save(self, commit=True):
         instance = super(AlbumForm, self).save(commit)

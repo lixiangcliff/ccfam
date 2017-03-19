@@ -6,4 +6,5 @@ olefile==0.44
 piexif==1.0.12
 Pillow==4.0.0
 Unidecode==0.4.20
+django-cleanup==0.4.2
 

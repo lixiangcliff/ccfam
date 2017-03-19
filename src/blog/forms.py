@@ -21,7 +21,7 @@ class AlbumForm(forms.ModelForm):
     def save(self, commit=True):
         instance = super(AlbumForm, self).save(commit)
         for each in self.cleaned_data['images']:
-            Photo.objects.create(image=each, album=instance)
+            Photo.objects.create(image=each, album=instance, author=instance.author, editor=instance.editor)
         return instance
 
 

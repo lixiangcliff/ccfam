@@ -46,10 +46,10 @@ class Album(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("album:detail", kwargs={"slug": self.slug})
+        return reverse("album:detail", kwargs={"slug": self.slug, "author_username": self.author.username})
 
     def get_absolute_url_edit(self):
-        return reverse("album:update", kwargs={"slug": self.slug})
+        return reverse("album:update", kwargs={"slug": self.slug, "author_username": self.author.username})
 
     class Meta:
         ordering = ["-created_time", "-updated_time"]

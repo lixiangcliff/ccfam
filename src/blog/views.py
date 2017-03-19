@@ -14,7 +14,7 @@ def album_create(request):
     form = AlbumForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=True)
-        #instance.editor = request.user
+        # instance.editor = request.user
         instance.save()
         messages.success(request, "Album Successfully Created!")
         # populate exif info to photos
@@ -28,8 +28,12 @@ def album_create(request):
     return render(request, "album_form.html", context)
 
 
-def album_detail(request, slug):
-    instance = get_object_or_404(Album, slug=slug)
+def album_detail(request, author_username, slug):
+    # instance = get_object_or_404(Album, slug=slug)
+    instance_set = Album.objects.filter(author__username__exact=author_username, slug__exact=slug)
+    if not instance_set or len(instance_set) != 1:
+        raise Http404
+    instance = instance_set.first()
     if instance.draft:
         if not (request.user.is_staff or request.user.is_superuser):
             raise Http404
@@ -102,10 +106,12 @@ def album_list(request):
     return render(request, "album_list.html", context)
 
 
-def album_update(request, slug=None):
+def album_update(request, author_username, slug=None):
     if not (request.user.is_staff or request.user.is_superuser):
         raise Http404
-    instance = get_object_or_404(Album, slug=slug)
+    # instance = get_object_or_404(Album, slug=slug)
+    instance_set = Album.objects.filter(author__username__exact=author_username, slug__exact=slug)
+    instance = instance_set.first()
     if instance:
         title = instance.title
     form = AlbumForm(request.POST or None, request.FILES or None, instance=instance)
@@ -131,10 +137,12 @@ def album_update(request, slug=None):
     return render(request, "album_form.html", context)
 
 
-def album_delete(request, slug=None):
+def album_delete(request, author_username, slug=None):
     if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
-    instance = get_object_or_404(Album, slug=slug)
+    # instance = get_object_or_404(Album, slug=slug)
+    instance_set = Album.objects.filter(author__username__exact=author_username, slug__exact=slug)
+    instance = instance_set.first()
     instance.delete()
     messages.success(request, "Album Successfully Deleted!")
     return redirect("album:list")
@@ -159,7 +167,7 @@ def photo_create(request):
     form = PhotoForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=True)
-        #instance.editor = request.user
+        # instance.editor = request.user
         instance.save()
         messages.success(request, "Photo Successfully Uploaded!")
         # populate exif info to photo
@@ -195,6 +203,7 @@ def photo_update(request, id=id):
         "update": update
     }
     return render(request, "photo_form.html", context)
+
 
 # this needs to be moved to util module
 def grouped(l, n):

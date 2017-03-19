@@ -1,0 +1,9 @@
+Django==1.10.5
+django-crispy-forms==1.6.1
+django-registration-redux==1.4
+geopy==1.11.0
+olefile==0.44
+piexif==1.0.12
+Pillow==4.0.0
+Unidecode==0.4.20
+

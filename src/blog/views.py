@@ -144,6 +144,10 @@ def album_delete(request, author_username, slug=None):
     # instance = get_object_or_404(Album, slug=slug)
     instance_set = Album.objects.filter(author__username__exact=author_username, slug__exact=slug)
     instance = instance_set.first()
+    # delete all photos under album
+    photo_set = Photo.objects.filter(album=instance)
+    for photo in photo_set:
+        photo.delete()
     instance.delete()
     messages.success(request, "Album Successfully Deleted!")
     return redirect("album:list")

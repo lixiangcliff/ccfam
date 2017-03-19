@@ -10,7 +10,6 @@ class AlbumForm(forms.ModelForm):
         fields = [
             'title',
             'author',
-            'editor',
             'cover_photo',
             'description',
             'draft',

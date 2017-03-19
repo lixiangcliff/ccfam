@@ -99,7 +99,8 @@ class Photo(models.Model):
         self.image_path = upload_location_photo(self, image_basename)
         super(Photo, self).save(*args, **kwargs)
 
-    def populate_exif_info(self):
+    def post_process(self):
+        # populate exif infos
         exif_data = get_exif_data_by_image_path(settings.MEDIA_ROOT + "/" + self.image_path)
         self.width = self.get_width(exif_data)
         self.height = self.get_height(exif_data)
@@ -110,9 +111,13 @@ class Photo(models.Model):
         self.latitude = self.get_latitude(exif_data)
         self.longitude = self.get_longitude(exif_data)
         self.address = self.get_address(exif_data)
-
+        # update other field
+        self.author = self.album.author
+        self.editor = self.album.editor
         super(Photo, self).save(
-            update_fields=["width", "height", "orientation", "device_make", "device_model", "taken_time", "latitude", "longitude", "address"])
+            update_fields=["author", "editor", "width", "height", "orientation", "device_make", "device_model",
+                           "taken_time", "latitude", "longitude", "address"])
+        # rotate image if needed
         self.rotate_image()
 
     def __str__(self):  # python3
@@ -134,6 +139,9 @@ class Photo(models.Model):
                 exif_bytes = piexif.dump(exif_dict)
 
                 if orientation == 2:
+                    img.close()
+                    return
+                elif orientation == 2:
                     img = img.transpose(Image.FLIP_LEFT_RIGHT)
                 elif orientation == 3:
                     img = img.rotate(180, expand=True)

@@ -14,11 +14,11 @@ def album_create(request):
     form = AlbumForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=True)
-        # instance.editor = request.user
+        instance.editor = request.user
         instance.save()
         messages.success(request, "Album Successfully Created!")
         # populate exif info to photos
-        populate_photo_exif_info_in_album(instance)
+        post_process_photos(instance)
         return HttpResponsePermanentRedirect(instance.get_absolute_url())
     elif form.errors:
         messages.error(request, "Album NOT Successfully Created!")
@@ -120,10 +120,11 @@ def album_update(request, author_username, slug=None):
         # change slug if title updated
         if instance.title != title:
             instance.slug = create_slug(instance)
+        instance.editor = request.user
         instance.save()
         messages.success(request, "Album Successfully Updated!")
         # populate exif info to photos
-        populate_photo_exif_info_in_album(instance)
+        post_process_photos(instance)
         return HttpResponsePermanentRedirect(instance.get_absolute_url())
     elif form.errors:
         messages.error(request, "Album NOT Successfully Updated!")
@@ -171,7 +172,7 @@ def photo_create(request):
         instance.save()
         messages.success(request, "Photo Successfully Uploaded!")
         # populate exif info to photo
-        instance.populate_exif_info()
+        instance.post_process()
         return HttpResponsePermanentRedirect(instance.get_absolute_url())
     elif form.errors:
         messages.error(request, "Photo NOT Successfully Uploaded!")
@@ -211,9 +212,8 @@ def grouped(l, n):
         yield l[i:i + n]
 
 
-def populate_photo_exif_info_in_album(album):
+def post_process_photos(album):
     photos = album.photo_set.all()
     if photos:
         for photo in photos:
-            photo.populate_exif_info()
-    print ("finish populate photo exif")
+            photo.post_process()

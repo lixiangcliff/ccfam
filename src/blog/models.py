@@ -80,6 +80,7 @@ class Photo(models.Model):
     # optional
     width = models.IntegerField(default=0, null=True, blank=True)
     height = models.IntegerField(default=0, null=True, blank=True)
+    size = models.BigIntegerField(default=0, null=True, blank=True)
     description = models.TextField(blank=True)
     device_make = models.CharField(max_length=128, null=True, blank=True)
     device_model = models.CharField(max_length=128, null=True, blank=True)
@@ -112,8 +113,9 @@ class Photo(models.Model):
         # update other field
         self.author = self.album.author
         self.editor = self.album.editor
+        self.size = self.image.size
         super(Photo, self).save(
-            update_fields=["author", "editor", "width", "height", "orientation", "device_make", "device_model",
+            update_fields=["author", "editor", "width", "height", "size", "orientation", "device_make", "device_model",
                            "taken_time", "latitude", "longitude", "address"])
         # rotate image if needed
         self.rotate_image()

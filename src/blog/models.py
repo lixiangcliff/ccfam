@@ -138,7 +138,7 @@ class Photo(models.Model):
                 orientation = exif_dict["0th"].pop(piexif.ImageIFD.Orientation)
                 exif_bytes = piexif.dump(exif_dict)
 
-                if orientation == 2:
+                if orientation == 1:
                     img.close()
                     return
                 elif orientation == 2:

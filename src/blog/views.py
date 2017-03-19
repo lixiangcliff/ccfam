@@ -206,6 +206,16 @@ def photo_update(request, id=id):
     return render(request, "photo_form.html", context)
 
 
+def photo_delete(request, id=id):
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
+    instance = get_object_or_404(Photo, id=id)
+    instance.delete()
+    messages.success(request, "Photo Successfully Deleted!")
+    return redirect("album:list")
+
+
+
 # this needs to be moved to util module
 def grouped(l, n):
     for i in range(0, len(l), n):

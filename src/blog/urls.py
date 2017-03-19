@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^photo/create/$', views.photo_create, name='photo_create'),
     url(r'^photo/(?P<id>[0-9]+)/$', views.photo_detail, name='photo_detail'),
     url(r'^photo/(?P<id>[0-9]+)/edit$', views.photo_update, name='photo_update'),
+    url(r'^photo/(?P<id>[0-9]+)/delete', views.photo_delete, name='photo_delete'),
     # temp workaround above, need to move photo out of album
     url(r'^create/$', views.album_create, name='create'),
     url(r'^(?P<author_username>[\w.@+-]+)/(?P<slug>[\w-]+)/$', views.album_detail, name='detail'),

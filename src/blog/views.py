@@ -12,6 +12,9 @@ def album_create(request):
     if not (request.user.is_staff or request.user.is_superuser):
         raise Http404
     form = AlbumForm(request.POST or None, request.FILES or None)
+    import datetime
+    print ("##start##")
+    print (datetime.datetime.now())
     if form.is_valid():
         instance = form.save(commit=True)
         instance.editor = request.user
@@ -19,6 +22,8 @@ def album_create(request):
         messages.success(request, "Album Successfully Created!")
         # populate exif info to photos
         post_process_photos(instance)
+        print ("##end##")
+        print (datetime.datetime.now())
         return HttpResponsePermanentRedirect(instance.get_absolute_url())
     elif form.errors:
         messages.error(request, "Album NOT Successfully Created!")

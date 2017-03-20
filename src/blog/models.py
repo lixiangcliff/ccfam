@@ -113,19 +113,21 @@ class Photo(models.Model):
         # update other field
         self.author = self.album.author
         self.editor = self.album.editor
+
+        # rotate image if needed
+        self.rotate_and_compress_image()
         self.size = self.image.size
+
         super(Photo, self).save(
             update_fields=["author", "editor", "width", "height", "size", "orientation", "device_make", "device_model",
                            "taken_time", "latitude", "longitude", "address"])
-        # rotate image if needed
-        self.rotate_image()
 
     def __str__(self):  # python3
         return self.title
 
     # http://stackoverflow.com/questions/22045882/modify-or-delete-exif-tag-orientation-in-python
     # http://piexif.readthedocs.io/en/latest/sample.html?highlight=orientation
-    def rotate_image(self):
+    def rotate_and_compress_image(self):
         filename = self.image
         from PIL import Image
         import piexif
@@ -138,10 +140,7 @@ class Photo(models.Model):
                 orientation = exif_dict["0th"].pop(piexif.ImageIFD.Orientation)
                 exif_bytes = piexif.dump(exif_dict)
 
-                if orientation == 1:
-                    img.close()
-                    return
-                elif orientation == 2:
+                if orientation == 2:
                     img = img.transpose(Image.FLIP_LEFT_RIGHT)
                 elif orientation == 3:
                     img = img.rotate(180, expand=True)
@@ -156,7 +155,7 @@ class Photo(models.Model):
                 elif orientation == 8:
                     img = img.rotate(90, expand=True)
 
-                img.save(self.image.file.name, overwrite=True, exif=exif_bytes)
+                img.save(self.image.file.name, overwrite=True, optimize=True, quality=25, exif=exif_bytes)
 
     def get_width(self, exif_data):
         return exif_data.get('ExifImageWidth', None)

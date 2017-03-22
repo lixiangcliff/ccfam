@@ -1,7 +1,16 @@
 {% load staticfiles %}
 
+{% load tz %}
+
+
 <footer class="footer">
-      <div class="container">
-        <p class="text-muted code">© 2017 ccfam® We are family!</p>
-      </div>
+    <div class="container">
+        <p class="text-muted code">© 2017 ccfam® We are family! |
+            {% localtime on %}
+                local time: {% now "H:i Y-n-d e" %}
+            {% endlocaltime %}
+        </p>
+    </div>
+
+
 </footer>

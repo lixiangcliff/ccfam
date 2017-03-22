@@ -11,12 +11,18 @@
 
         <h1>{{ title }}</h1>
         <div class="row">
-            <div class="pull-right">
-                <form method="GET" action="">
-                    <input type="text" name="q" placeholder="Search albums" value="{{ request.GET.q }}"/>
-                    <input type="submit" value="Search"/>
-                </form>
-            </div>
+            <form method="GET" action="">
+                <div class="col-sm-6 pull-right">
+                    <div class="input-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search albums"
+                               value="{{ request.GET.q }}"/>
+                        <span class="input-group-btn">
+                            {#<input class="btn btn-default" type="submit" value="Search"/>#}
+                            <button class="btn btn-default" type="submit">Search <i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
         </div>
         <hr/>
         {% for obj_group in object_list_group %}

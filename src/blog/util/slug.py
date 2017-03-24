@@ -6,7 +6,7 @@ from .time import slugify_time
 
 def create_slug(instance):
     slug = defaultfilters.slugify(unidecode(instance.title))
-    qs = instance.__class__.objects.filter(slug=slug)
+    qs = instance.__class__.objects.filter(author__username__exact=instance.author.username, slug__exact=slug)
     exists = qs.exists()
     # if it is a duplicated title, add timestamp at the end of slug
     if exists:

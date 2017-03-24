@@ -30,7 +30,7 @@ class Album(models.Model):
     # cover_photo = models.ForeignKey(Photo, verbose_name=_('cover_photo'), null=True, blank=True)
     cover_photo = models.URLField(blank=True)
     description = models.TextField(blank=True)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(null=False, blank=False)
     draft = models.BooleanField(default=False)
     created_time = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True, auto_now_add=False)

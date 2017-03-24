@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.http import Http404, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 
+from src.blog.util.slug import create_naive_slug
 from .forms import AlbumForm, PhotoForm
 from .models import Album, create_slug, Photo
 
@@ -122,8 +123,12 @@ def album_update(request, author_username, slug=None):
     form = AlbumForm(request.POST or None, request.FILES or None, instance=instance)
     if form.is_valid():
         instance = form.save(commit=False)
-        # change slug if title updated
-        if instance.title != title:
+        # 1.covert to naive slug if cur slug has ts but slug without ts(naive_slug) has been deleted (fu2 zheng4!)
+        naive_slug = create_naive_slug(title)
+        naive_instance_set = Album.objects.filter(author__username__exact=author_username, slug__exact=naive_slug)
+        naive_slug_album_deleted = not naive_instance_set
+        # 2.change slug if title updated
+        if naive_slug_album_deleted or instance.title != title:
             instance.slug = create_slug(instance)
         instance.editor = request.user
         instance.save()

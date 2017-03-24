@@ -5,13 +5,18 @@ from .time import slugify_time
 
 
 def create_slug(instance):
-    slug = defaultfilters.slugify(unidecode(instance.title))
+    slug = create_naive_slug(instance.title)
     qs = instance.__class__.objects.filter(author__username__exact=instance.author.username, slug__exact=slug)
     exists = qs.exists()
     # if it is a duplicated title, add timestamp at the end of slug
     if exists:
         slug = '%s-%s' % (slug, slugify_time())
     return slug
+
+
+def create_naive_slug(string):
+    return defaultfilters.slugify(unidecode(string))
+
 
     # def create_slug(instance, new_slug=None):
     #     slug = slugify(instance.title)

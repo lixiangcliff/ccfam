@@ -5,7 +5,7 @@ from django.db import models
 from django.urls import reverse
 
 from .util.geo import get_location_by_coordinate
-from .util.photo import get_exif_data_by_image_path, get_lat_lon
+from .util.photo import get_exif_data_by_image_path, get_lat_lon, rotate_and_compress_image
 from .util.slug import create_slug
 from .util.time import get_datetime_by_string
 
@@ -115,7 +115,7 @@ class Photo(models.Model):
         self.editor = self.album.editor
 
         # rotate image if needed
-        self.rotate_and_compress_image()
+        rotate_and_compress_image(self.image)
         self.size = self.image.size
 
         super(Photo, self).save(
@@ -124,38 +124,6 @@ class Photo(models.Model):
 
     def __str__(self):  # python3
         return self.title
-
-    # http://stackoverflow.com/questions/22045882/modify-or-delete-exif-tag-orientation-in-python
-    # http://piexif.readthedocs.io/en/latest/sample.html?highlight=orientation
-    def rotate_and_compress_image(self):
-        filename = self.image
-        from PIL import Image
-        import piexif
-
-        img = Image.open(filename)
-        if "exif" in img.info:
-            exif_dict = piexif.load(img.info["exif"])
-
-            if piexif.ImageIFD.Orientation in exif_dict["0th"]:
-                orientation = exif_dict["0th"].pop(piexif.ImageIFD.Orientation)
-                exif_bytes = piexif.dump(exif_dict)
-
-                if orientation == 2:
-                    img = img.transpose(Image.FLIP_LEFT_RIGHT)
-                elif orientation == 3:
-                    img = img.rotate(180, expand=True)
-                elif orientation == 4:
-                    img = img.rotate(180, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
-                elif orientation == 5:
-                    img = img.rotate(-90, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
-                elif orientation == 6:
-                    img = img.rotate(-90, expand=True)
-                elif orientation == 7:
-                    img = img.rotate(90, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
-                elif orientation == 8:
-                    img = img.rotate(90, expand=True)
-
-                img.save(self.image.file.name, overwrite=True, optimize=True, quality=settings.IMAGE_QUALITY, exif=exif_bytes)
 
     def get_width(self, exif_data):
         return exif_data.get('ExifImageWidth', None)

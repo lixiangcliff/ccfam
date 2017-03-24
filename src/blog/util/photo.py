@@ -1,10 +1,13 @@
 import PIL.ExifTags
 from PIL import Image
 from PIL.ExifTags import GPSTAGS, TAGS
+from PIL import Image
+import piexif
 
 
 ### http://eran.sandler.co.il/2011/05/20/extract-gps-latitude-and-longitude-data-from-exif-using-python-imaging-library-pil/
 #from src.blog.util.time import get_datetime_by_string
+from src.ccfam import settings
 
 
 def get_exif_data_by_image_path(image_path):
@@ -88,6 +91,35 @@ def print_exif_data(image_path):
     for k, v in exif_data.items():
         print(k, ':', v)
 
+
+# http://stackoverflow.com/questions/22045882/modify-or-delete-exif-tag-orientation-in-python
+# http://piexif.readthedocs.io/en/latest/sample.html?highlight=orientation
+def rotate_and_compress_image(filename):
+
+    img = Image.open(filename)
+    if "exif" in img.info:
+        exif_dict = piexif.load(img.info["exif"])
+
+        if piexif.ImageIFD.Orientation in exif_dict["0th"]:
+            orientation = exif_dict["0th"].pop(piexif.ImageIFD.Orientation)
+            exif_bytes = piexif.dump(exif_dict)
+
+            if orientation == 2:
+                img = img.transpose(Image.FLIP_LEFT_RIGHT)
+            elif orientation == 3:
+                img = img.rotate(180, expand=True)
+            elif orientation == 4:
+                img = img.rotate(180, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
+            elif orientation == 5:
+                img = img.rotate(-90, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
+            elif orientation == 6:
+                img = img.rotate(-90, expand=True)
+            elif orientation == 7:
+                img = img.rotate(90, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
+            elif orientation == 8:
+                img = img.rotate(90, expand=True)
+
+            img.save(filename.file.name, overwrite=True, optimize=True, quality=settings.IMAGE_QUALITY, exif=exif_bytes)
 
 
 #image_path = '/Users/Cliff/per/static/pictures/test_mobile/a12.jpg'

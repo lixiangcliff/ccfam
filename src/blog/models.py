@@ -155,7 +155,7 @@ class Photo(models.Model):
                 elif orientation == 8:
                     img = img.rotate(90, expand=True)
 
-                img.save(self.image.file.name, overwrite=True, optimize=True, quality=25, exif=exif_bytes)
+                img.save(self.image.file.name, overwrite=True, optimize=True, quality=settings.IMAGE_QUALITY, exif=exif_bytes)
 
     def get_width(self, exif_data):
         return exif_data.get('ExifImageWidth', None)

@@ -36,8 +36,17 @@
                             {% endif %}
                             <div class="caption">
                                 {% if obj.draft %}<h5 style="color:red">Draft</h5> {% endif %}
-                                <h4><a href='{{ obj.get_absolute_url }}'>{{ obj.title }}</a></h4>
-                                <h5>
+
+                                <h3>
+                                    <p style="text-align:left;">
+                                        <a href='{{ obj.get_absolute_url }}'>{{ obj.title }}</a>
+                                        <span style="float:right;">{% if obj.author.get_full_name %}
+                                            <small>Author: {{ obj.author.get_full_name }}</small>
+                                        {% endif %}</span>
+                                    </p>
+                                </h3>
+
+                                {% comment %}<h5>
                                     <small>Created: {{ obj.created_time }} ({{ obj.created_time | timesince }}
                                         ago)
                                     </small>
@@ -46,10 +55,8 @@
                                     <small>Updated: {{ obj.updated_time }} ({{ obj.updated_time | timesince }}
                                         ago)
                                     </small>
-                                </h5>
-                                {% if obj.author.get_full_name %}
-                                    <p>Author: {{ obj.author.get_full_name }}</p>
-                                {% endif %}
+                                </h5>{% endcomment %}
+
                                 <hr/>
                                 <p>{{ obj.description | linebreaks | truncatechars:60 }}</p>
                                 <p><a href="{{ obj.get_absolute_url }}" class="btn btn-primary"

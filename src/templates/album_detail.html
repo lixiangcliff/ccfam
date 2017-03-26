@@ -36,12 +36,22 @@
                         <div class="thumbnail">
                             {% if photo.image %}
                                 <a href="{% url 'album:photo_detail' photo.id %}"><img src='{{ photo.image.url }}' class="img-responsive" alt="{{ photo.image_name }}"/></a>
+
                             {% endif %}
                             <div class="caption">
-                                <h4><a href='{% url 'album:photo_detail' photo.id %}'>{{ photo.image_name }}</a></h4>
+
+                                <p style="text-align:left;">
+                                    <h4><a href='{% url 'album:photo_detail' photo.id %}'>{{ photo.image_name }}</a>
+                                        <span style="float:right;">
+                                            <a href="{{ obj.get_absolute_url_edit }}" class="btn btn-default" role="button">Set as cover photo</a>
+                                        </span>
+                                    </h4>
+
+                                </p>
+
                                 {% if photo.description %}
                                     <hr/>
-                                    <p>{{ photo.description | linebreaks | truncatechars:60 }}</p>
+                                    <p>{{ photo.description | truncatechars:60 }}</p>
                                 {% endif %}
                             </div>
                         </div>

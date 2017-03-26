@@ -30,8 +30,8 @@
                 {% for obj in obj_group %}
                     <div class="col-sm-4">
                         <div class="thumbnail">
-                            {% if obj.image %}
-                                <a href="{{ obj.get_absolute_url }}"><img src='{{ obj.image.url }}'
+                            {% if obj.cover_photo_url %}
+                                <a href="{{ obj.get_absolute_url }}"><img src='{{ obj.cover_photo_url }}'
                                                                           class="img-responsive"/></a>
                             {% endif %}
                             <div class="caption">

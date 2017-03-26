@@ -26,12 +26,12 @@ class Album(models.Model):
     title = models.CharField(max_length=128)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
     editor = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, related_name="+")
-    # recursive definition?
+    # recursive definition? maybe to mv Album and Photo to diff app
     # cover_photo = models.ForeignKey(Photo, verbose_name=_('cover_photo'), null=True, blank=True)
-    cover_photo = models.URLField(blank=True)
+    cover_photo_url = models.CharField(max_length=256, null=True, blank=True)
     description = models.TextField(blank=True)
     slug = models.SlugField(null=False, blank=False)
-    draft = models.BooleanField(default=False)
+    draft = models.BooleanField(default=True)
     created_time = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True, auto_now_add=False)
 

@@ -19,10 +19,14 @@ def album_create(request):
     if form.is_valid():
         instance = form.save(commit=True)
         instance.editor = request.user
-        instance.save()
-        messages.success(request, "Album Successfully Created!")
         # populate exif info to photos
         post_process_photos(instance)
+        # update album cover photo
+        create_cover_photo(instance)
+
+        instance.save()
+        messages.success(request, "Album Successfully Created!")
+
         print ("##end##")
         print (datetime.datetime.now())
         return HttpResponsePermanentRedirect(instance.get_absolute_url())
@@ -241,3 +245,9 @@ def post_process_photos(album):
     if photos:
         for photo in photos:
             photo.post_process()
+
+
+# use the first image of the album when creating
+def create_cover_photo(album):
+    cover_photo_url = album.photo_set.order_by('title').first().image.url
+    album.cover_photo_url = cover_photo_url

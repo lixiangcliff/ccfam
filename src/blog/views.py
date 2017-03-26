@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from src.blog.util.slug import create_naive_slug
 from .forms import AlbumForm, PhotoForm
-from .models import Album, create_slug, Photo
+from .models import Album, Photo, create_slug
 
 
 def album_create(request):
@@ -135,6 +135,7 @@ def album_update(request, author_username, slug=None):
         if naive_slug_album_deleted or instance.title != title:
             instance.slug = create_slug(instance)
         instance.editor = request.user
+        create_cover_photo(instance)
         instance.save()
         messages.success(request, "Album Successfully Updated!")
         # populate exif info to photos
@@ -228,10 +229,14 @@ def photo_delete(request, id=id):
     if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
     instance = get_object_or_404(Photo, id=id)
+    album = instance.album
+    photo_url = instance.image.url
     instance.delete()
+    # if current photo is cover photo of album, need to update cover photo after deletion
+    if album.cover_photo_url == photo_url:
+        create_cover_photo(album)
     messages.success(request, "Photo Successfully Deleted!")
     return redirect("album:list")
-
 
 
 # this needs to be moved to util module
@@ -249,5 +254,8 @@ def post_process_photos(album):
 
 # use the first image of the album when creating
 def create_cover_photo(album):
-    cover_photo_url = album.photo_set.order_by('title').first().image.url
-    album.cover_photo_url = cover_photo_url
+    album.cover_photo_url = ''
+    if album.photo_set and album.photo_set.order_by('title').first() is not None:
+        cover_photo_url = album.photo_set.order_by('title').first().image.url
+        album.cover_photo_url = cover_photo_url
+        album.save()

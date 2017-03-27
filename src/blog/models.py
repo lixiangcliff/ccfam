@@ -101,6 +101,8 @@ class Photo(models.Model):
     def post_process(self):
         # populate exif infos
         exif_data = get_exif_data_by_image_path(settings.MEDIA_ROOT + "/" + self.image_path)
+        # self.width must be put in post_process()
+        # cuz we use this to check whether a photo has been processed in views.post_process_photos()
         self.width = self.get_width(exif_data)
         self.height = self.get_height(exif_data)
         self.device_make = self.get_device_make(exif_data)

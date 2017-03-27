@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib import messages
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
@@ -13,8 +15,8 @@ def album_create(request):
     if not (request.user.is_staff or request.user.is_superuser):
         raise Http404
     form = AlbumForm(request.POST or None, request.FILES or None)
-    import datetime
-    print ("##start##")
+
+    print ("##create start##")
     print (datetime.datetime.now())
     if form.is_valid():
         instance = form.save(commit=True)
@@ -27,7 +29,7 @@ def album_create(request):
         instance.save()
         messages.success(request, "Album Successfully Created!")
 
-        print ("##end##")
+        print ("##create end##")
         print (datetime.datetime.now())
         return HttpResponsePermanentRedirect(instance.get_absolute_url())
     elif form.errors:
@@ -130,6 +132,8 @@ def album_update(request, author_username, slug=None):
     if instance:
         title = instance.title
     form = AlbumForm(request.POST or None, request.FILES or None, instance=instance)
+    print ("##update start##")
+    print (datetime.datetime.now())
     if form.is_valid():
         instance = form.save(commit=False)
         # 1.covert to naive slug if cur slug has ts but slug without ts(naive_slug) has been deleted (fu2 zheng4!)
@@ -146,6 +150,9 @@ def album_update(request, author_username, slug=None):
         messages.success(request, "Album Successfully Updated!")
         # populate exif info to photos
         post_process_photos(instance)
+        print ("##update end##")
+        print (datetime.datetime.now())
+
         return HttpResponsePermanentRedirect(instance.get_absolute_url())
     elif form.errors:
         messages.error(request, "Album NOT Successfully Updated!")
@@ -265,7 +272,8 @@ def post_process_photos(album):
     photos = album.photo_set.all()
     if photos:
         for photo in photos:
-            photo.post_process()
+            if not photo.width or photo.width == 0: # means it has not been processed before
+                photo.post_process()
 
 
 # use the first image of the album when creating

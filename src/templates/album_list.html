@@ -40,22 +40,29 @@
                                 <h3>
                                     <p style="text-align:left;">
                                         <a href='{{ obj.get_absolute_url }}'>{{ obj.title }}</a>
-                                        <span style="float:right;">{% if obj.author.get_full_name %}
-                                            <small>Author: {{ obj.author.get_full_name }}</small>
-                                        {% endif %}</span>
+                                        <span style="float:right;">
+
+                                            {% if obj.author.get_full_name %}
+                                                <small>Author: {{ obj.author.get_full_name }}</small>
+                                            {% elif obj.author %}
+                                                <small>Author: {{ obj.author }}</small>
+
+                                            {% endif %}
+                                        </span>
                                     </p>
                                 </h3>
 
-                                {% comment %}<h5>
+                                <h4>
                                     <small>Created: {{ obj.created_time }} ({{ obj.created_time | timesince }}
                                         ago)
                                     </small>
-                                </h5>
-                                <h5>
+                                </h4>
+                                {% comment %}
+                                <h4>
                                     <small>Updated: {{ obj.updated_time }} ({{ obj.updated_time | timesince }}
                                         ago)
                                     </small>
-                                </h5>{% endcomment %}
+                                </h4>{% endcomment %}
 
                                 <hr/>
                                 <p>{{ obj.description | linebreaks | truncatechars:60 }}</p>

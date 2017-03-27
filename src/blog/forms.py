@@ -35,3 +35,12 @@ class PhotoForm(forms.ModelForm):
             'description',
             'image',
         ]
+
+
+class CoverPhotoForm(forms.ModelForm):
+
+    class Meta:
+        model = Album
+        fields = [
+            'cover_photo_url',
+        ]

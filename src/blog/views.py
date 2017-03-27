@@ -5,7 +5,7 @@ from django.http import Http404, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 
 from src.blog.util.slug import create_naive_slug
-from .forms import AlbumForm, PhotoForm
+from .forms import AlbumForm, PhotoForm, CoverPhotoForm
 from .models import Album, Photo, create_slug
 
 
@@ -43,6 +43,9 @@ def album_detail(request, author_username, slug):
     instance_set = Album.objects.filter(author__username__exact=author_username, slug__exact=slug)
     if not instance_set or len(instance_set) != 1:
         raise Http404
+    user_can_edit = False
+    if request.user.is_staff or request.user.is_superuser:
+        user_can_edit = True
     instance = instance_set.first()
     if instance.draft:
         if not (request.user.is_staff or request.user.is_superuser):
@@ -68,6 +71,8 @@ def album_detail(request, author_username, slug):
         "photos": queryset,
         "photos_group": grouped(queryset, 3),
         "page_request_var": page_request_var,
+        "user_can_edit": user_can_edit,
+
     }
 
     return render(request, "album_detail.html", context)
@@ -135,7 +140,8 @@ def album_update(request, author_username, slug=None):
         if naive_slug_album_deleted or instance.title != title:
             instance.slug = create_slug(instance)
         instance.editor = request.user
-        create_cover_photo(instance)
+        if not instance.cover_photo_url:
+            create_cover_photo(instance)
         instance.save()
         messages.success(request, "Album Successfully Updated!")
         # populate exif info to photos
@@ -237,6 +243,16 @@ def photo_delete(request, id=id):
         create_cover_photo(album)
     messages.success(request, "Photo Successfully Deleted!")
     return redirect("album:list")
+
+
+def set_cover_photo(request, author_username, slug, id):
+    album_set = Album.objects.filter(author__username__exact=author_username, slug__exact=slug)
+    album = album_set.first()
+    photo = get_object_or_404(Photo, id=id)
+    album.cover_photo_url = photo.image.url
+    album.save()
+    messages.success(request, "Cover photo Successfully Updated!")
+    return redirect(album.get_absolute_url())
 
 
 # this needs to be moved to util module

@@ -43,7 +43,16 @@
                                 <p style="text-align:left;">
                                     <h4><a href='{% url 'album:photo_detail' photo.id %}'>{{ photo.image_name }}</a>
                                         <span style="float:right;">
-                                            <a href="{{ obj.get_absolute_url_edit }}" class="btn btn-default" role="button">Set as cover photo</a>
+                                            {% if user_can_edit %}
+                                                <form action="{{ instance.get_absolute_url }}set_cover_photo/{{ photo.id }}/"
+                                                      method="post">{% csrf_token %}
+                                                {{ form.as_p }}
+                                                <input type="hidden" name="cover_photo_url"
+                                                       value="{{ photo.image.url }}">
+                                                <input class="btn btn-default" type="submit" value="Set as cover photo">
+                                            </form>
+
+                                            {% endif %}
                                         </span>
                                     </h4>
 

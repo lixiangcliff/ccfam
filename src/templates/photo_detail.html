@@ -9,7 +9,10 @@
     <div class="container-fluid">
 
         <div class="text-center">
-            <h4>{{ instance.title }}</h4>
+            <h4>{{ instance.title }}
+                <a href="{{ instance.get_absolute_url_edit }}" class="btn btn-default"
+                   role="button">Edit</a>
+            </h4>
         </div>
 
         <div class="row">

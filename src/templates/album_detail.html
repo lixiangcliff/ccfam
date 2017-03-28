@@ -7,19 +7,20 @@
 {% block content %}
     <div class="col-sm-8 col-sm-offset-2">
         <div class="row">
-            <a href="{{ instance.get_absolute_url_edit }}" class="btn btn-default"
-               role="button">Edit</a>
+
             <h1>{{ title }}
                 {% if instance.draft %}
                     <span style="color:red;">Draft</span>
                 {% endif %}
-                <small>{{ instance.updated_time }} ({{ instance.updated_time | timesince }} ago)</small>
+
+                <a href="{{ instance.get_absolute_url_edit }}" class="btn btn-default"
+                   role="button">Edit</a>
             </h1>
 
             {% if instance.get_author_full_name_or_username %}
                 <p>Author: {{ instance.get_author_full_name_or_username }}</p>
             {% endif %}
-
+                <p>{{ instance.updated_time }} ({{ instance.updated_time | timesince }} ago)</p>
             {{ instance.description | linebreaks }}<br/>
             <br/>
         </div>

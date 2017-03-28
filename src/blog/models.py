@@ -175,8 +175,8 @@ class Photo(models.Model):
     def get_absolute_url(self):
         return reverse("album:photo_detail", kwargs={"id": self.id})
 
-    # def get_absolute_url_edit(self):
-    #     return reverse("album:update", kwargs={"slug": self.slug})
+    def get_absolute_url_edit(self):
+        return reverse("album:photo_update", kwargs={"id": self.id})
 
     def get_author_full_name_or_username(self):
         if self.author.get_full_name():

@@ -10,7 +10,7 @@
 
             <h1>{{ title }}
                 {% if instance.draft %}
-                    <span style="color:red;">Draft</span>
+                    <small><span style="color:red;">Draft</span></small>
                 {% endif %}
 
                 <a href="{{ instance.get_absolute_url_edit }}" class="btn btn-default"

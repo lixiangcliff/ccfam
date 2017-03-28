@@ -7,11 +7,100 @@
 
 {% block content %}
     <div class="container-fluid">
+
+        <div class="text-center">
+            <h4>{{ instance.title }}</h4>
+        </div>
+
         <div class="row">
             <div class="thumbnail">
-                <a href="{{ instance.image.url }}"><img src="{{ instance.image.url }}" class="img-fluid" alt="{{ instance.image_name }}"></a>
+                <a href="{{ instance.image.url }}"><img src="{{ instance.image.url }}" class="img-fluid"
+                                                        alt="{{ instance.image_name }}"></a>
             </div>
         </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th class="col-sm-2 col-xs-1">Item</th>
+                <th>Info</th>
+
+            </tr>
+            </thead>
+
+            <tbody>
+            {% if instance.image_name %}
+            <tr>
+                <th scope="row">Image</th>
+                <td>{{ instance.image_name }}</td>
+            </tr>
+            {% endif %}
+
+            {% if instance.get_full_name %}
+            <tr>
+                <th scope="row">Author</th>
+                <td>{{ instance.get_full_name }}</td>
+            </tr>
+            {% endif %}
+
+            {% if instance.taken_time %}
+            <tr>
+                <th scope="row">Taken</th>
+                <td>{{ instance.taken_time }}</td>
+            </tr>
+            {% endif %}
+
+            {% if instance.address %}
+            <tr>
+                <th scope="row">Address</th>
+                <td>{{ instance.address }}</td>
+            </tr>
+            {% endif %}
+
+            {% if instance.description %}
+            <tr>
+                <th scope="row">Description</th>
+                <td>{{ instance.description }}</td>
+            </tr>
+            {% endif %}
+
+            {% if instance.album.title %}
+            <tr>
+                <th scope="row">Album</th>
+                <td>{{ instance.album.title }}</td>
+            </tr>
+            {% endif %}
+            {% if instance.created_time %}
+            <tr>
+                <th scope="row">Created</th>
+                <td>{{ instance.created_time }}</td>
+            </tr>
+            {% endif %}
+
+            {% if instance.updated_time%}
+            <tr>
+                <th scope="row">Updated</th>
+                <td>{{ instance.updated_time }}</td>
+            </tr>
+            {% endif %}
+
+            {% if instance.device_make %}
+            <tr>
+                <th scope="row">Device</th>
+                <td>{{ instance.device_make }}</td>
+            </tr>
+            {% endif %}
+
+            {% if instance.device_model %}
+            <tr>
+                <th scope="row">Model</th>
+                <td>{{ instance.device_model }}</td>
+            </tr>
+            {% endif %}
+
+            </tbody>
+        </table>
+
     </div>
 
 {% endblock %}

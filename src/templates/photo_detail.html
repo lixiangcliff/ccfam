@@ -17,30 +17,31 @@
                 <a href="{{ instance.image.url }}"><img src="{{ instance.image.url }}" class="img-fluid"
                                                         alt="{{ instance.image_name }}"></a>
             </div>
+            <!--previous image-->
+            <p><a href="{{ instance.image.url }}" class="btn btn-default" role="button"> See original image</a>
+            <!--next image-->
         </div>
 
         <table class="table table-striped">
             <thead>
             <tr>
                 <th class="col-sm-2 col-xs-1">Item</th>
-                <th>Info</th>
+                <th>Information</th>
 
             </tr>
             </thead>
 
             <tbody>
-            {% if instance.image_name %}
-            <tr>
-                <th scope="row">Image</th>
-                <td>{{ instance.image_name }}</td>
-            </tr>
-            {% endif %}
 
-            {% if instance.get_full_name %}
-            <tr>
-                <th scope="row">Author</th>
-                <td>{{ instance.get_full_name }}</td>
-            </tr>
+            {% if instance.author or instance.author.get_full_name %}
+                <tr>
+                    <th scope="row">Author</th>
+                    {% if instance.author.get_full_name %}
+                        <td>{{ instance.author.get_full_name }}</td>
+                    {% elif instance.author %}
+                        <td>{{ instance.author }}</td>
+                    {% endif %}
+                </tr>
             {% endif %}
 
             {% if instance.taken_time %}
@@ -61,6 +62,13 @@
             <tr>
                 <th scope="row">Description</th>
                 <td>{{ instance.description }}</td>
+            </tr>
+            {% endif %}
+
+            {% if instance.image_name %}
+            <tr>
+                <th scope="row">Image</th>
+                <td>{{ instance.image_name }}</td>
             </tr>
             {% endif %}
 

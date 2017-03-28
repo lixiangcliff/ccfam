@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load time_tags %}
+
 {% block head_title %}
     albums | {{ block.super }}
 {% endblock head_title %}
@@ -53,9 +55,7 @@
                                 </h3>
 
                                 <h4>
-                                    <small>Created: {{ obj.created_time }} ({{ obj.created_time | timesince }}
-                                        ago)
-                                    </small>
+                                    <small>Created: {{ obj.created_time | timesince_threshold }}</small>
                                 </h4>
                                 {% comment %}
                                 <h4>

@@ -22,6 +22,24 @@
             <!--next image-->
         </div>
 
+        <div class="pagination">
+            <span class="step-links">
+                {% if photos.has_previous %}
+                    <a href="?{{ page_request_var }}={{ photos.previous_page_number }}
+                    {% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ photos.number }} of {{ photos.paginator.num_pages }}.
+                </span>
+
+                {% if photos.has_next %}
+                    <a href="?{{ page_request_var }}={{ photos.next_page_number }}
+                    {% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">next</a>
+                {% endif %}
+            </span>
+        </div>
+
         <table class="table table-striped">
             <thead>
             <tr>
@@ -33,16 +51,13 @@
 
             <tbody>
 
-            {% if instance.author or instance.author.get_full_name %}
+            {% if instance.get_author_full_name_or_username %}
                 <tr>
                     <th scope="row">Author</th>
-                    {% if instance.author.get_full_name %}
-                        <td>{{ instance.author.get_full_name }}</td>
-                    {% elif instance.author %}
-                        <td>{{ instance.author }}</td>
-                    {% endif %}
+                    <td>{{ instance.get_author_full_name_or_username }}</td>
                 </tr>
             {% endif %}
+
 
             {% if instance.taken_time %}
             <tr>

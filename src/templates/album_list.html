@@ -44,11 +44,8 @@
                                         <a href='{{ obj.get_absolute_url }}'>{{ obj.title }}</a>
                                         <span style="float:right;">
 
-                                            {% if obj.author.get_full_name %}
-                                                <small>Author: {{ obj.author.get_full_name }}</small>
-                                            {% elif obj.author %}
-                                                <small>Author: {{ obj.author }}</small>
-
+                                            {% if obj.get_author_full_name_or_username %}
+                                                <small>Author: {{ obj.get_author_full_name_or_username }}</small>
                                             {% endif %}
                                         </span>
                                     </p>

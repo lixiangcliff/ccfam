@@ -51,6 +51,18 @@ class Album(models.Model):
     def get_absolute_url_edit(self):
         return reverse("album:update", kwargs={"slug": self.slug, "author_username": self.author.username})
 
+    def get_author_full_name_or_username(self):
+        if self.author.get_full_name():
+            return self.author.get_full_name()
+        else:
+            return self.author.get_username()
+
+    def get_editor_full_name_or_username(self):
+        if self.editor.get_full_name():
+            return self.editor.get_full_name()
+        else:
+            return self.editor.get_username()
+
     class Meta:
         ordering = ["-created_time", "-updated_time"]
 
@@ -165,6 +177,18 @@ class Photo(models.Model):
 
     # def get_absolute_url_edit(self):
     #     return reverse("album:update", kwargs={"slug": self.slug})
+
+    def get_author_full_name_or_username(self):
+        if self.author.get_full_name():
+            return self.author.get_full_name()
+        else:
+            return self.author.get_username()
+
+    def get_editor_full_name_or_username(self):
+        if self.editor.get_full_name():
+            return self.editor.get_full_name()
+        else:
+            return self.editor.get_username()
 
     class Meta:
         ordering = ["image_name", "created_time", "updated_time"]

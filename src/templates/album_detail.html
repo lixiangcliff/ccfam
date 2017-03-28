@@ -7,7 +7,6 @@
 {% block content %}
     <div class="col-sm-8 col-sm-offset-2">
         <div class="row">
-
             <h1>{{ title }}
                 {% if instance.draft %}
                     <small><span style="color:red;">Draft</span></small>
@@ -18,11 +17,15 @@
             </h1>
 
             {% if instance.get_author_full_name_or_username %}
-                <p>Author: {{ instance.get_author_full_name_or_username }}</p>
+                <h4>Author: {{ instance.get_author_full_name_or_username }}</h4>
             {% endif %}
-                <p>{{ instance.updated_time }} ({{ instance.updated_time | timesince }} ago)</p>
-            {{ instance.description | linebreaks }}<br/>
-            <br/>
+                <p>Created: {{ instance.created_time }} ({{ instance.created_time | timesince }} ago)</p>
+                <p>Updated {{ instance.updated_time }} ({{ instance.updated_time | timesince }} ago)</p>
+        {% if instance.description %}
+            <br>
+            {{ instance.description | linebreaks }}
+        {% endif %}
+
         </div>
     </div>
 

@@ -39,14 +39,6 @@ def album_create(request):
     }
     return render(request, "album_form.html", context)
 
-def album_display_to_preview(request):
-    slug = request.GET.get('slug')
-    author_username = request.GET.get('author_username')
-    page = request.GET.get('page')
-    row = request.GET.get('row')
-    col = request.GET.get('col')
-
-    pass
 
 def album_detail(request, author_username, slug):
     return album_detail_generic(request, author_username, slug, 9, "album_detail.html")

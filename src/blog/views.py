@@ -19,19 +19,19 @@ def album_create(request):
     print ("##create start##")
     print (datetime.datetime.now())
     if form.is_valid():
-        instance = form.save(commit=True)
-        instance.editor = request.user
+        album = form.save(commit=True)
+        album.editor = request.user
         # populate exif info to photos
-        post_process_photos(instance)
+        post_process_photos(album)
         # update album cover photo
-        create_cover_photo(instance)
+        create_cover_photo(album)
 
-        instance.save()
+        album.save()
         messages.success(request, "Album Successfully Created!")
 
         print ("##create end##")
         print (datetime.datetime.now())
-        return HttpResponsePermanentRedirect(instance.get_absolute_url())
+        return HttpResponsePermanentRedirect(album.get_absolute_url())
     elif form.errors:
         messages.error(request, "Album NOT Successfully Created!")
     context = {
@@ -75,7 +75,6 @@ def album_detail_generic(request, author_username, slug, item_count_per_page, re
         queryset = paginator.page(paginator.num_pages)
 
     context = {
-        "title": album.title,
         "album": album,
         "photos": queryset,
         "photos_group": grouped(queryset, 3),
@@ -87,15 +86,15 @@ def album_detail_generic(request, author_username, slug, item_count_per_page, re
 def album_list(request):
     if Album is None:
         raise Http404
-    queryset_list = Album.objects.active()  # .order_by('-timestamp')
+    album_list = Album.objects.active()  # .order_by('-timestamp')
     user_can_edit = False
     if request.user.is_staff or request.user.is_superuser:
-        queryset_list = Album.objects.all()
+        album_list = Album.objects.all()
         user_can_edit = True
 
     query = request.GET.get('q')
     if query:
-        queryset_list = queryset_list.filter(
+        album_list = album_list.filter(
             Q(title__icontains=query) |
             Q(description__icontains=query) |
             Q(author__first_name__icontains=query) |
@@ -103,23 +102,23 @@ def album_list(request):
         ).distinct()
 
     item_count = 9
-    paginator = Paginator(queryset_list, item_count)  # Show item_count per page
+    paginator = Paginator(album_list, item_count)  # Show item_count per page
     page_request_var = 'page'
     page = request.GET.get(page_request_var)
     try:
-        queryset = paginator.page(page)
+        albums = paginator.page(page)
     except PageNotAnInteger:
         # If page is not an integer, deliver first page.
-        queryset = paginator.page(1)
+        albums = paginator.page(1)
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
-        queryset = paginator.page(paginator.num_pages)
+        albums = paginator.page(paginator.num_pages)
 
     # context['object_list'] = grouped(Bar.objects.all(), 4)
 
     context = {
-        "object_list": queryset,
-        "object_list_group": grouped(queryset, 3),
+        "albums": albums,
+        #"object_list_group": grouped(albums, 3),
         "title": "All Albums",
         "page_request_var": page_request_var,
         "user_can_edit": user_can_edit
@@ -130,40 +129,39 @@ def album_list(request):
 def album_update(request, author_username, slug=None):
     if not (request.user.is_staff or request.user.is_superuser):
         raise Http404
-    # instance = get_object_or_404(Album, slug=slug)
-    instance_set = Album.objects.filter(author__username__exact=author_username, slug__exact=slug)
-    instance = instance_set.first()
-    if instance:
-        title = instance.title
-    form = AlbumForm(request.POST or None, request.FILES or None, instance=instance)
+    # album = get_object_or_404(Album, slug=slug)
+    albums = Album.objects.filter(author__username__exact=author_username, slug__exact=slug)
+    album = albums.first()
+    if album:
+        title = album.title
+    form = AlbumForm(request.POST or None, request.FILES or None, instance=album)
     print ("##update start##")
     print (datetime.datetime.now())
     if form.is_valid():
-        instance = form.save(commit=False)
+        album = form.save(commit=False)
         # 1.covert to naive slug if cur slug has ts but slug without ts(naive_slug) has been deleted (fu2 zheng4!)
         naive_slug = create_naive_slug(title)
         naive_instance_set = Album.objects.filter(author__username__exact=author_username, slug__exact=naive_slug)
         naive_slug_album_deleted = not naive_instance_set
         # 2.change slug if title updated
-        if naive_slug_album_deleted or instance.title != title:
-            instance.slug = create_slug(instance)
-        instance.editor = request.user
-        if not instance.cover_photo_url:
-            create_cover_photo(instance)
-        instance.save()
+        if naive_slug_album_deleted or album.title != title:
+            album.slug = create_slug(album)
+        album.editor = request.user
+        if not album.cover_photo_url:
+            create_cover_photo(album)
+        album.save()
         messages.success(request, "Album Successfully Updated!")
         # populate exif info to photos
-        post_process_photos(instance)
+        post_process_photos(album)
         print ("##update end##")
         print (datetime.datetime.now())
 
-        return HttpResponsePermanentRedirect(instance.get_absolute_url())
+        return HttpResponsePermanentRedirect(album.get_absolute_url())
     elif form.errors:
         messages.error(request, "Album NOT Successfully Updated!")
     update = True
     context = {
-        "title": instance.title,
-        "instance": instance,
+        "album": album,
         "form": form,
         "update": update
     }
@@ -173,14 +171,14 @@ def album_update(request, author_username, slug=None):
 def album_delete(request, author_username, slug=None):
     if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
-    # instance = get_object_or_404(Album, slug=slug)
-    instance_set = Album.objects.filter(author__username__exact=author_username, slug__exact=slug)
-    instance = instance_set.first()
+    # album = get_object_or_404(Album, slug=slug)
+    albums = Album.objects.filter(author__username__exact=author_username, slug__exact=slug)
+    album = albums.first()
     # delete all photos under album
-    photo_set = Photo.objects.filter(album=instance)
+    photo_set = Photo.objects.filter(album=album)
     for photo in photo_set:
         photo.delete()
-    instance.delete()
+    album.delete()
     messages.success(request, "Album Successfully Deleted!")
     return redirect("album:list")
 
@@ -248,21 +246,20 @@ def photo_create(request):
 def photo_update(request, id=id):
     if not (request.user.is_staff or request.user.is_superuser):
         raise Http404
-    instance = get_object_or_404(Photo, id=id)
-    if instance:
-        title = instance.title
-    form = PhotoForm(request.POST or None, request.FILES or None, instance=instance)
+    photo = get_object_or_404(Photo, id=id)
+    if photo:
+        title = photo.title
+    form = PhotoForm(request.POST or None, request.FILES or None, instance=photo)
     if form.is_valid():
-        instance = form.save(commit=True)
-        instance.save()
+        photo = form.save(commit=True)
+        photo.save()
         messages.success(request, "Photo Successfully Updated!")
-        return HttpResponsePermanentRedirect(instance.get_absolute_url())
+        return HttpResponsePermanentRedirect(photo.get_absolute_url())
     elif form.errors:
         messages.error(request, "Photo NOT Successfully Updated!")
     update = True
     context = {
-        "title": instance.title,
-        "instance": instance,
+        "photo": photo,
         "form": form,
         "update": update
     }
@@ -272,10 +269,10 @@ def photo_update(request, id=id):
 def photo_delete(request, id=id):
     if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
-    instance = get_object_or_404(Photo, id=id)
-    album = instance.album
-    photo_url = instance.image.url
-    instance.delete()
+    photo = get_object_or_404(Photo, id=id)
+    album = photo.album
+    photo_url = photo.image.url
+    photo.delete()
     # if current photo is cover photo of album, need to update cover photo after deletion
     if album.cover_photo_url == photo_url:
         create_cover_photo(album)

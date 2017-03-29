@@ -11,7 +11,7 @@
 {% block content %}
     <div class="col-sm-8 col-sm-offset-2">
         <div class="row">
-            <h1>{{ title }}
+            <h1>{{ album.title }}
                 {% if album.draft %}
                     <small><span style="color:red;">Draft</span></small>
                 {% endif %}
@@ -74,9 +74,9 @@
                 </div>
             </div>
 
-        {% if forloop.counter0 == 2 or forloop.counter0 == 5 or forloop.counter0 == 8 %}
-            </div>
-        {% endif %}
+            {% if forloop.counter0 == 2 or forloop.counter0 == 5 or forloop.counter0 == 8 %}
+                </div>
+            {% endif %}
         {% endfor %}
     </div>
 

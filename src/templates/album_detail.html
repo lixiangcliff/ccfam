@@ -2,6 +2,8 @@
 
 {% load transposition_tags %}
 
+{% load name_tags %}
+
 {% block head_title %}
     {{ album.title }} | {{ block.super }}
 {% endblock head_title %}
@@ -19,8 +21,8 @@
                    role="button">Edit</a>
             </h1>
 
-            {% if album.get_author_full_name_or_username %}
-                <h4>Author: {{ album.get_author_full_name_or_username }}</h4>
+            {% if album.author %}
+                <h4>Author: {{ album.author | full_name_or_username }}</h4>
             {% endif %}
             <p>Created: {{ album.created_time }} ({{ album.created_time | timesince }} ago)</p>
             <p>Updated {{ album.updated_time }} ({{ album.updated_time | timesince }} ago)</p>
@@ -98,8 +100,6 @@
                 {% endif %}
             </span>
         </div>
-    </div>
-
     </div>
 
 {% endblock %}

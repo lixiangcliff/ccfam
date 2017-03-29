@@ -2,6 +2,8 @@
 
 {% load time_tags %}
 
+{% load name_tags %}
+
 {% block head_title %}
     albums | {{ block.super }}
 {% endblock head_title %}
@@ -46,8 +48,8 @@
                                         <a href='{{ obj.get_absolute_url }}'>{{ obj.title }}</a>
                                         <span style="float:right;">
 
-                                            {% if obj.get_author_full_name_or_username %}
-                                                <small>Author: {{ obj.get_author_full_name_or_username }}</small>
+                                            {% if obj.author %}
+                                                <small>Author: {{ obj.author | full_name_or_username }}</small>
                                             {% endif %}
                                         </span>
                                     </p>

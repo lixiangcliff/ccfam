@@ -2,6 +2,8 @@
 
 {% load calculation_tags %}
 
+{% load name_tags %}
+
 {% block head_title %}
     {{ album.title }} | {{ block.super }}
 {% endblock head_title %}
@@ -63,10 +65,11 @@
 
                     <tbody>
 
-                    {% if photo.get_author_full_name_or_username %}
+
+                    {% if photo.author %}
                         <tr>
                             <th scope="row">Author</th>
-                            <td>{{ photo.get_author_full_name_or_username }}</td>
+                            <td>{{ photo.author | full_name_or_username }}</td>
                         </tr>
                     {% endif %}
 

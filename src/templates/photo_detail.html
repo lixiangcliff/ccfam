@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head_title %}
-    {{ instance.title }} | {{ block.super }}
+    {{ photo.title }} | {{ block.super }}
 {% endblock head_title %}
 
 
@@ -9,39 +9,23 @@
     <div class="container-fluid">
 
         <div class="text-center">
-            <h4>{{ instance.title }}
-                <a href="{{ instance.get_absolute_url_edit }}" class="btn btn-default"
+            <h4>{{ photo.title }}
+                <a href="{{ photo.get_absolute_url_edit }}" class="btn btn-default"
                    role="button">Edit</a>
             </h4>
         </div>
 
         <div class="row">
             <div class="thumbnail">
-                <a href="{{ instance.image.url }}"><img src="{{ instance.image.url }}" class="img-fluid"
-                                                        alt="{{ instance.image_name }}"></a>
+                <a href="{{ photo.image.url }}"><img src="{{ photo.image.url }}" class="img-fluid"
+                                                        alt="{{ photo.image_name }}"></a>
             </div>
             <!--previous image-->
-            <p><a href="{{ instance.image.url }}" class="btn btn-default" role="button"> See original image</a>
+            <p><a href="{{ photo.image.url }}" class="btn btn-default" role="button"> See original image</a>
             <!--next image-->
         </div>
 
-        <div class="pagination">
-            <span class="step-links">
-                {% if photos.has_previous %}
-                    <a href="?{{ page_request_var }}={{ photos.previous_page_number }}
-                    {% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">previous</a>
-                {% endif %}
 
-                <span class="current">
-                    Page {{ photos.number }} of {{ photos.paginator.num_pages }}.
-                </span>
-
-                {% if photos.has_next %}
-                    <a href="?{{ page_request_var }}={{ photos.next_page_number }}
-                    {% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">next</a>
-                {% endif %}
-            </span>
-        </div>
 
         <table class="table table-striped">
             <thead>
@@ -54,73 +38,73 @@
 
             <tbody>
 
-            {% if instance.get_author_full_name_or_username %}
+            {% if photo.get_author_full_name_or_username %}
                 <tr>
                     <th scope="row">Author</th>
-                    <td>{{ instance.get_author_full_name_or_username }}</td>
+                    <td>{{ photo.get_author_full_name_or_username }}</td>
                 </tr>
             {% endif %}
 
 
-            {% if instance.taken_time %}
+            {% if photo.taken_time %}
             <tr>
                 <th scope="row">Taken</th>
-                <td>{{ instance.taken_time }}</td>
+                <td>{{ photo.taken_time }}</td>
             </tr>
             {% endif %}
 
-            {% if instance.address %}
+            {% if photo.address %}
             <tr>
                 <th scope="row">Address</th>
-                <td>{{ instance.address }}</td>
+                <td>{{ photo.address }}</td>
             </tr>
             {% endif %}
 
-            {% if instance.description %}
+            {% if photo.description %}
             <tr>
                 <th scope="row">Description</th>
-                <td>{{ instance.description }}</td>
+                <td>{{ photo.description }}</td>
             </tr>
             {% endif %}
 
-            {% if instance.image_name %}
+            {% if photo.image_name %}
             <tr>
                 <th scope="row">Image</th>
-                <td>{{ instance.image_name }}</td>
+                <td>{{ photo.image_name }}</td>
             </tr>
             {% endif %}
 
-            {% if instance.album.title %}
+            {% if photo.album.title %}
             <tr>
                 <th scope="row">Album</th>
-                <td>{{ instance.album.title }}</td>
+                <td>{{ photo.album.title }}</td>
             </tr>
             {% endif %}
-            {% if instance.created_time %}
+            {% if photo.created_time %}
             <tr>
                 <th scope="row">Created</th>
-                <td>{{ instance.created_time }}</td>
+                <td>{{ photo.created_time }}</td>
             </tr>
             {% endif %}
 
-            {% if instance.updated_time%}
+            {% if photo.updated_time%}
             <tr>
                 <th scope="row">Updated</th>
-                <td>{{ instance.updated_time }}</td>
+                <td>{{ photo.updated_time }}</td>
             </tr>
             {% endif %}
 
-            {% if instance.device_make %}
+            {% if photo.device_make %}
             <tr>
                 <th scope="row">Device</th>
-                <td>{{ instance.device_make }}</td>
+                <td>{{ photo.device_make }}</td>
             </tr>
             {% endif %}
 
-            {% if instance.device_model %}
+            {% if photo.device_model %}
             <tr>
                 <th scope="row">Model</th>
-                <td>{{ instance.device_model }}</td>
+                <td>{{ photo.device_model }}</td>
             </tr>
             {% endif %}
 

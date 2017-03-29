@@ -41,21 +41,28 @@ def album_create(request):
 
 
 def album_detail(request, author_username, slug):
-    # instance = get_object_or_404(Album, slug=slug)
-    instance_set = Album.objects.filter(author__username__exact=author_username, slug__exact=slug)
-    if not instance_set or len(instance_set) != 1:
+    return album_detail_generic(request, author_username, slug, 9, "album_detail.html")
+
+
+def album_detail_preview(request, author_username, slug):
+    return album_detail_generic(request, author_username, slug, 1, "album_detail_preview.html")
+
+
+def album_detail_generic(request, author_username, slug, item_count_per_page, render_page):
+    album_set = Album.objects.filter(author__username__exact=author_username, slug__exact=slug)
+    if not album_set or len(album_set) != 1:
         raise Http404
     user_can_edit = False
     if request.user.is_staff or request.user.is_superuser:
         user_can_edit = True
-    instance = instance_set.first()
-    if instance.draft:
+    album = album_set.first()
+    if album.draft:
         if not (request.user.is_staff or request.user.is_superuser):
             raise Http404
-    photos = instance.photo_set.all()
+    photos = album.photo_set.all()
 
-    item_count = 9
-    paginator = Paginator(photos, item_count)  # Show item_count per page
+    item_count_per_page = item_count_per_page
+    paginator = Paginator(photos, item_count_per_page)
     page_request_var = 'page'
     page = request.GET.get(page_request_var)
     try:
@@ -68,17 +75,14 @@ def album_detail(request, author_username, slug):
         queryset = paginator.page(paginator.num_pages)
 
     context = {
-        "title": instance.title,
-        "instance": instance,
+        "title": album.title,
+        "album": album,
         "photos": queryset,
         "photos_group": grouped(queryset, 3),
         "page_request_var": page_request_var,
         "user_can_edit": user_can_edit,
-
     }
-
-    return render(request, "album_detail.html", context)
-
+    return render(request, render_page, context)
 
 def album_list(request):
     if Album is None:
@@ -182,14 +186,41 @@ def album_delete(request, author_username, slug=None):
 
 
 def photo_detail(request, id):
-    instance = get_object_or_404(Photo, id=id)
-    if instance.album.draft:
+    photo = get_object_or_404(Photo, id=id)
+    if photo.album.draft:
         if not (request.user.is_staff or request.user.is_superuser):
             raise Http404
+    album = photo.album
+    user_can_edit = False
+    if request.user.is_staff or request.user.is_superuser:
+        user_can_edit = True
+    photos = album.photo_set.all()
+
+
+    item_count = 1
+    paginator = Paginator(photos, item_count)  # Show item_count per page
+    page_request_var = 'page'
+    page = request.GET.get(page_request_var)
+    try:
+        queryset = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        queryset = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        queryset = paginator.page(paginator.num_pages)
+
+    # context['object_list'] = grouped(Bar.objects.all(), 4)
+
     context = {
-        "title": instance.title,
-        "instance": instance,
+        "title": photo.title,
+        "photo": photo,
+        "photos": queryset,
+        #"photos_group": grouped(queryset, 3),
+        "page_request_var": page_request_var,
+        "user_can_edit": user_can_edit,
     }
+
 
     return render(request, "photo_detail.html", context)
 

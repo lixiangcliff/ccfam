@@ -51,6 +51,9 @@ class Album(models.Model):
     def get_absolute_url_preview(self):
         return reverse("album:preview", kwargs={"slug": self.slug, "author_username": self.author.username})
 
+    def get_absolute_url_preview(self):
+        return reverse("album:preview", kwargs={"slug": self.slug, "author_username": self.author.username})
+
     def get_absolute_url_edit(self):
         return reverse("album:update", kwargs={"slug": self.slug, "author_username": self.author.username})
 

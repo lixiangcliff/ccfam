@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load transposition_tags %}
+
 {% block head_title %}
     {{ album.title }} | {{ block.super }}
 {% endblock head_title %}
@@ -20,73 +22,83 @@
             {% if album.get_author_full_name_or_username %}
                 <h4>Author: {{ album.get_author_full_name_or_username }}</h4>
             {% endif %}
-                <p>Created: {{ album.created_time }} ({{ album.created_time | timesince }} ago)</p>
-                <p>Updated {{ album.updated_time }} ({{ album.updated_time | timesince }} ago)</p>
-        {% if album.description %}
-            <br>
-            {{ album.description | linebreaks }}
-        {% endif %}
+            <p>Created: {{ album.created_time }} ({{ album.created_time | timesince }} ago)</p>
+            <p>Updated {{ album.updated_time }} ({{ album.updated_time | timesince }} ago)</p>
+            {% if album.description %}
+                <br>
+                {{ album.description | linebreaks }}
+            {% endif %}
 
         </div>
     </div>
 
     <div class="col-md-12">
-        <hr/>
-        {% for photos in photos_group %}
-            <div class="row">
-                {% for photo in photos %}
-                    <div class="col-sm-4">
-                        <div class="thumbnail">
-                            {% if photo.image %}
-                                <a href="{% url 'album:photo_detail' photo.id %}"><img src='{{ photo.image.url }}' class="img-responsive" alt="{{ photo.image_name }}"/></a>
-                            {% endif %}
-                            <div class="caption">
+        {% for photo in photos %}
+            {% if forloop.counter0 == 2 or forloop.counter0 == 5 or forloop.counter0 == 8 %}
+                <div class="row">
+            {% endif %}
 
-                                <p style="text-align:left;">
-                                    <h4><a href='{% url 'album:photo_detail' photo.id %}'>{{ photo.image_name }}</a>
-                                        <span style="float:right;">
-                                            {% if user_can_edit %}
-                                            <form action="{{ album.get_absolute_url }}set_cover_photo/{{ photo.id }}/"
-                                                  method="post">{% csrf_token %}
-                                                {{ form.as_p }}
-                                                <input type="hidden" name="cover_photo_url"
-                                                       value="{{ photo.image.url }}">
-                                                <input class="btn btn-default" type="submit" value="Set as cover photo">
-                                            </form>
+            <div class="col-sm-4">
+                <div class="thumbnail">
+                    {% if photo.image %}
+                        <a href="{{ album.get_absolute_url_preview }}?{{ page_request_var }}={{ photos.number | display_to_preview:forloop.counter0}}">
+                            <img src='{{ photo.image.url }}' class="img-responsive" alt="{{ photo.image_name }}"/></a>
+                    {% endif %}
+                    <div class="caption">
 
-                                            {% endif %}
-                                        </span>
-                                    </h4>
-
-                                </p>
-
-                                {% if photo.description %}
-                                    <hr/>
-                                    <p>{{ photo.description | truncatechars:60 }}</p>
+                        <p style="text-align:left;">
+                        <h4><a href="{{ album.get_absolute_url_preview }}?{{ page_request_var }}={{ photos.number | display_to_preview:forloop.counter0}}">{{ photo.image_name }} </a>
+                            <span style="float:right;">
+                                {% if user_can_edit %}
+                                    <form action="{{ album.get_absolute_url }}set_cover_photo/{{ photo.id }}/"
+                                          method="post">{% csrf_token %}
+                                    {{ form.as_p }}
+                                    <input type="hidden" name="cover_photo_url"
+                                           value="{{ photo.image.url }}">
+                                    <input class="btn btn-default" type="submit"
+                                           value="Set as cover photo">
+                                    </form>
                                 {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endfor %}
-        <hr>
+                            </span>
+                        </h4>
 
+                        </p>
+
+                        {% if photo.description %}
+                            <hr/>
+                            <p>{{ photo.description | truncatechars:60 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        {% if forloop.counter0 == 2 or forloop.counter0 == 5 or forloop.counter0 == 8 %}
+            </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="text-center">
         <div class="pagination">
             <span class="step-links">
                 {% if photos.has_previous %}
-                    <a href="?{{ page_request_var }}={{ photos.previous_page_number }}">previous</a>
+                    <a href="?{{ page_request_var }}={{ photos.previous_page_number }}"
+                       class="btn btn-primary btn-lg"
+                       role="button">&lt&lt Previous</a>
                 {% endif %}
 
                 <span class="current">
-                    Page {{ photos.number }} of {{ photos.paginator.num_pages }}.
+                    Page {{ photos.number }} of {{ photos.paginator.num_pages }}
                 </span>
 
                 {% if photos.has_next %}
-                    <a href="?{{ page_request_var }}={{ photos.next_page_number }}">next</a>
+                    <a href="?{{ page_request_var }}={{ photos.next_page_number }}"
+                       class="btn btn-primary btn-lg"
+                       role="button">&nbsp &nbsp Next &nbsp &nbsp&gt&gt</a>
                 {% endif %}
             </span>
         </div>
+    </div>
 
     </div>
 

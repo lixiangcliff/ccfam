@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load calculation_tags %}
+
 {% block head_title %}
     {{ album.title }} | {{ block.super }}
 {% endblock head_title %}
@@ -15,6 +17,8 @@
 
                 <div class="text-center">
                     <h4>{{ photo.title }}</h4>
+                    <a href="{{ album.get_absolute_url }}?{{ page_request_var }}={{ photos.number | ceil_divide:9}}" class="btn btn-primary"
+                   role="button">Display Mode</a>
                 </div>
 
                 <div class="thumbnail">

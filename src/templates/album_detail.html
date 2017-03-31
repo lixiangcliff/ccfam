@@ -80,12 +80,12 @@
         {% endfor %}
     </div>
 
-    <div class="text-center">
+    <div class="col-md-12 text-center">
         <div class="pagination">
             <span class="step-links">
                 {% if photos.has_previous %}
                     <a href="?{{ page_request_var }}={{ photos.previous_page_number }}"
-                       class="btn btn-primary btn-lg"
+                       class="btn btn-primary"
                        role="button">&lt&lt Previous</a>
                 {% endif %}
 
@@ -95,7 +95,7 @@
 
                 {% if photos.has_next %}
                     <a href="?{{ page_request_var }}={{ photos.next_page_number }}"
-                       class="btn btn-primary btn-lg"
+                       class="btn btn-primary"
                        role="button">&nbsp &nbsp Next &nbsp &nbsp&gt&gt</a>
                 {% endif %}
             </span>

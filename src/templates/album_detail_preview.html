@@ -18,9 +18,9 @@
             {% for photo in photos %}
 
                 <div class="text-center">
-                    <h4>{{ photo.title }}</h4>
+                    <h4>{{ photo.title }}
                     <a href="{{ album.get_absolute_url }}?{{ page_request_var }}={{ photos.number | ceil_divide:9}}" class="btn btn-primary"
-                   role="button">Display Mode</a>
+                   role="button">Display Mode</a></h4>
                 </div>
 
                 <div class="thumbnail">
@@ -35,7 +35,7 @@
                             <span class="step-links">
                                 {% if photos.has_previous %}
                                     <a href="?{{ page_request_var }}={{ photos.previous_page_number }}"
-                                       class="btn btn-primary btn-lg"
+                                       class="btn btn-primary"
                                        role="button">&lt&lt Previous</a>
                                 {% endif %}
 
@@ -45,7 +45,7 @@
 
                                 {% if photos.has_next %}
                                     <a href="?{{ page_request_var }}={{ photos.next_page_number }}"
-                                       class="btn btn-primary btn-lg"
+                                       class="btn btn-primary"
                                        role="button">&nbsp &nbsp Next &nbsp &nbsp&gt&gt</a>
                                 {% endif %}
                             </span>

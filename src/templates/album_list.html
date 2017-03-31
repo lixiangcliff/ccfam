@@ -81,12 +81,12 @@
         {% endfor %}
     </div>
 
-    <div class="text-center">
+    <div class="col-md-12 text-center">
         <div class="pagination">
             <span class="step-links">
                 {% if albums.has_previous %}
                     <a href="?{{ page_request_var }}={{ albums.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
-                       class="btn btn-primary btn-lg"
+                       class="btn btn-primary"
                        role="button">&lt&lt Previous</a>
                 {% endif %}
 
@@ -96,7 +96,7 @@
 
                 {% if albums.has_next %}
                     <a href="?{{ page_request_var }}={{ albums.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
-                       class="btn btn-primary btn-lg"
+                       class="btn btn-primary"
                        role="button">&nbsp &nbsp Next &nbsp &nbsp&gt&gt</a>
                 {% endif %}
             </span>

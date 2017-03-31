@@ -2,6 +2,8 @@
 
 {% load transposition_tags %}
 
+{% load calculation_tags %}
+
 {% load name_tags %}
 
 {% block head_title %}
@@ -15,7 +17,7 @@
                 {% if album.draft %}
                     <small><span style="color:red;">Draft</span></small>
                 {% endif %}
-                <a href="{{ album.get_absolute_url_preview }}" class="btn btn-primary"
+                <a href="{{ album.get_absolute_url_preview }}?{{ page_request_var }}={{ photos.number | subtract:1 | multiply:9| add:1 }}" class="btn btn-primary"
                    role="button">Preview Mode</a>
                 <a href="{{ album.get_absolute_url_edit }}" class="btn btn-default"
                    role="button">Edit</a>

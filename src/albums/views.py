@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.http import Http404, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 
-from src.blog.util.slug import create_naive_slug
+from src.albums.util.slug import create_naive_slug
 from .forms import AlbumForm, PhotoForm, CoverPhotoForm
 from .models import Album, Photo, create_slug
 

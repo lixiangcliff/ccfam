@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'registration',
     'django_cleanup',
     # my apps
-    'blog',
+    'albums',
 ]
 
 MIDDLEWARE = [

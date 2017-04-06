@@ -6,7 +6,7 @@ import piexif
 
 
 ### http://eran.sandler.co.il/2011/05/20/extract-gps-latitude-and-longitude-data-from-exif-using-python-imaging-library-pil/
-#from src.blog.util.time import get_datetime_by_string
+#from src.albums.util.time import get_datetime_by_string
 from src.ccfam import settings
 
 

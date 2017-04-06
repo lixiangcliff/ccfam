@@ -17,7 +17,7 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
-# from blog import views
+# from albums import views
 from ccfam import views as ccfam_views
 
 # may need to change per:
@@ -28,7 +28,7 @@ urlpatterns = [
     url(r'^home/$', ccfam_views.home, name='home'),
     url(r'^about/$', ccfam_views.about, name='about'),
     url(r'^contact/$', ccfam_views.contact, name='contact'),
-    url(r'^album/', include('blog.urls', namespace='album')),
+    url(r'^album/', include('albums.urls', namespace='album')),
     url(r'^accounts/', include('registration.backends.default.urls')),
 
 ]

@@ -1,7 +1,8 @@
 from django import forms
 from .util.multiupload.multiupload import MultiFileField
 
-from .models import Album, Photo
+from .models import Album
+from photos.models import Photo
 
 
 class AlbumForm(forms.ModelForm):
@@ -23,18 +24,6 @@ class AlbumForm(forms.ModelForm):
         return instance
 
 
-class PhotoForm(forms.ModelForm):
-    image = forms.ImageField(label='Image')
-
-    class Meta:
-        model = Photo
-        fields = [
-            'author',
-            'editor',
-            'album',
-            'description',
-            'image',
-        ]
 
 
 class CoverPhotoForm(forms.ModelForm):

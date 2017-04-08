@@ -28,7 +28,8 @@ urlpatterns = [
     url(r'^home/$', ccfam_views.home, name='home'),
     url(r'^about/$', ccfam_views.about, name='about'),
     url(r'^contact/$', ccfam_views.contact, name='contact'),
-    url(r'^album/', include('albums.urls', namespace='album')),
+    url(r'^albums/', include('albums.urls', namespace='album')),
+    url(r'^photos/', include('photos.urls', namespace='photo')),
     url(r'^accounts/', include('registration.backends.default.urls')),
 
 ]

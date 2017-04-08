@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'django_cleanup',
     # my apps
     'albums',
+    'photos',
+    # 'src.albums.models.Album',
+    # 'src.photos.models.Photo',
 ]
 
 MIDDLEWARE = [

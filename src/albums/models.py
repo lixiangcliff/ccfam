@@ -54,5 +54,4 @@ class Album(models.Model):
 
     class Meta:
         ordering = ["-created_time", "-updated_time"]
-        #app_label = 'album'
 

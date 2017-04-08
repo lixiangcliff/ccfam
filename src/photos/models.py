@@ -123,4 +123,3 @@ class Photo(models.Model):
 
     class Meta:
         ordering = ["image_name", "created_time", "updated_time"]
-        #app_label = 'photo'

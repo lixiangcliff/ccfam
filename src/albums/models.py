@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 
-from .util.slug import create_slug
+from util.slug import create_slug
 
 
 class AlbumManager(models.Manager):

@@ -5,11 +5,11 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
 from django.http import Http404, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, redirect, render
+from photos.models import Photo
 
+from util.slug import create_naive_slug
 from .forms import AlbumForm
 from .models import Album, create_slug
-from .util.slug import create_naive_slug
-from photos.models import Photo
 
 
 def album_create(request):

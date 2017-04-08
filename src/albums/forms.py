@@ -1,8 +1,8 @@
 from django import forms
-from .util.multiupload.multiupload import MultiFileField
-
-from .models import Album
 from photos.models import Photo
+
+from util.multiupload.multiupload import MultiFileField
+from .models import Album
 
 
 class AlbumForm(forms.ModelForm):

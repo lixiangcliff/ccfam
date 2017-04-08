@@ -1,13 +1,13 @@
 import os
 
+from albums.models import Album
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
+from util.geo import get_location_by_coordinate
+from util.photo import get_exif_data_by_image_path, get_lat_lon, rotate_and_compress_image
 
-from albums.models import Album
-from src.albums.util.geo import get_location_by_coordinate
-from src.albums.util.photo import get_exif_data_by_image_path, get_lat_lon, rotate_and_compress_image
-from src.albums.util.time import get_datetime_by_string
+from src.util.time import get_datetime_by_string
 
 
 def upload_location_photo(instance, filename):

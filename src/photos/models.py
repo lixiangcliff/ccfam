@@ -11,8 +11,8 @@ from util.photo import get_exif_data_by_image_path, get_lat_lon, rotate_and_comp
 
 
 def upload_location_photo(instance, filename):
-    author = instance.photo_album.author
-    title = instance.photo_album.slug
+    author = instance.album.author
+    title = instance.album.slug
     filename = filename.replace(' ', '_')
     filename = filename.replace(',', '')
     return 'photos/%s/%s/%s' % (author, title, filename)
@@ -24,7 +24,7 @@ class Photo(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
     editor = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, related_name="+")
 
-    photo_album = models.ForeignKey(Album, verbose_name='album')
+    album = models.ForeignKey(Album, verbose_name='album')
     image_name = models.CharField(max_length=128)  # photo original file name
     image_path = models.CharField(max_length=256)
     # order matters! file_name and file_location must locate in front of file
@@ -68,8 +68,8 @@ class Photo(models.Model):
         self.longitude = self.get_longitude(exif_data)
         self.address = self.get_address(exif_data)
         # update other field
-        self.author = self.photo_album.author
-        self.editor = self.photo_album.editor
+        self.author = self.album.author
+        self.editor = self.album.editor
 
         # rotate image if needed
         rotate_and_compress_image(self.image)

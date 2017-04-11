@@ -10,10 +10,10 @@ from .models import Photo
 
 def photo_detail(request, id):
     photo = get_object_or_404(Photo, id=id)
-    if photo.photo_album.draft:
+    if photo.album.draft:
         if not (request.user.is_staff or request.user.is_superuser):
             raise Http404
-    album = photo.photo_album
+    album = photo.album
     user_can_edit = False
     if request.user.is_staff or request.user.is_superuser:
         user_can_edit = True
@@ -95,7 +95,7 @@ def photo_delete(request, id=id):
     if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
     photo = get_object_or_404(Photo, id=id)
-    album = photo.photo_album
+    album = photo.album
     photo_url = photo.image.url
     photo.delete()
     # if current photo is cover photo of album, need to update cover photo after deletion

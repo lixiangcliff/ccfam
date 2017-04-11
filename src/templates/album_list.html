@@ -40,8 +40,8 @@
             {% endif %}
                 <div class="col-sm-4">
                     <div class="thumbnail">
-                        {% if album.cover_photo_url %}
-                            <a href="{{ album.get_absolute_url }}"><img src='{{ album.cover_photo_url }}'
+                        {% if album.cover_photo %}
+                            <a href="{{ album.get_absolute_url }}"><img src='{{ album.cover_photo.image.url }}'
                                                                       class="img-responsive"/></a>
                         {% endif %}
                         <div class="caption">

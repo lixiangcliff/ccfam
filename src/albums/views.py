@@ -148,7 +148,7 @@ def album_update(request, author_username, slug=None):
         if naive_slug_album_deleted or album.title != title:
             album.slug = create_slug(album)
         album.editor = request.user
-        if not album.cover_photo_url:
+        if not album.cover_photo:
             create_cover_photo(album)
         album.save()
         messages.success(request, "Album Successfully Updated!")
@@ -194,7 +194,7 @@ def set_cover_photo(request, author_username, slug, id):
     album_set = Album.objects.filter(author__username__exact=author_username, slug__exact=slug)
     album = album_set.first()
     photo = get_object_or_404(Photo, id=id)
-    album.cover_photo_url = photo.image.url
+    album.cover_photo = photo
     album.save()
     messages.success(request, "Cover photo Successfully Updated!")
     return redirect(album.get_absolute_url())
@@ -212,8 +212,8 @@ def post_process_photos(album):
 
 # use the first image of the album when creating
 def create_cover_photo(album):
-    album.cover_photo_url = ''
+    album.cover_photo = None
     if album.photo_set and album.photo_set.order_by('title').first() is not None:
-        cover_photo_url = album.photo_set.order_by('title').first().image.url
-        album.cover_photo_url = cover_photo_url
+        cover_photo = album.photo_set.order_by('title').first()
+        album.cover_photo = cover_photo
         album.save()

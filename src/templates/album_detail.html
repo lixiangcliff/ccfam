@@ -57,7 +57,7 @@
                                     <form action="{{ album.get_absolute_url }}set_cover_photo/{{ photo.id }}/"
                                           method="post">{% csrf_token %}
                                     {{ form.as_p }}
-                                    <input type="hidden" name="cover_photo_url"
+                                    <input type="hidden" name="cover_photo"
                                            value="{{ photo.image.url }}">
                                     <input class="btn btn-default" type="submit"
                                            value="Set as cover photo">

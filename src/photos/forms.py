@@ -9,7 +9,7 @@ class PhotoForm(forms.ModelForm):
         fields = [
             'author',
             'editor',
-            'album',
+            'photo_album',
             'description',
             'image',
         ]

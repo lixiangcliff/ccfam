@@ -44,7 +44,7 @@
                     <li class="nav navbar-nav"><a href="#">
                         {% if request.user.get_full_name %}{{ request.user.get_full_name }}{% else %}
                             {{ request.user.username }}{% endif %}</a></li>
-                    <li class="nav navbar-nav"><a href="{% url 'auth_logout' %}">Logout</a></li>
+                    <li class="nav navbar-nav"><a href="{% url 'auth_logout' %}">{% trans 'Logout' %}</a></li>
                 {% endif %}
             </ul>
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-12 12:18-0700\n"
+"POT-Creation-Date: 2017-04-12 12:25-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -121,6 +121,10 @@ msgstr "关于"
 #: src/templates/navbar.html:25
 msgid "Contact"
 msgstr "联络"
+
+#: src/templates/navbar.html:48
+msgid "Logout"
+msgstr "登出"
 
 #: src/templates/navbar.html:55
 msgid "Username"

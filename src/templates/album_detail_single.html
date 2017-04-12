@@ -38,17 +38,17 @@
                                 {% if photos.has_previous %}
                                     <a href="?{{ page_request_var }}={{ photos.previous_page_number }}"
                                        class="btn btn-primary"
-                                       role="button">&lt&lt {% trans 'Previous' %}</a>
+                                       role="button">&lt&lt {% trans 'Prev' %}</a>
                                 {% endif %}
 
                                 <span class="current">
-                                    Photo {{ photos.number }} of {{ photos.paginator.num_pages }}
+                                    {{ photos.number }} / {{ photos.paginator.num_pages }}
                                 </span>
 
                                 {% if photos.has_next %}
                                     <a href="?{{ page_request_var }}={{ photos.next_page_number }}"
                                        class="btn btn-primary"
-                                       role="button">&nbsp &nbsp {% trans 'Next' %} &nbsp &nbsp&gt&gt</a>
+                                       role="button">{% trans 'Next' %} &gt&gt</a>
                                 {% endif %}
                             </span>
                         </div>

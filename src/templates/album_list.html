@@ -89,17 +89,17 @@
                 {% if albums.has_previous %}
                     <a href="?{{ page_request_var }}={{ albums.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
                        class="btn btn-primary"
-                       role="button">&lt&lt {% trans 'Previous' %}</a>
+                       role="button">&lt&lt {% trans 'Prev' %}</a>
                 {% endif %}
 
                 <span class="current">
-                    Page {{ albums.number }} of {{ albums.paginator.num_pages }}
+                    {{ albums.number }} / {{ albums.paginator.num_pages }}
                 </span>
 
                 {% if albums.has_next %}
                     <a href="?{{ page_request_var }}={{ albums.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
                        class="btn btn-primary"
-                       role="button">&nbsp &nbsp {% trans 'Next' %} &nbsp &nbsp&gt&gt</a>
+                       role="button">{% trans 'Next' %} &gt&gt</a>
                 {% endif %}
             </span>
         </div>

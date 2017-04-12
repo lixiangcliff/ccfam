@@ -42,11 +42,11 @@ def album_create(request):
 
 
 def album_detail(request, author_username, slug):
-    return album_detail_generic(request, author_username, slug, 9, "album_detail.html")
+    return album_detail_generic(request, author_username, slug, 9, "album_detail_multiple.html")
 
 
 def album_detail_preview(request, author_username, slug):
-    return album_detail_generic(request, author_username, slug, 1, "album_detail_preview.html")
+    return album_detail_generic(request, author_username, slug, 1, "album_detail_single.html")
 
 
 def album_detail_generic(request, author_username, slug, item_count_per_page, render_page):

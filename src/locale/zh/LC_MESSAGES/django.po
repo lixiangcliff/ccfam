@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-12 11:53-0700\n"
+"POT-Creation-Date: 2017-04-12 12:18-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,76 +17,76 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/templates/album_detail.html:23
+#: src/templates/album_detail_multiple.html:23
 msgid "Single Mode"
 msgstr "单张模式"
 
-#: src/templates/album_detail.html:25 src/templates/album_list.html:74
+#: src/templates/album_detail_multiple.html:25 src/templates/album_list.html:74
 msgid "Edit"
 msgstr "编辑"
 
-#: src/templates/album_detail.html:29
-#: src/templates/album_detail_preview.html:73 src/templates/album_list.html:58
+#: src/templates/album_detail_multiple.html:29
+#: src/templates/album_detail_single.html:73 src/templates/album_list.html:58
 msgid "Author"
 msgstr "作者"
 
-#: src/templates/album_detail.html:31
-#: src/templates/album_detail_preview.html:115 src/templates/album_list.html:65
+#: src/templates/album_detail_multiple.html:31
+#: src/templates/album_detail_single.html:115 src/templates/album_list.html:65
 msgid "Created"
 msgstr "创建于"
 
-#: src/templates/album_detail.html:32
-#: src/templates/album_detail_preview.html:122
+#: src/templates/album_detail_multiple.html:32
+#: src/templates/album_detail_single.html:122
 msgid "Updated"
 msgstr "更新于"
 
-#: src/templates/album_detail.html:65
+#: src/templates/album_detail_multiple.html:65
 msgid "Set as cover photo"
 msgstr "设为封面"
 
-#: src/templates/album_detail.html:93
-#: src/templates/album_detail_preview.html:41 src/templates/album_list.html:92
-msgid "Previous"
+#: src/templates/album_detail_multiple.html:93
+#: src/templates/album_detail_single.html:41 src/templates/album_list.html:92
+msgid "Prev"
 msgstr "上一页"
 
-#: src/templates/album_detail.html:103
-#: src/templates/album_detail_preview.html:51 src/templates/album_list.html:102
+#: src/templates/album_detail_multiple.html:103
+#: src/templates/album_detail_single.html:51 src/templates/album_list.html:102
 msgid "Next"
 msgstr "下一页"
 
-#: src/templates/album_detail_preview.html:25
+#: src/templates/album_detail_single.html:25
 msgid "Multiple Mode"
 msgstr "多张模式"
 
-#: src/templates/album_detail_preview.html:62
+#: src/templates/album_detail_single.html:62
 msgid "Item"
 msgstr "项目"
 
-#: src/templates/album_detail_preview.html:63
+#: src/templates/album_detail_single.html:63
 msgid "Information"
 msgstr "信息"
 
-#: src/templates/album_detail_preview.html:81
+#: src/templates/album_detail_single.html:81
 msgid "Taken"
 msgstr "拍摄时间"
 
-#: src/templates/album_detail_preview.html:88
+#: src/templates/album_detail_single.html:88
 msgid "Address"
 msgstr "地址"
 
-#: src/templates/album_detail_preview.html:102
+#: src/templates/album_detail_single.html:102
 msgid "Image"
 msgstr "照片名称"
 
-#: src/templates/album_detail_preview.html:109 src/templates/navbar.html:23
+#: src/templates/album_detail_single.html:109 src/templates/navbar.html:23
 msgid "Album"
 msgstr "相册"
 
-#: src/templates/album_detail_preview.html:129
+#: src/templates/album_detail_single.html:129
 msgid "Device"
 msgstr "设备"
 
-#: src/templates/album_detail_preview.html:136
+#: src/templates/album_detail_single.html:136
 msgid "Model"
 msgstr "型号"
 

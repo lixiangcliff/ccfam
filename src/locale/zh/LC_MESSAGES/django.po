@@ -80,7 +80,7 @@ msgstr "照片名称"
 
 #: src/templates/album_detail_preview.html:109 src/templates/navbar.html:23
 msgid "Album"
-msgstr "所属相册"
+msgstr "相册"
 
 #: src/templates/album_detail_preview.html:129
 msgid "Device"

@@ -55,7 +55,7 @@
                         <p style="text-align:left;">
                         <h4><a href="{{ album.get_absolute_url_single }}?{{ page_request_var }}={{ photos.number | display_to_preview:forloop.counter0}}">{{ photo.image_name }} </a>
                             <span style="float:right;">
-                                {% if user_can_edit %}
+                                {% if user.is_staff %}
                                     <form action="{{ album.get_absolute_url }}set_cover_photo/{{ photo.id }}/"
                                           method="post">{% csrf_token %}
                                     {{ form.as_p }}

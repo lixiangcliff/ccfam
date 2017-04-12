@@ -14,9 +14,6 @@ def photo_detail(request, id):
         if not (request.user.is_staff or request.user.is_superuser):
             raise Http404
     album = photo.album
-    user_can_edit = False
-    if request.user.is_staff or request.user.is_superuser:
-        user_can_edit = True
     photos = album.photo_set.all()
 
 
@@ -41,7 +38,6 @@ def photo_detail(request, id):
         "photos": queryset,
         #"photos_group": grouped(queryset, 3),
         "page_request_var": page_request_var,
-        "user_can_edit": user_can_edit,
     }
 
 

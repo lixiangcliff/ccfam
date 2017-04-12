@@ -53,13 +53,10 @@ def album_detail_generic(request, author_username, slug, item_count_per_page, re
     album_set = Album.objects.filter(author__username__exact=author_username, slug__exact=slug)
     if not album_set or len(album_set) != 1:
         raise Http404
-    user_can_edit = False
-    if request.user.is_staff or request.user.is_superuser:
-        user_can_edit = True
     album = album_set.first()
-    if album.draft:
-        if not (request.user.is_staff or request.user.is_superuser):
-            raise Http404
+    if album.draft and not request.user.is_staff:
+        raise Http404
+
     photos = album.photo_set.all()
 
     item_count_per_page = item_count_per_page
@@ -78,9 +75,8 @@ def album_detail_generic(request, author_username, slug, item_count_per_page, re
     context = {
         "album": album,
         "photos": queryset,
-        "photos_group": grouped(queryset, 3),
+        #"photos_group": grouped(queryset, 3),
         "page_request_var": page_request_var,
-        "user_can_edit": user_can_edit,
     }
     return render(request, render_page, context)
 
@@ -88,15 +84,13 @@ def album_detail_generic(request, author_username, slug, item_count_per_page, re
 def album_list(request):
     if Album is None:
         raise Http404
-    album_list = Album.objects.active()  # .order_by('-timestamp')
-    user_can_edit = False
+    active_albums = Album.objects.active()  # .order_by('-timestamp')
     if request.user.is_staff or request.user.is_superuser:
-        album_list = Album.objects.all()
-        user_can_edit = True
+        active_albums = Album.objects.all()
 
     query = request.GET.get('q')
     if query:
-        album_list = album_list.filter(
+        active_albums = active_albums.filter(
             Q(title__icontains=query) |
             Q(description__icontains=query) |
             Q(author__first_name__icontains=query) |
@@ -104,7 +98,7 @@ def album_list(request):
         ).distinct()
 
     item_count = 9
-    paginator = Paginator(album_list, item_count)  # Show item_count per page
+    paginator = Paginator(active_albums, item_count)  # Show item_count per page
     page_request_var = 'page'
     page = request.GET.get(page_request_var)
     try:
@@ -116,14 +110,10 @@ def album_list(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         albums = paginator.page(paginator.num_pages)
 
-    # context['object_list'] = grouped(Bar.objects.all(), 4)
-
     context = {
         "albums": albums,
-        # "object_list_group": grouped(albums, 3),
         "title": "All Albums",
         "page_request_var": page_request_var,
-        "user_can_edit": user_can_edit
     }
     return render(request, "album_list.html", context)
 

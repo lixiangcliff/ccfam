@@ -40,13 +40,13 @@ class Album(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("album:detail", kwargs={"slug": self.slug, "author_username": self.author.username})
+        return self.get_absolute_url_multiple()
 
-    def get_absolute_url_preview(self):
-        return reverse("album:preview", kwargs={"slug": self.slug, "author_username": self.author.username})
+    def get_absolute_url_single(self):
+        return reverse("album:detail_single", kwargs={"slug": self.slug, "author_username": self.author.username})
 
-    def get_absolute_url_preview(self):
-        return reverse("album:preview", kwargs={"slug": self.slug, "author_username": self.author.username})
+    def get_absolute_url_multiple(self):
+        return reverse("album:detail_multiple", kwargs={"slug": self.slug, "author_username": self.author.username})
 
     def get_absolute_url_edit(self):
         return reverse("album:update", kwargs={"slug": self.slug, "author_username": self.author.username})

@@ -19,7 +19,7 @@
                 {% if album.draft %}
                     <small><span style="color:red;">Draft</span></small>
                 {% endif %}
-                <a href="{{ album.get_absolute_url_preview }}?{{ page_request_var }}={{ photos.number | subtract:1 | multiply:9| add:1 }}" class="btn btn-primary"
+                <a href="{{ album.get_absolute_url_single }}?{{ page_request_var }}={{ photos.number | subtract:1 | multiply:9| add:1 }}" class="btn btn-primary"
                    role="button">{% trans 'Single Mode' %}</a>
                 <a href="{{ album.get_absolute_url_edit }}" class="btn btn-default"
                    role="button">{% trans 'Edit' %}</a>
@@ -47,13 +47,13 @@
             <div class="col-sm-4">
                 <div class="thumbnail">
                     {% if photo.image %}
-                        <a href="{{ album.get_absolute_url_preview }}?{{ page_request_var }}={{ photos.number | display_to_preview:forloop.counter0}}">
+                        <a href="{{ album.get_absolute_url_single }}?{{ page_request_var }}={{ photos.number | display_to_preview:forloop.counter0}}">
                             <img src='{{ photo.image.url }}' class="img-responsive" alt="{{ photo.image_name }}"/></a>
                     {% endif %}
                     <div class="caption">
 
                         <p style="text-align:left;">
-                        <h4><a href="{{ album.get_absolute_url_preview }}?{{ page_request_var }}={{ photos.number | display_to_preview:forloop.counter0}}">{{ photo.image_name }} </a>
+                        <h4><a href="{{ album.get_absolute_url_single }}?{{ page_request_var }}={{ photos.number | display_to_preview:forloop.counter0}}">{{ photo.image_name }} </a>
                             <span style="float:right;">
                                 {% if user_can_edit %}
                                     <form action="{{ album.get_absolute_url }}set_cover_photo/{{ photo.id }}/"

@@ -41,11 +41,11 @@ def album_create(request):
     return render(request, "album_form.html", context)
 
 
-def album_detail(request, author_username, slug):
+def album_detail_multiple(request, author_username, slug):
     return album_detail_generic(request, author_username, slug, 9, "album_detail_multiple.html")
 
 
-def album_detail_preview(request, author_username, slug):
+def album_detail_single(request, author_username, slug):
     return album_detail_generic(request, author_username, slug, 1, "album_detail_single.html")
 
 
@@ -84,6 +84,7 @@ def album_detail_generic(request, author_username, slug, item_count_per_page, re
     }
     return render(request, render_page, context)
 
+
 def album_list(request):
     if Album is None:
         raise Http404
@@ -119,7 +120,7 @@ def album_list(request):
 
     context = {
         "albums": albums,
-        #"object_list_group": grouped(albums, 3),
+        # "object_list_group": grouped(albums, 3),
         "title": "All Albums",
         "page_request_var": page_request_var,
         "user_can_edit": user_can_edit
@@ -183,11 +184,11 @@ def album_delete(request, author_username, slug=None):
     messages.success(request, "Album Successfully Deleted!")
     return redirect("album:list")
 
+
 # this needs to be moved to util module
 def grouped(l, n):
     for i in range(0, len(l), n):
         yield l[i:i + n]
-
 
 
 def set_cover_photo(request, author_username, slug, id):
@@ -200,13 +201,11 @@ def set_cover_photo(request, author_username, slug, id):
     return redirect(album.get_absolute_url())
 
 
-
-
 def post_process_photos(album):
     photos = album.photo_set.all()
     if photos:
         for photo in photos:
-            if not photo.width or photo.width == 0: # means it has not been processed before
+            if not photo.width or photo.width == 0:  # means it has not been processed before
                 photo.post_process()
 
 

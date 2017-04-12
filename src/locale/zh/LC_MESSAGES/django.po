@@ -1,0 +1,216 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-04-12 11:53-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/templates/album_detail.html:23
+msgid "Single Mode"
+msgstr "单张模式"
+
+#: src/templates/album_detail.html:25 src/templates/album_list.html:74
+msgid "Edit"
+msgstr "编辑"
+
+#: src/templates/album_detail.html:29
+#: src/templates/album_detail_preview.html:73 src/templates/album_list.html:58
+msgid "Author"
+msgstr "作者"
+
+#: src/templates/album_detail.html:31
+#: src/templates/album_detail_preview.html:115 src/templates/album_list.html:65
+msgid "Created"
+msgstr "创建于"
+
+#: src/templates/album_detail.html:32
+#: src/templates/album_detail_preview.html:122
+msgid "Updated"
+msgstr "更新于"
+
+#: src/templates/album_detail.html:65
+msgid "Set as cover photo"
+msgstr "设为封面"
+
+#: src/templates/album_detail.html:93
+#: src/templates/album_detail_preview.html:41 src/templates/album_list.html:92
+msgid "Previous"
+msgstr "上一页"
+
+#: src/templates/album_detail.html:103
+#: src/templates/album_detail_preview.html:51 src/templates/album_list.html:102
+msgid "Next"
+msgstr "下一页"
+
+#: src/templates/album_detail_preview.html:25
+msgid "Multiple Mode"
+msgstr "多张模式"
+
+#: src/templates/album_detail_preview.html:62
+msgid "Item"
+msgstr "项目"
+
+#: src/templates/album_detail_preview.html:63
+msgid "Information"
+msgstr "信息"
+
+#: src/templates/album_detail_preview.html:81
+msgid "Taken"
+msgstr "拍摄时间"
+
+#: src/templates/album_detail_preview.html:88
+msgid "Address"
+msgstr "地址"
+
+#: src/templates/album_detail_preview.html:102
+msgid "Image"
+msgstr "照片名称"
+
+#: src/templates/album_detail_preview.html:109 src/templates/navbar.html:23
+msgid "Album"
+msgstr "所属相册"
+
+#: src/templates/album_detail_preview.html:129
+msgid "Device"
+msgstr "设备"
+
+#: src/templates/album_detail_preview.html:136
+msgid "Model"
+msgstr "型号"
+
+#: src/templates/album_form.html:20
+msgid "Update Album"
+msgstr "更新相册"
+
+#: src/templates/album_form.html:20 src/templates/album_list.html:20
+msgid "Create Album"
+msgstr "创建相册"
+
+#: src/templates/album_list.html:25
+msgid "Search albums"
+msgstr "搜索相册"
+
+#: src/templates/album_list.html:29
+msgid "Search"
+msgstr "搜索"
+
+#: src/templates/album_list.html:71
+msgid "View"
+msgstr "浏览"
+
+#: src/templates/navbar.html:22
+msgid "Home"
+msgstr "主页"
+
+#: src/templates/navbar.html:24
+msgid "About"
+msgstr "关于"
+
+#: src/templates/navbar.html:25
+msgid "Contact"
+msgstr "联络"
+
+#: src/templates/navbar.html:55
+msgid "Username"
+msgstr "用户名"
+
+#: src/templates/navbar.html:58
+msgid "Password"
+msgstr "密码"
+
+#: src/templates/navbar.html:60
+msgid "Login"
+msgstr "登陆"
+
+#: src/templates/registration/activate.html:6
+msgid "Account activation failed"
+msgstr "激活账户失败"
+
+#: src/templates/registration/activation_complete.html:5
+msgid "Your account is now activated."
+msgstr "你的账户已被激活"
+
+#: src/templates/registration/activation_email.txt:2
+msgid "Activate account at"
+msgstr "激活所在账户"
+
+#: src/templates/registration/activation_email.txt:11
+#, python-format
+msgid "The above link is valid for %(expiration_days)s days."
+msgstr ""
+
+#: src/templates/registration/login.html:14
+#: src/templates/registration/password_change_form.html:9
+#: src/templates/registration/password_reset_confirm.html:12
+msgid "Submit"
+msgstr "提交"
+
+#: src/templates/registration/password_change_done.html:5
+msgid "Password changed"
+msgstr "密码已修改"
+
+#: src/templates/registration/password_reset_complete.html:6
+msgid "Password reset successfully"
+msgstr "密码重置成功"
+
+#: src/templates/registration/password_reset_complete.html:8
+msgid "Log in"
+msgstr "登陆"
+
+#: src/templates/registration/password_reset_confirm.html:17
+msgid "Password reset failed"
+msgstr "密码重置失败"
+
+#: src/templates/registration/password_reset_done.html:5
+msgid "Email with password reset instructions has been sent."
+msgstr "包含密码重置说明的电邮已发送"
+
+#: src/templates/registration/password_reset_email.html:2
+#, python-format
+msgid "Reset password at %(site_name)s"
+msgstr ""
+
+#: src/templates/registration/password_reset_form.html:13
+msgid "Reset"
+msgstr "重置"
+
+#: src/templates/registration/registration_closed.html:5
+msgid "Registration is currently closed."
+msgstr "当前已关闭注册"
+
+#: src/templates/registration/registration_complete.html:5
+msgid "You are now registered. Activation email sent."
+msgstr "你已注册。激活电邮已发送。"
+
+#: src/util/multiupload/multiupload.py:45
+#, python-format
+msgid ""
+"Ensure at least %(min_num)s files are uploaded (received %(num_files)s)."
+msgstr ""
+
+#: src/util/multiupload/multiupload.py:48
+#, python-format
+msgid "Ensure at most %(max_num)s files are uploaded (received %(num_files)s)."
+msgstr ""
+
+#: src/util/multiupload/multiupload.py:51
+#, python-format
+msgid "File %(uploaded_file_name)s exceeded maximum upload size."
+msgstr ""
+
+#: src/util/multiupload/multiupload.py:119
+#, python-format
+msgid "Invalid media_type. Valid types are: %(valid_types)s"
+msgstr ""

@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load i18n %}
+
 {% load time_tags %}
 
 {% load name_tags %}
@@ -15,16 +17,16 @@
         <h1>{{ title }}</h1>
         <div class="row">
             <div class="col-sm-2">
-                <a href="{% url 'album:create' %} " class="btn btn-default" role="button">Create Album</a>
+                <a href="{% url 'album:create' %} " class="btn btn-default" role="button">{% trans 'Create Album' %}</a>
             </div>
             <form method="GET" action="">
                 <div class="col-sm-6 pull-right">
                     <div class="input-group">
-                        <input class="form-control" type="text" name="q" placeholder="Search albums"
+                        <input class="form-control" type="text" name="q" placeholder="{% trans 'Search albums' %}"
                                value="{{ request.GET.q }}"/>
                         <span class="input-group-btn">
                             {#<input class="btn btn-default" type="submit" value="Search"/>#}
-                            <button class="btn btn-default" type="submit">Search <i class="fa fa-search"></i></button>
+                            <button class="btn btn-default" type="submit">{% trans 'Search' %} <i class="fa fa-search"></i></button>
                         </span>
                     </div>
                 </div>
@@ -53,23 +55,23 @@
                                     <span style="float:right;">
 
                                         {% if album.author %}
-                                            <small>Author: {{ album.author | full_name_or_username }}</small>
+                                            <small>{% trans 'Author' %}: {{ album.author | full_name_or_username }}</small>
                                         {% endif %}
                                     </span>
                                 </p>
                             </h3>
 
                             <h4>
-                                <small>Created: {{ album.created_time | timesince_threshold }}</small>
+                                <small>{% trans 'Created' %}: {{ album.created_time | timesince_threshold }}</small>
                             </h4>
 
                             <hr/>
                             <p>{{ album.description | linebreaks | truncatechars:60 }}</p>
                             <p><a href="{{ album.get_absolute_url }}" class="btn btn-primary"
-                                  role="button">View</a>
+                                  role="button">{% trans 'View' %}</a>
                                 {% if user_can_edit %}<a
                                         href="{{ album.get_absolute_url_edit }}" class="btn btn-default"
-                                        role="button">Edit</a>
+                                        role="button">{% trans 'Edit' %}</a>
                                 {% endif %}
                             </p>
                         </div>
@@ -87,7 +89,7 @@
                 {% if albums.has_previous %}
                     <a href="?{{ page_request_var }}={{ albums.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
                        class="btn btn-primary"
-                       role="button">&lt&lt Previous</a>
+                       role="button">&lt&lt {% trans 'Previous' %}</a>
                 {% endif %}
 
                 <span class="current">
@@ -97,7 +99,7 @@
                 {% if albums.has_next %}
                     <a href="?{{ page_request_var }}={{ albums.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
                        class="btn btn-primary"
-                       role="button">&nbsp &nbsp Next &nbsp &nbsp&gt&gt</a>
+                       role="button">&nbsp &nbsp {% trans 'Next' %} &nbsp &nbsp&gt&gt</a>
                 {% endif %}
             </span>
         </div>

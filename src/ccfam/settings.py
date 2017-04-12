@@ -24,7 +24,8 @@ SECRET_KEY = '_+6=by_tlb8xnp0o-w-1fbdd22a1@fm*fgj3!&30y8@-oace7j'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.31.206', '10.16.1.141', 'localhost', '127.0.0.1', '73.93.130.249', '192.168.31.199', 'ccfam.com']
+ALLOWED_HOSTS = ['192.168.31.206', '10.16.1.141', 'localhost', '127.0.0.1', '73.93.130.249', '192.168.31.199',
+                 'ccfam.com']
 
 # Application definition
 
@@ -51,6 +52,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -145,3 +147,7 @@ LOGIN_REDIRECT_URL = '/'
 
 # image quality by Pillow compress
 IMAGE_QUALITY = 55
+
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, "locale"),
+)

@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load i18n %}
+
 {% load crispy_forms_tags %}
 
 {% block head_title %}
@@ -15,7 +17,7 @@
             <form method="POST" , action="" enctype="multipart/form-data"> {% csrf_token %}
                 {{ form | crispy }}
                 <input type="submit" class="btn btn-primary"
-                       value={% if update %}"Update Album"{% else %}"Create Album"{% endif %}/>
+                       value={% if update %}"{% trans 'Update Album' %}"{% else %}"{% trans 'Create Album' %}"{% endif %}/>
             </form>
         </div>
     </div>

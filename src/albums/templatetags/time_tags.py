@@ -15,7 +15,7 @@ def timesince_threshold(value, days=7):
     """
     now = timezone.now()
     if now - value < timedelta(days=days):
-        return timesince(value) + ' ago'
+        return timesince(value) + ' ago(之前)' # need to find a way to handle this
     else:
         return value
 

@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load i18n %}
+
 {% load transposition_tags %}
 
 {% load calculation_tags %}
@@ -18,16 +20,16 @@
                     <small><span style="color:red;">Draft</span></small>
                 {% endif %}
                 <a href="{{ album.get_absolute_url_preview }}?{{ page_request_var }}={{ photos.number | subtract:1 | multiply:9| add:1 }}" class="btn btn-primary"
-                   role="button">Preview Mode</a>
+                   role="button">{% trans 'Single Mode' %}</a>
                 <a href="{{ album.get_absolute_url_edit }}" class="btn btn-default"
-                   role="button">Edit</a>
+                   role="button">{% trans 'Edit' %}</a>
             </h1>
 
             {% if album.author %}
-                <h4>Author: {{ album.author | full_name_or_username }}</h4>
+                <h4>{% trans 'Author' %}: {{ album.author | full_name_or_username }}</h4>
             {% endif %}
-            <p>Created: {{ album.created_time }} ({{ album.created_time | timesince }} ago)</p>
-            <p>Updated {{ album.updated_time }} ({{ album.updated_time | timesince }} ago)</p>
+            <p>{% trans 'Created' %}: {{ album.created_time }} ({{ album.created_time | timesince }} ago)</p>
+            <p>{% trans 'Updated' %}: {{ album.updated_time }} ({{ album.updated_time | timesince }} ago)</p>
             {% if album.description %}
                 <br>
                 {{ album.description | linebreaks }}
@@ -60,7 +62,7 @@
                                     <input type="hidden" name="cover_photo"
                                            value="{{ photo.image.url }}">
                                     <input class="btn btn-default" type="submit"
-                                           value="Set as cover photo">
+                                           value="{% trans 'Set as cover photo' %}">
                                     </form>
                                 {% endif %}
                             </span>
@@ -88,7 +90,7 @@
                 {% if photos.has_previous %}
                     <a href="?{{ page_request_var }}={{ photos.previous_page_number }}"
                        class="btn btn-primary"
-                       role="button">&lt&lt Previous</a>
+                       role="button">&lt&lt {% trans 'Previous' %}</a>
                 {% endif %}
 
                 <span class="current">
@@ -98,7 +100,7 @@
                 {% if photos.has_next %}
                     <a href="?{{ page_request_var }}={{ photos.next_page_number }}"
                        class="btn btn-primary"
-                       role="button">&nbsp &nbsp Next &nbsp &nbsp&gt&gt</a>
+                       role="button">&nbsp &nbsp {% trans 'Next' %} &nbsp &nbsp&gt&gt</a>
                 {% endif %}
             </span>
         </div>

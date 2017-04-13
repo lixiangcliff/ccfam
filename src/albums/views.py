@@ -24,10 +24,10 @@ def album_create(request):
         album.editor = request.user
         # populate exif info to photos
         post_process_photos(album)
+        album.save()
+
         # update album cover photo
         create_cover_photo(album)
-
-        album.save()
         messages.success(request, "Album Successfully Created!")
 
         print ("##create end##")

@@ -116,10 +116,13 @@ class Photo(models.Model):
         pass
 
     def get_absolute_url(self):
-        return reverse("album:photo_detail", kwargs={"id": self.id})
+        return reverse("photo:detail", kwargs={"id": self.id})
 
     def get_absolute_url_edit(self):
-        return reverse("album:photo_update", kwargs={"id": self.id})
+        return reverse("photo:update", kwargs={"id": self.id})
+
+    def get_absolute_url_delete(self):
+        return reverse("photo:delete", kwargs={"id": self.id})
 
     class Meta:
-        ordering = ["image_name", "created_time", "updated_time"]
+        ordering = ["title", "created_time", "updated_time"]

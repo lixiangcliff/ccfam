@@ -3,6 +3,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import Http404, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 
+from albums.models import Album
 from albums.views import create_cover_photo
 from .forms import PhotoForm
 from .models import Photo
@@ -14,33 +15,26 @@ def photo_detail(request, id):
         if not (request.user.is_staff or request.user.is_superuser):
             raise Http404
     album = photo.album
-    photos = album.photo_set.all()
-
-
-    item_count = 1
-    paginator = Paginator(photos, item_count)  # Show item_count per page
-    page_request_var = 'page'
-    page = request.GET.get(page_request_var)
-    try:
-        queryset = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        queryset = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        queryset = paginator.page(paginator.num_pages)
-
-    # context['object_list'] = grouped(Bar.objects.all(), 4)
+    photos = Photo.objects.filter(album=album).values().order_by('title')
+    prev_idx = -1
+    next_idx = len(photos)
+    idx = 0
+    for p in photos:
+        if p.get('id') == photo.id:
+            prev_idx = idx - 1
+            next_idx = idx + 1
+            break
+        idx += 1
+    prev_photo = photos[prev_idx] if prev_idx > -1 else None
+    next_photo = photos[next_idx] if next_idx < len(photos) else None
 
     context = {
         "title": photo.title,
         "photo": photo,
-        "photos": queryset,
-        #"photos_group": grouped(queryset, 3),
-        "page_request_var": page_request_var,
+        "prev_photo": prev_photo,
+        "next_photo": next_photo,
+        "album": album
     }
-
-
     return render(request, "photo_detail.html", context)
 
 
@@ -91,12 +85,39 @@ def photo_delete(request, id=id):
     if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
     photo = get_object_or_404(Photo, id=id)
+    print('photo.id', photo.id)
     album = photo.album
-    photo_url = photo.image.url
-    photo.delete()
+    photos = Photo.objects.filter(album=album).values().order_by('title')
+
+    prev_idx = -1
+    next_idx = len(photos)
+    idx = 0
+    for p in photos:
+        if str(p.get('id')) == str(photo.id):
+            prev_idx = idx - 1
+            next_idx = idx + 1
+            break
+        idx += 1
+    prev_photo = photos[prev_idx] if prev_idx > -1 else None
+    next_photo = photos[next_idx] if next_idx < len(photos) else None
+
+    if prev_photo is None and next_photo is None:  # no photo left in current album
+        photo.delete()
+        messages.success(request, "Photo Successfully Deleted!")
+        return redirect("album:list")
+
+    if next_photo is None:  # deleted photo is the last one in album
+        next_photo = prev_photo
+
     # if current photo is cover photo of album, need to update cover photo after deletion
-    if album.cover_photo == photo_url:
+    if album.cover_photo == photo:
+        # this must happen after 'album.cover_photo == photo' checking,
+        # otherwise if the deleted photo is cover_photo, album.cover_photo will be null
+        photo.delete()
         create_cover_photo(album)
+    else:
+        photo.delete()
     messages.success(request, "Photo Successfully Deleted!")
-    return redirect("album:list")
+    return redirect("photo:detail", id=next_photo.get('id'))
+
 

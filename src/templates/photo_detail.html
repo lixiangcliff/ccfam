@@ -1,115 +1,157 @@
 {% extends 'base.html' %}
 
+{% load i18n %}
+
+{% load calculation_tags %}
+
+{% load name_tags %}
+
 {% block head_title %}
     {{ photo.title }} | {{ block.super }}
 {% endblock head_title %}
 
 
 {% block content %}
+
     <div class="container-fluid">
 
-        <div class="text-center">
-            <h4>{{ photo.title }}
-                <a href="{{ photo.get_absolute_url_edit }}" class="btn btn-default"
-                   role="button">Edit</a>
-            </h4>
-        </div>
 
         <div class="row">
-            <div class="thumbnail">
-                <a href="{{ photo.image.url }}"><img src="{{ photo.image.url }}" class="img-fluid"
-                                                        alt="{{ photo.image_name }}"></a>
-            </div>
-            <!--previous image-->
-            <p><a href="{{ photo.image.url }}" class="btn btn-default" role="button"> See original image</a>
-            <!--next image-->
+
+
+                <div class="text-center">
+                    <h4>{{ photo.title }}
+                        <a href="{{ album.get_absolute_url }}"
+                           class="btn btn-primary"
+                           role="button">{% trans 'Go back to Album' %}</a>
+                        {% if user.is_staff %}
+                            <a href="{{ photo.get_absolute_url_edit }}" class="btn btn-default"
+                               role="button">{% trans 'Edit' %}</a>
+                            <a href="{{ photo.get_absolute_url_delete }}" class="btn btn-default"
+                               role="button">{% trans 'Delete' %}</a>
+                        {% endif %}
+                    </h4>
+                </div>
+
+                <div class="thumbnail">
+
+                    {% if photo.image %}
+                        <a href="{% if next_photo %}/photos/{{ next_photo.id }}{% endif %}"><img
+                                src='{{ photo.image.url }}' class="img-responsive" alt="{{ photo.image_name }}"/></a>
+                    {% endif %}
+
+                    <div class="text-center">
+                        <div class="pagination">
+                            <span class="step-links">
+                                {% if prev_photo %}
+                                    <a href="/photos/{{ prev_photo.id }}"
+                                       class="btn btn-primary"
+                                       role="button">&lt&lt {% trans 'Prev' %}</a>
+                                {% endif %}
+
+                                <span class="current">
+{#                                    {{ photos.number }} / {{ photos.paginator.num_pages }}#}
+                                </span>
+
+                                {% if next_photo %}
+                                    <a href="/photos/{{ next_photo.id }}"
+                                       class="btn btn-primary"
+                                       role="button">{% trans 'Next' %} &gt&gt</a>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th class="col-sm-2 col-xs-1">{% trans 'Item' %}</th>
+                        <th>{% trans 'Information' %}</th>
+
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+
+                    {% if photo.author %}
+                        <tr>
+                            <th scope="row">{% trans 'Author' %}</th>
+                            <td>{{ photo.author | full_name_or_username }}</td>
+                        </tr>
+                    {% endif %}
+
+                    {% if user.is_authenticated %}
+                        {% if photo.taken_time %}
+                            <tr>
+                                <th scope="row">{% trans 'Taken' %}</th>
+                                <td>{{ photo.taken_time }}</td>
+                            </tr>
+                        {% endif %}
+
+
+                        {% if photo.address %}
+                            <tr>
+                                <th scope="row">{% trans 'Address' %}</th>
+                                <td>{{ photo.address }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if photo.description %}
+                        <tr>
+                            <th scope="row">Description</th>
+                            <td>{{ photo.description }}</td>
+                        </tr>
+                    {% endif %}
+
+                    {% if photo.image_name %}
+                        <tr>
+                            <th scope="row">{% trans 'Image' %}</th>
+                            <td>{{ photo.image_name }}</td>
+                        </tr>
+                    {% endif %}
+
+                    {% if photo.album.title %}
+                        <tr>
+                            <th scope="row">{% trans 'Album' %}</th>
+                            <td>{{ photo.album.title }}</td>
+                        </tr>
+                    {% endif %}
+                    {% if photo.created_time %}
+                        <tr>
+                            <th scope="row">{% trans 'Created' %}</th>
+                            <td>{{ photo.created_time }}</td>
+                        </tr>
+                    {% endif %}
+
+                    {% if photo.updated_time %}
+                        <tr>
+                            <th scope="row">{% trans 'Updated' %}</th>
+                            <td>{{ photo.updated_time }}</td>
+                        </tr>
+                    {% endif %}
+
+                    {% if user.is_authenticated %}
+                        {% if photo.device_make %}
+                            <tr>
+                                <th scope="row">{% trans 'Device' %}</th>
+                                <td>{{ photo.device_make }}</td>
+                            </tr>
+                        {% endif %}
+
+                        {% if photo.device_model %}
+                            <tr>
+                                <th scope="row">{% trans 'Model' %}</th>
+                                <td>{{ photo.device_model }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endif %}
+                    </tbody>
+                </table>
         </div>
-
-
-
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th class="col-sm-2 col-xs-1">Item</th>
-                <th>Information</th>
-
-            </tr>
-            </thead>
-
-            <tbody>
-
-            {% if photo.get_author_full_name_or_username %}
-                <tr>
-                    <th scope="row">Author</th>
-                    <td>{{ photo.get_author_full_name_or_username }}</td>
-                </tr>
-            {% endif %}
-
-
-            {% if photo.taken_time %}
-            <tr>
-                <th scope="row">Taken</th>
-                <td>{{ photo.taken_time }}</td>
-            </tr>
-            {% endif %}
-
-            {% if photo.address %}
-            <tr>
-                <th scope="row">Address</th>
-                <td>{{ photo.address }}</td>
-            </tr>
-            {% endif %}
-
-            {% if photo.description %}
-            <tr>
-                <th scope="row">Description</th>
-                <td>{{ photo.description }}</td>
-            </tr>
-            {% endif %}
-
-            {% if photo.image_name %}
-            <tr>
-                <th scope="row">Image</th>
-                <td>{{ photo.image_name }}</td>
-            </tr>
-            {% endif %}
-
-            {% if photo.album.title %}
-            <tr>
-                <th scope="row">Album</th>
-                <td>{{ photo.album.title }}</td>
-            </tr>
-            {% endif %}
-            {% if photo.created_time %}
-            <tr>
-                <th scope="row">Created</th>
-                <td>{{ photo.created_time }}</td>
-            </tr>
-            {% endif %}
-
-            {% if photo.updated_time%}
-            <tr>
-                <th scope="row">Updated</th>
-                <td>{{ photo.updated_time }}</td>
-            </tr>
-            {% endif %}
-
-            {% if photo.device_make %}
-            <tr>
-                <th scope="row">Device</th>
-                <td>{{ photo.device_make }}</td>
-            </tr>
-            {% endif %}
-
-            {% if photo.device_model %}
-            <tr>
-                <th scope="row">Model</th>
-                <td>{{ photo.device_model }}</td>
-            </tr>
-            {% endif %}
-
-            </tbody>
-        </table>
 
     </div>
 

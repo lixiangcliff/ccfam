@@ -8,9 +8,9 @@ from .views import (
 )
 
 urlpatterns = [
-    url(r'^create/$', photo_create, name='photo_create'),
-    url(r'^(?P<id>[0-9]+)/$', photo_detail, name='photo_detail'),
-    url(r'^(?P<id>[0-9]+)/edit$', photo_update, name='photo_update'),
-    url(r'^(?P<id>[0-9]+)/delete', photo_delete, name='photo_delete'),
+    url(r'^create/$', photo_create, name='create'),
+    url(r'^(?P<id>[0-9]+)/$', photo_detail, name='detail'),
+    url(r'^(?P<id>[0-9]+)/edit$', photo_update, name='update'),
+    url(r'^(?P<id>[0-9]+)/delete', photo_delete, name='delete'),
 
 ]

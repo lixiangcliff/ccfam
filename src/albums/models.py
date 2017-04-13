@@ -22,7 +22,7 @@ class Album(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
     editor = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, related_name="+")
     # cover_photo_url = models.CharField(max_length=256, null=True, blank=True)
-    cover_photo = models.ForeignKey('photos.Photo', verbose_name='cover_photo', related_name='+', null=True, blank=True)
+    cover_photo = models.ForeignKey('photos.Photo', verbose_name='cover_photo', related_name='+', on_delete=models.SET_NULL, null=True, blank=True)
     description = models.TextField(blank=True)
     slug = models.SlugField(null=False, blank=False)
     draft = models.BooleanField(default=True)
@@ -52,6 +52,6 @@ class Album(models.Model):
         return reverse("album:update", kwargs={"slug": self.slug, "author_username": self.author.username})
 
     class Meta:
-        ordering = ["-created_time", "-updated_time"]
+        ordering = ["-title", "-created_time", "-updated_time"]
 
 

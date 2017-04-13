@@ -28,9 +28,9 @@
                            role="button">{% trans 'Go back to Album' %}</a>
                         {% if user.is_staff %}
                             <a href="{{ photo.get_absolute_url_edit }}" class="btn btn-default"
-                               role="button">{% trans 'Edit' %}</a>
-                            <a href="{{ photo.get_absolute_url_delete }}" class="btn btn-default"
-                               role="button">{% trans 'Delete' %}</a>
+                               role="button">{% trans 'Edit Photo' %}</a>
+                            <a href="{{ photo.get_absolute_url_delete }}" class="btn btn-danger"
+                               role="button">{% trans 'Delete Photo' %}</a>
                         {% endif %}
                     </h4>
                 </div>

@@ -51,6 +51,9 @@ class Album(models.Model):
     def get_absolute_url_edit(self):
         return reverse("album:update", kwargs={"slug": self.slug, "author_username": self.author.username})
 
+    def get_absolute_url_delete(self):
+        return reverse("album:delete", kwargs={"slug": self.slug, "author_username": self.author.username})
+
     class Meta:
         ordering = ["-title", "-created_time", "-updated_time"]
 

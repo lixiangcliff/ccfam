@@ -19,10 +19,16 @@
                 {% if album.draft %}
                     <small><span style="color:red;">Draft</span></small>
                 {% endif %}
-                <a href="{{ album.get_absolute_url_single }}?{{ page_request_var }}={{ photos.number | subtract:1 | multiply:9| add:1 }}" class="btn btn-primary"
+                <a href="{{ album.get_absolute_url_single }}?{{ page_request_var }}={{ photos.number | subtract:1 | multiply:9| add:1 }}"
+                   class="btn btn-primary"
                    role="button">{% trans 'Single Mode' %}</a>
-                <a href="{{ album.get_absolute_url_edit }}" class="btn btn-default"
-                   role="button">{% trans 'Edit' %}</a>
+                {% if user.is_staff %}
+                    <a href="{{ album.get_absolute_url_edit }}" class="btn btn-default"
+                       role="button">{% trans 'Edit Album' %}</a>
+                    {# http://stackoverflow.com/questions/5834983/javascript-confirm-cancel-button-not-stopping-javascript #}
+                    <a href="{{ album.get_absolute_url_delete }}" class="btn btn-danger"
+                       role="button" onclick="if (confirm('Are you sure to delete this album?')) commentDelete(1); return false">{% trans 'Delete Album' %}</a>
+                {% endif %}
             </h1>
 
             {% if album.author %}

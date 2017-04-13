@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-13 12:07-0700\n"
+"POT-Creation-Date: 2017-04-13 13:54-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,46 +17,50 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/templates/album_detail_multiple.html:23
+#: src/templates/album_detail_multiple.html:24
 msgid "Single Mode"
 msgstr "单张模式"
 
-#: src/templates/album_detail_multiple.html:25 src/templates/album_list.html:74
-#: src/templates/photo_detail.html:29
-msgid "Edit"
-msgstr "编辑"
+#: src/templates/album_detail_multiple.html:27
+
+msgid "Edit Album"
+msgstr "编辑相册"
 
 #: src/templates/album_detail_multiple.html:29
+msgid "Delete Album"
+msgstr "删除相册"
+
+#: src/templates/album_detail_multiple.html:34
 #: src/templates/album_detail_single.html:79 src/templates/album_list.html:58
-#: src/templates/photo_detail.html:81
+#: src/templates/photo_detail.html:83
 msgid "Author"
 msgstr "作者"
 
-#: src/templates/album_detail_multiple.html:31
+#: src/templates/album_detail_multiple.html:36
 #: src/templates/album_detail_single.html:123 src/templates/album_list.html:65
-#: src/templates/photo_detail.html:125
+#: src/templates/photo_detail.html:127
 msgid "Created"
 msgstr "创建于"
 
-#: src/templates/album_detail_multiple.html:32
+#: src/templates/album_detail_multiple.html:37
 #: src/templates/album_detail_single.html:130
-#: src/templates/photo_detail.html:132
+#: src/templates/photo_detail.html:134
 msgid "Updated"
 msgstr "更新于"
 
-#: src/templates/album_detail_multiple.html:65
+#: src/templates/album_detail_multiple.html:70
 msgid "Set as cover photo"
 msgstr "设为封面"
 
-#: src/templates/album_detail_multiple.html:93
+#: src/templates/album_detail_multiple.html:98
 #: src/templates/album_detail_single.html:47 src/templates/album_list.html:92
-#: src/templates/photo_detail.html:49
+#: src/templates/photo_detail.html:51
 msgid "Prev"
 msgstr "上一页"
 
-#: src/templates/album_detail_multiple.html:103
+#: src/templates/album_detail_multiple.html:108
 #: src/templates/album_detail_single.html:57 src/templates/album_list.html:102
-#: src/templates/photo_detail.html:59
+#: src/templates/photo_detail.html:61
 msgid "Next"
 msgstr "下一页"
 
@@ -65,42 +69,42 @@ msgid "Multiple Mode"
 msgstr "多张模式"
 
 #: src/templates/album_detail_single.html:29
-msgid "Edit photo"
-msgstr "编辑照片"
+msgid "Edit Mode"
+msgstr "编辑模式"
 
-#: src/templates/album_detail_single.html:68 src/templates/photo_detail.html:70
+#: src/templates/album_detail_single.html:68 src/templates/photo_detail.html:72
 msgid "Item"
 msgstr "项目"
 
-#: src/templates/album_detail_single.html:69 src/templates/photo_detail.html:71
+#: src/templates/album_detail_single.html:69 src/templates/photo_detail.html:73
 msgid "Information"
 msgstr "信息"
 
-#: src/templates/album_detail_single.html:87 src/templates/photo_detail.html:89
+#: src/templates/album_detail_single.html:87 src/templates/photo_detail.html:91
 msgid "Taken"
 msgstr "拍摄时间"
 
-#: src/templates/album_detail_single.html:95 src/templates/photo_detail.html:97
+#: src/templates/album_detail_single.html:95 src/templates/photo_detail.html:99
 msgid "Address"
 msgstr "地址"
 
 #: src/templates/album_detail_single.html:110
-#: src/templates/photo_detail.html:112
+#: src/templates/photo_detail.html:114
 msgid "Image"
 msgstr "照片名称"
 
 #: src/templates/album_detail_single.html:117 src/templates/navbar.html:23
-#: src/templates/photo_detail.html:119
+#: src/templates/photo_detail.html:121
 msgid "Album"
 msgstr "相册"
 
 #: src/templates/album_detail_single.html:138
-#: src/templates/photo_detail.html:140
+#: src/templates/photo_detail.html:142
 msgid "Device"
 msgstr "设备"
 
 #: src/templates/album_detail_single.html:145
-#: src/templates/photo_detail.html:147
+#: src/templates/photo_detail.html:149
 msgid "Model"
 msgstr "型号"
 
@@ -123,6 +127,10 @@ msgstr "搜索"
 #: src/templates/album_list.html:71
 msgid "View"
 msgstr "浏览"
+
+#: src/templates/album_list.html:74
+msgid "Edit"
+msgstr "编辑"
 
 #: src/templates/navbar.html:22
 msgid "Home"
@@ -152,13 +160,21 @@ msgstr "密码"
 msgid "Login"
 msgstr "登陆"
 
-#: src/templates/photo_detail.html:26
+#: src/templates/photo_detail.html:23
+msgid "You are in Edit mode"
+msgstr "你现在处于编辑模式"
+
+#: src/templates/photo_detail.html:28
 msgid "Go back to Album"
 msgstr ""
 
 #: src/templates/photo_detail.html:31
-msgid "Delete"
-msgstr ""
+msgid "Edit Photo"
+msgstr "编辑照片"
+
+#: src/templates/photo_detail.html:33
+msgid "Delete Photo"
+msgstr "删除照片"
 
 #: src/templates/registration/activate.html:6
 msgid "Account activation failed"

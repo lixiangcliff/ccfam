@@ -20,6 +20,8 @@
 
 
                 <div class="text-center">
+                    {% if user.is_staff %}<h4>{% trans 'You are in Edit mode' %}</h4>
+                    {% endif %}
                     <h4>{{ photo.title }}
                         <a href="{{ album.get_absolute_url }}"
                            class="btn btn-primary"

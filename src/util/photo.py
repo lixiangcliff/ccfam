@@ -14,6 +14,7 @@ def get_exif_data_by_image_path(image_path):
     image = Image.open(image_path)
     return get_exif_data(image)
 
+
 def get_exif_data(image):
     """Returns a dictionary from the exif data of an PIL Image item. Also converts the GPS Tags"""
     exif_data = {}
@@ -102,7 +103,6 @@ def rotate_and_compress_image(filename):
 
         if piexif.ImageIFD.Orientation in exif_dict["0th"]:
             orientation = exif_dict["0th"].pop(piexif.ImageIFD.Orientation)
-            exif_bytes = piexif.dump(exif_dict)
 
             if orientation == 2:
                 img = img.transpose(Image.FLIP_LEFT_RIGHT)
@@ -119,12 +119,28 @@ def rotate_and_compress_image(filename):
             elif orientation == 8:
                 img = img.rotate(90, expand=True)
 
-            img.save(filename.file.name, overwrite=True, optimize=True, quality=settings.IMAGE_QUALITY, exif=exif_bytes)
+            # exif_bytes = None
+            # try:
+            #     exif_bytes = piexif.dump(exif_dict)
+            # except Exception as e:
+            #     print('exception: ', e)
+            #
+            # if exif_bytes:
+            #     img.save(filename.file.name, overwrite=True, optimize=True, quality=settings.IMAGE_QUALITY, exif=exif_bytes)
+            # else:
+
+            img.save(filename.file.name, overwrite=True, optimize=True, quality=settings.IMAGE_QUALITY)
 
 
-#image_path = '/Users/Cliff/per/static/pictures/test_mobile/a12.jpg'
-#img = PIL.Image.open(image_path)
-#exif_data = get_exif_data(img)
+def is_jpeg(image_full_path):
+    return Image.open(image_full_path).format.lower() == 'jpeg'
+
+# image_path = '/Users/Cliff/per/static/pictures/sample/Abstract_Shapes.jpg'
+# img = PIL.Image.open(image_path)
+# exif_data = get_exif_data(img)
+# print(exif_data)
+# print(is_jpeg(image_path))
+
 #datetime_data = exif_data['DateTime']
 # print (get_lat_lon(exif_data)[0] is None)
 #   print (exif_data.get('Orientation'))

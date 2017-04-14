@@ -7,15 +7,15 @@ from django.urls import reverse
 from albums.models import Album
 from src.util.time import get_datetime_by_string
 from util.geo import get_location_by_coordinate
-from util.photo import get_exif_data_by_image_path, get_lat_lon, rotate_and_compress_image
+from util.photo import get_exif_data_by_image_path, get_lat_lon, rotate_and_compress_image, is_jpeg
 
 
 def upload_location_photo(instance, filename):
     author = instance.album.author
-    title = instance.album.slug
+    album_title = instance.album.slug
     filename = filename.replace(' ', '_')
     filename = filename.replace(',', '')
-    return 'photos/%s/%s/%s' % (author, title, filename)
+    return 'photos/%s/%s/%s' % (author, album_title, filename)
 
 
 class Photo(models.Model):
@@ -54,26 +54,35 @@ class Photo(models.Model):
         super(Photo, self).save(*args, **kwargs)
 
     def post_process(self):
+        image_full_path = settings.MEDIA_ROOT + "/" + self.image_path
+        image_is_jpeg = is_jpeg(image_full_path)
+        # if not jpeg:
+
+        # if jpeg
         # populate exif infos
-        exif_data = get_exif_data_by_image_path(settings.MEDIA_ROOT + "/" + self.image_path)
-        # self.width must be put in post_process()
-        # cuz we use this to check whether a photo has been processed in views.post_process_photos()
-        self.width = self.get_width(exif_data)
-        self.height = self.get_height(exif_data)
-        self.device_make = self.get_device_make(exif_data)
-        self.device_model = self.get_device_model(exif_data)
-        self.orientation = self.get_orientation(exif_data)
-        self.taken_time = self.get_taken_time(exif_data)
-        self.latitude = self.get_latitude(exif_data)
-        self.longitude = self.get_longitude(exif_data)
-        self.address = self.get_address(exif_data)
+        if image_is_jpeg:
+            exif_data = get_exif_data_by_image_path(image_full_path)
+            # self.width must be put in post_process()
+            # cuz we use this to check whether a photo has been processed in views.post_process_photos()
+            self.width = self.get_width(exif_data)
+            self.height = self.get_height(exif_data)
+            self.device_make = self.get_device_make(exif_data)
+            self.device_model = self.get_device_model(exif_data)
+            self.orientation = self.get_orientation(exif_data)
+            self.taken_time = self.get_taken_time(exif_data)
+            self.latitude = self.get_latitude(exif_data)
+            self.longitude = self.get_longitude(exif_data)
+            self.address = self.get_address(exif_data)
+
+            # rotate image if needed
+            rotate_and_compress_image(self.image)
+            self.size = self.image.size
+        else: # not jpeg
+            pass
+
         # update other field
         self.author = self.album.author
         self.editor = self.album.editor
-
-        # rotate image if needed
-        rotate_and_compress_image(self.image)
-        self.size = self.image.size
 
         super(Photo, self).save(
             update_fields=["author", "editor", "width", "height", "size", "orientation", "device_make", "device_model",

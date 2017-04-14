@@ -27,13 +27,16 @@ def photo_detail(request, id):
         idx += 1
     prev_photo = photos[prev_idx] if prev_idx > -1 else None
     next_photo = photos[next_idx] if next_idx < len(photos) else None
-
+    photo_position = idx + 1
+    photos_count = len(photos)
     context = {
         "title": photo.title,
         "photo": photo,
         "prev_photo": prev_photo,
         "next_photo": next_photo,
-        "album": album
+        "album": album,
+        "photo_position": photo_position,
+        "photos_count": photos_count,
     }
     return render(request, "photo_detail.html", context)
 

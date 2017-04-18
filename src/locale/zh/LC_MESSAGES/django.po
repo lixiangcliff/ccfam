@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-13 13:54-0700\n"
+"POT-Creation-Date: 2017-04-16 16:14-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,43 +22,42 @@ msgid "Single Mode"
 msgstr "单张模式"
 
 #: src/templates/album_detail_multiple.html:27
-
 msgid "Edit Album"
 msgstr "编辑相册"
 
-#: src/templates/album_detail_multiple.html:29
+#: src/templates/album_detail_multiple.html:30
 msgid "Delete Album"
 msgstr "删除相册"
 
-#: src/templates/album_detail_multiple.html:34
+#: src/templates/album_detail_multiple.html:35
 #: src/templates/album_detail_single.html:79 src/templates/album_list.html:58
 #: src/templates/photo_detail.html:83
 msgid "Author"
 msgstr "作者"
 
-#: src/templates/album_detail_multiple.html:36
+#: src/templates/album_detail_multiple.html:37
 #: src/templates/album_detail_single.html:123 src/templates/album_list.html:65
 #: src/templates/photo_detail.html:127
 msgid "Created"
 msgstr "创建于"
 
-#: src/templates/album_detail_multiple.html:37
+#: src/templates/album_detail_multiple.html:38
 #: src/templates/album_detail_single.html:130
 #: src/templates/photo_detail.html:134
 msgid "Updated"
 msgstr "更新于"
 
-#: src/templates/album_detail_multiple.html:70
-msgid "Set as cover photo"
+#: src/templates/album_detail_multiple.html:71
+msgid "Set Cover"
 msgstr "设为封面"
 
-#: src/templates/album_detail_multiple.html:98
+#: src/templates/album_detail_multiple.html:99
 #: src/templates/album_detail_single.html:47 src/templates/album_list.html:92
 #: src/templates/photo_detail.html:51
 msgid "Prev"
 msgstr "上一页"
 
-#: src/templates/album_detail_multiple.html:108
+#: src/templates/album_detail_multiple.html:109
 #: src/templates/album_detail_single.html:57 src/templates/album_list.html:102
 #: src/templates/photo_detail.html:61
 msgid "Next"
@@ -166,7 +165,7 @@ msgstr "你现在处于编辑模式"
 
 #: src/templates/photo_detail.html:28
 msgid "Go back to Album"
-msgstr ""
+msgstr "返回相册"
 
 #: src/templates/photo_detail.html:31
 msgid "Edit Photo"
@@ -256,3 +255,6 @@ msgstr ""
 #, python-format
 msgid "Invalid media_type. Valid types are: %(valid_types)s"
 msgstr ""
+
+#~ msgid "Set as cover photo"
+#~ msgstr "设为封面"

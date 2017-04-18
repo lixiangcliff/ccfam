@@ -88,7 +88,6 @@ def photo_delete(request, id=id):
     if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
     photo = get_object_or_404(Photo, id=id)
-    print('photo.id', photo.id)
     album = photo.album
     photos = Photo.objects.filter(album=album).values().order_by('title')
 

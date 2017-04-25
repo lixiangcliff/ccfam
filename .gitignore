@@ -6,3 +6,8 @@ media_cdn/*
 .hubot_history
 .idea/
 *.pyc
+bin/
+include/
+lib/
+*.py[cod]
+pip-selfcheck.json

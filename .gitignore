@@ -11,5 +11,5 @@ include/
 lib/
 *.py[cod]
 pip-selfcheck.json
-/src/ccfam/settings/prod.py
-/src/db.sqlite3
+src/ccfam/settings/prod.py
+

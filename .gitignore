@@ -11,3 +11,4 @@ include/
 lib/
 *.py[cod]
 pip-selfcheck.json
+src/ccfam/settings/prod.py

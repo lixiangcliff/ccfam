@@ -1,0 +1,20 @@
+stic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+
+*.sqlite3
+__ pycache __
+node_modules
+media_cdn/*
+.DS_Store*
+.hubot_history
+.idea/
+*.pyc
+bin/
+include/
+lib/
+*.py[cod]
+pip-selfcheck.json
+

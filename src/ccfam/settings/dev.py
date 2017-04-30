@@ -151,3 +151,5 @@ IMAGE_QUALITY = 55
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, "locale"),
 )
+
+SUPERUSER_PASSWORD = ''

@@ -5,5 +5,7 @@ from src.ccfam import settings
 class Command(BaseCommand):
     def handle(self, *args, **options):
         User = get_user_model()
-        if not User.objects.filter(username__exact="cliff").exists():
-            User.objects.create_superuser("cliff", "lixiang.cliff@gmail.com", settings.SUPERUSER_PASSWORD)
+        if User.objects.filter(username__exact="cliff").count() == 0:
+            User.objects.create_superuser("cliff", "lixiang.cliff@gmail.com", "test")
+        else:
+            print('account cliff already exists. do nothing.')

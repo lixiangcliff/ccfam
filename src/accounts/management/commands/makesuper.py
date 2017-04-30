@@ -6,6 +6,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         User = get_user_model()
         if User.objects.filter(username__exact="cliff").count() == 0:
-            User.objects.create_superuser("cliff", "lixiang.cliff@gmail.com", "test")
+            User.objects.create_superuser("cliff", "lixiang.cliff@gmail.com", settings.SUPERUSER_PASSWORD)
         else:
             print('account cliff already exists. do nothing.')

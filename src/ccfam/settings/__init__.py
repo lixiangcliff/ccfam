@@ -1,9 +1,9 @@
-from .base import *
+from .prod import *
 
-try:
-    from .prod import *
-except:
-    pass
+# try:
+#     from .prod import *
+# except:
+#     pass
 
 # try:
 #     from .dev import *

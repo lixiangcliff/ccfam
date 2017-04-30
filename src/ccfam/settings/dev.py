@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'registration',
     'django_cleanup',
     # my apps
+    'accounts',
     'albums',
     'photos',
 ]

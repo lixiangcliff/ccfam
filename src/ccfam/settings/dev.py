@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'registration',
     'django_cleanup',
+    'storages',
     # my apps
     'accounts',
     'albums',

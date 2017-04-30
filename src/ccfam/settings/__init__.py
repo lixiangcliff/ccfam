@@ -5,14 +5,14 @@ try:
 except:
     pass
 
-# try:
-#     from .dev import *
-# except:
-#     pass
-#
-# try:
-#     from .vm import *
-# except:
-#     pass
+try:
+    from .dev import *
+except:
+    pass
+
+try:
+    from .vm import *
+except:
+    pass
 
 

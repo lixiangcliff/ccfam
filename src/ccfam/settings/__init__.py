@@ -1,6 +1,11 @@
 from .base import *
 
 try:
+    from .prod import *
+except:
+    pass
+
+try:
     from .dev import *
 except:
     pass
@@ -10,7 +15,4 @@ try:
 except:
     pass
 
-try:
-    from .prod import *
-except:
-    pass
+

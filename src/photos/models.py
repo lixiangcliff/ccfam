@@ -54,7 +54,13 @@ class Photo(models.Model):
         super(Photo, self).save(*args, **kwargs)
 
     def post_process(self):
-        image_full_path = settings.MEDIA_ROOT + "/" + self.image_path
+        if settings.ENV == 'dev':
+        # for dev:
+            image_full_path = settings.MEDIA_ROOT + "/" + self.image_path
+        # for prod:
+        elif settings.ENV == 'prod': # for now hard coded for protocol
+            image_full_path = 'https://s3-' + settings.S3DIRECT_REGION + '.amazonaws.com/' + settings.AWS_STORAGE_BUCKET_NAME + '/media/' + self.image_path
+        print('image_full_path', image_full_path)
         image_is_jpeg = is_jpeg(image_full_path)
         # if not jpeg:
 

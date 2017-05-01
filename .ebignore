@@ -17,4 +17,5 @@ include/
 lib/
 *.py[cod]
 pip-selfcheck.json
+.Python
 

@@ -74,8 +74,6 @@ class Photo(models.Model):
             self.address = self.get_address(exif_data)
 
             # rotate image if needed
-            print('self.image.file.name', self.image.file.name)
-            print('self.image_path', self.image_path)
             rotate_and_compress_image(pil_image, self)
             self.size = self.image.size
         else: # not jpeg

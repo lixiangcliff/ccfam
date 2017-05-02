@@ -127,7 +127,7 @@ def rotate_and_compress_image(img, photo_obj):
     # compress and write back
     if settings.ENV == 'dev':  # local
         img.save(photo_obj.image.file.name, overwrite=True, optimize=True,
-                 quality=settings.IMAGE_QUALITY)
+                 quality=settings.IMAGE_QUALITY) # photo_obj.image.file.name is a full path of local file
     elif settings.ENV == 'prod':  # on s3
         key = get_s3_image_file_key(photo_obj.image_path)
 
@@ -149,8 +149,6 @@ def is_jpeg(image):
 
 
 def get_image(image_path):
-    print('settings.IMAGE_QUALITY', settings.IMAGE_QUALITY)
-    print('settings.ENV', settings.ENV)
     if settings.ENV == 'dev':  # local
         image_full_path = settings.MEDIA_ROOT + "/" + image_path
         return Image.open(image_full_path)

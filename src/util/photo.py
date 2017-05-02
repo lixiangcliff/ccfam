@@ -140,6 +140,8 @@ def is_jpeg(image):
 
 
 def get_image(image_path):
+    print('settings.IMAGE_QUALITY', settings.IMAGE_QUALITY)
+    print('settings.ENV', settings.ENV)
     if settings.ENV == 'dev':  # local
         return Image.open(image_path)
     elif settings.ENV == 'prod':  # on s3

@@ -153,7 +153,7 @@ def get_image(image_path):
         conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
         bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
         k = Key(bucket)
-        k.key = image_path  # for example, 'images/bob/resized_image1.png'
+        k.key = 'media/' + image_path  # for example, 'images/bob/resized_image1.png'
         tmp_file_name = 'tmp.file'
         k.get_contents_to_filename(tmp_file_name)
         return Image.open(tmp_file_name)

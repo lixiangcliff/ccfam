@@ -95,9 +95,10 @@ def print_exif_data(image_path):
 
 # http://stackoverflow.com/questions/22045882/modify-or-delete-exif-tag-orientation-in-python
 # http://piexif.readthedocs.io/en/latest/sample.html?highlight=orientation
-def rotate_and_compress_image(filename):
+def rotate_and_compress_image(img, filename):
 
-    img = Image.open(filename)
+    #img = Image.open(filename)
+
     if "exif" in img.info:
         exif_dict = piexif.load(img.info["exif"])
 
@@ -132,8 +133,27 @@ def rotate_and_compress_image(filename):
             img.save(filename.file.name, overwrite=True, optimize=True, quality=settings.IMAGE_QUALITY)
 
 
-def is_jpeg(image_full_path):
-    return Image.open(image_full_path).format.lower() == 'jpeg'
+# def is_jpeg(image_full_path):
+#     return Image.open(image_full_path).format.lower() == 'jpeg'
+def is_jpeg(image):
+    return image.format.lower() == 'jpeg'
+
+
+def get_image(image_path):
+    if settings.ENV == 'dev':  # local
+        return Image.open(image_path)
+    elif settings.ENV == 'prod':  # on s3
+        # http://stackoverflow.com/questions/18729026/upload-images-to-amazon-s3-using-django
+        from boto.s3.connection import S3Connection
+        from boto.s3.key import Key
+
+        conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+        bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
+        k = Key(bucket)
+        k.key = image_path  # for example, 'images/bob/resized_image1.png'
+        tmp_file_name = 'tmp.file'
+        k.get_contents_to_filename(tmp_file_name)
+        return Image.open(tmp_file_name)
 
 # image_path = '/Users/Cliff/per/static/pictures/sample/Abstract_Shapes.jpg'
 # img = PIL.Image.open(image_path)

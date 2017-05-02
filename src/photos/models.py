@@ -7,8 +7,8 @@ from django.urls import reverse
 from albums.models import Album
 from src.util.time import get_datetime_by_string
 from util.geo import get_location_by_coordinate
-from util.photo import get_exif_data_by_image_path, get_lat_lon, rotate_and_compress_image, is_jpeg
-
+from util.photo import get_exif_data, get_lat_lon, rotate_and_compress_image, is_jpeg, get_image
+# from src.ccfam import settings as ccfam_settings
 
 def upload_location_photo(instance, filename):
     author = instance.album.author
@@ -54,20 +54,12 @@ class Photo(models.Model):
         super(Photo, self).save(*args, **kwargs)
 
     def post_process(self):
-        if settings.ENV == 'dev':
-        # for dev:
-            image_full_path = settings.MEDIA_ROOT + "/" + self.image_path
-        # for prod:
-        elif settings.ENV == 'prod': # for now hard coded for protocol
-            image_full_path = 'https://s3-' + settings.S3DIRECT_REGION + '.amazonaws.com/' + settings.AWS_STORAGE_BUCKET_NAME + '/media/' + self.image_path
-        print('image_full_path', image_full_path)
-        image_is_jpeg = is_jpeg(image_full_path)
-        # if not jpeg:
-
+        pil_image = get_image(self.image_path) # Pillow Image object
+        image_is_jpeg = is_jpeg(pil_image)
         # if jpeg
         # populate exif infos
         if image_is_jpeg:
-            exif_data = get_exif_data_by_image_path(image_full_path)
+            exif_data = get_exif_data(pil_image)
             # self.width must be put in post_process()
             # cuz we use this to check whether a photo has been processed in views.post_process_photos()
             self.width = self.get_width(exif_data)
@@ -76,12 +68,13 @@ class Photo(models.Model):
             self.device_model = self.get_device_model(exif_data)
             self.orientation = self.get_orientation(exif_data)
             self.taken_time = self.get_taken_time(exif_data)
-            self.latitude = self.get_latitude(exif_data)
-            self.longitude = self.get_longitude(exif_data)
+            lan_and_lon = get_lat_lon(exif_data)
+            self.latitude = lan_and_lon[0]
+            self.longitude = lan_and_lon[1]
             self.address = self.get_address(exif_data)
 
             # rotate image if needed
-            rotate_and_compress_image(self.image)
+            rotate_and_compress_image(pil_image, self.image)
             self.size = self.image.size
         else: # not jpeg
             pass
@@ -122,7 +115,7 @@ class Photo(models.Model):
         return get_lat_lon(exif_data)[1]
 
     def get_address(self, exif_data):
-        if get_lat_lon(exif_data)[0] is None:
+        if not self.latitude:
             return ""
         else:
             return get_location_by_coordinate(get_lat_lon(exif_data)[0], get_lat_lon(exif_data)[1])

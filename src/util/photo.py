@@ -143,7 +143,8 @@ def get_image(image_path):
     print('settings.IMAGE_QUALITY', settings.IMAGE_QUALITY)
     print('settings.ENV', settings.ENV)
     if settings.ENV == 'dev':  # local
-        return Image.open(image_path)
+        image_full_path = settings.MEDIA_ROOT + "/" + image_path
+        return Image.open(image_full_path)
     elif settings.ENV == 'prod':  # on s3
         # http://stackoverflow.com/questions/18729026/upload-images-to-amazon-s3-using-django
         from boto.s3.connection import S3Connection

@@ -1,3 +1,5 @@
+from io import BytesIO
+
 import PIL.ExifTags
 from PIL import Image
 from PIL.ExifTags import GPSTAGS, TAGS
@@ -7,6 +9,9 @@ import piexif
 
 ### http://eran.sandler.co.il/2011/05/20/extract-gps-latitude-and-longitude-data-from-exif-using-python-imaging-library-pil/
 #from src.albums.util.time import get_datetime_by_string
+from boto.s3.connection import S3Connection
+from boto.s3.key import Key
+
 from src.ccfam import settings
 
 
@@ -95,9 +100,50 @@ def print_exif_data(image_path):
 
 # http://stackoverflow.com/questions/22045882/modify-or-delete-exif-tag-orientation-in-python
 # http://piexif.readthedocs.io/en/latest/sample.html?highlight=orientation
-def rotate_and_compress_image(img, photo_obj):
-    #img = Image.open(filename)
+# https://gist.github.com/rigoneri/4716919
+# def rotate_and_compress_image(img, photo_obj):
+#     #img = Image.open(filename)
+#
+#     if "exif" in img.info:
+#         exif_dict = piexif.load(img.info["exif"])
+#
+#         if piexif.ImageIFD.Orientation in exif_dict["0th"]:
+#             orientation = exif_dict["0th"].pop(piexif.ImageIFD.Orientation)
+#
+#             if orientation == 2:
+#                 img = img.transpose(Image.FLIP_LEFT_RIGHT)
+#             elif orientation == 3:
+#                 img = img.rotate(180, expand=True)
+#             elif orientation == 4:
+#                 img = img.rotate(180, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
+#             elif orientation == 5:
+#                 img = img.rotate(-90, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
+#             elif orientation == 6:
+#                 img = img.rotate(-90, expand=True)
+#             elif orientation == 7:
+#                 img = img.rotate(90, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
+#             elif orientation == 8:
+#                 img = img.rotate(90, expand=True)
+#
+#             # exif_bytes = None
+#             # try:
+#             #     exif_bytes = piexif.dump(exif_dict)
+#             # except Exception as e:
+#             #     print('exception: ', e)
+#             #
+#             # if exif_bytes:
+#             #     img.save(filename.file.name, overwrite=True, optimize=True, quality=settings.IMAGE_QUALITY, exif=exif_bytes)
+#             # else:
+#
+#             file_path = ''
+#             if settings.ENV == 'dev':  # local
+#                 img.save(photo_obj.image.file.name, overwrite=True, optimize=True, quality=settings.IMAGE_QUALITY)
+#             elif settings.ENV == 'prod':  # on s3
+#                 img.save(file_path, overwrite=True, optimize=True, quality=settings.IMAGE_QUALITY)
 
+
+def rotate_and_compress_image(img, photo_obj):
+    # rotate
     if "exif" in img.info:
         exif_dict = piexif.load(img.info["exif"])
 
@@ -119,22 +165,29 @@ def rotate_and_compress_image(img, photo_obj):
             elif orientation == 8:
                 img = img.rotate(90, expand=True)
 
-            # exif_bytes = None
-            # try:
-            #     exif_bytes = piexif.dump(exif_dict)
-            # except Exception as e:
-            #     print('exception: ', e)
-            #
-            # if exif_bytes:
-            #     img.save(filename.file.name, overwrite=True, optimize=True, quality=settings.IMAGE_QUALITY, exif=exif_bytes)
-            # else:
+    # compress and write back
+    if settings.ENV == 'dev':  # local
+        img.save(photo_obj.image.file.name, overwrite=True, optimize=True,
+                 quality=settings.IMAGE_QUALITY)
+    elif settings.ENV == 'prod':  # on s3
+        # conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+        # bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
+        # key = Key(bucket)
+        # s3_image_path = 'media/' + photo_obj.image_path  # for example, 'images/bob/resized_image1.png'
+        # key.key = s3_image_path
+        key = get_s3_image_file_key(photo_obj.image_path)
 
-            file_path = ''
-            if settings.ENV == 'dev':  # local
-                img.save(photo_obj.image.file.name, overwrite=True, optimize=True, quality=settings.IMAGE_QUALITY)
-            elif settings.ENV == 'prod':  # on s3
-                img.save(file_path, overwrite=True, optimize=True, quality=settings.IMAGE_QUALITY)
+        tmp = BytesIO()
+        img.save(tmp, 'JPEG', quality=settings.IMAGE_QUALITY)
+        tmp.seek(0)
+        output_data = tmp.getvalue()
 
+        headers = dict()
+        headers['Content-Type'] = 'image/jpeg'
+        headers['Content-Length'] = str(len(output_data))
+        key.set_contents_from_string(output_data, headers=headers, policy='public-read')
+
+        tmp.close()
 
 # def is_jpeg(image_full_path):
 #     return Image.open(image_full_path).format.lower() == 'jpeg'
@@ -151,17 +204,21 @@ def get_image(image_path):
         image_full_path = settings.MEDIA_ROOT + "/" + image_path
         return Image.open(image_full_path)
     elif settings.ENV == 'prod':  # on s3
-        # http://stackoverflow.com/questions/18729026/upload-images-to-amazon-s3-using-django
-        from boto.s3.connection import S3Connection
-        from boto.s3.key import Key
+        # conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+        # bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
+        # key = Key(bucket)
+        # key.key = 'media/' + image_path  # for example, 'images/bob/resized_image1.png'
+        key = get_s3_image_file_key(image_path)
+        image_string = key.get_contents_as_string()
+        return Image.open(BytesIO(image_string))
 
-        conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
-        bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
-        k = Key(bucket)
-        k.key = 'media/' + image_path  # for example, 'images/bob/resized_image1.png'
-        tmp_file_name = 'tmp.file'
-        k.get_contents_to_filename(tmp_file_name)
-        return Image.open(tmp_file_name)
+
+def get_s3_image_file_key(image_path):
+    conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+    bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
+    key = Key(bucket)
+    key.key = 'media/' + image_path
+    return key
 
 # image_path = '/Users/Cliff/per/static/pictures/sample/Abstract_Shapes.jpg'
 # img = PIL.Image.open(image_path)

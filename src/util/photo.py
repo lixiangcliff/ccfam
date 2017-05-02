@@ -95,7 +95,7 @@ def print_exif_data(image_path):
 
 # http://stackoverflow.com/questions/22045882/modify-or-delete-exif-tag-orientation-in-python
 # http://piexif.readthedocs.io/en/latest/sample.html?highlight=orientation
-def rotate_and_compress_image(img, filename):
+def rotate_and_compress_image(img, image_path):
 
     #img = Image.open(filename)
 
@@ -130,7 +130,7 @@ def rotate_and_compress_image(img, filename):
             #     img.save(filename.file.name, overwrite=True, optimize=True, quality=settings.IMAGE_QUALITY, exif=exif_bytes)
             # else:
 
-            img.save(filename.file.name, overwrite=True, optimize=True, quality=settings.IMAGE_QUALITY)
+            img.save(image_path, overwrite=True, optimize=True, quality=settings.IMAGE_QUALITY)
 
 
 # def is_jpeg(image_full_path):
@@ -138,6 +138,8 @@ def rotate_and_compress_image(img, filename):
 def is_jpeg(image):
     return image.format.lower() == 'jpeg'
 
+def get_image_filename(image_path):
+    pass
 
 def get_image(image_path):
     print('settings.IMAGE_QUALITY', settings.IMAGE_QUALITY)

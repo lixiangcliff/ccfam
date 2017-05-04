@@ -25,17 +25,20 @@ body {
 /* Not required for template or sticky footer method. */
 
 body > .container {
-  padding: 15px 15px 0;
+  /*padding: 15px 15px 0;*/
 }
 .container .text-muted {
-  margin: 15px 0;
+  /*margin: 15px 0;*/
+  margin: 0px 0;
   color: white;
   text-align: center;
 }
 
 .footer > .container {
-  padding-right: 15px;
-  padding-left: 15px;
+  /*padding-right: 15px;*/
+  /*padding-left: 15px;*/
+  padding-right: 0px;
+  padding-left: 0px;
 }
 
 code {

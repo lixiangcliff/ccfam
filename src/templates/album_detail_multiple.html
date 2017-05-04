@@ -17,7 +17,7 @@
         <div class="row">
             <h1>{{ album.title }}
                 {% if album.draft %}
-                    <small><span style="color:red;">Draft</span></small>
+                    <small><span style="color:red;">{% trans 'Draft' %}</span></small>
                 {% endif %}
                 <a href="{{ album.get_absolute_url_single }}?{{ page_request_var }}={{ photos.number | subtract:1 | multiply:9| add:1 }}"
                    class="btn btn-primary"

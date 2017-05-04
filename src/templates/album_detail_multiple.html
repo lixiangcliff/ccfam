@@ -46,9 +46,6 @@
 
     <div class="col-md-12">
         {% for photo in photos %}
-{#            {% if forloop.counter0 == 2 or forloop.counter0 == 5 or forloop.counter0 == 8 %}#}
-{#                <div class="row">#}
-{#            {% endif %}#}
 
             <div class="col-sm-4">
                 <div class="thumbnail">
@@ -83,10 +80,11 @@
                     </div>
                 </div>
             </div>
-{##}
-{#            {% if forloop.counter0 == 2 or forloop.counter0 == 5 or forloop.counter0 == 8 %}#}
-{#                </div>#}
-{#            {% endif %}#}
+
+            {% if forloop.counter0 == 2 or forloop.counter0 == 5 or forloop.counter0 == 8 %}
+                <div class="row"></div>
+            {% endif %}
+
         {% endfor %}
     </div>
 

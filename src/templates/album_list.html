@@ -37,49 +37,48 @@
 
     <div class="col-md-12">
         {% for album in albums %}
-{#            {% if forloop.counter0 == 2 or forloop.counter0 == 5 or forloop.counter0 == 8 %}#}
-{#                <div class="row">#}
-{#            {% endif %}#}
-                <div class="col-sm-4">
-                    <div class="thumbnail">
-                        {% if album.cover_photo %}
-                            <a href="{{ album.get_absolute_url }}"><img src='{{ album.cover_photo.image.url }}'
-                                                                      class="img-responsive"/></a>
-                        {% endif %}
-                        <div class="caption">
-                            {% if album.draft %}<h5 style="color:red">Draft</h5> {% endif %}
 
-                            <h3>
-                                <p style="text-align:left;">
-                                    <a href='{{ album.get_absolute_url }}'>{{ album.title }}</a>
-                                    <span style="float:right;">
+            <div class="col-sm-4">
+                <div class="thumbnail">
+                    {% if album.cover_photo %}
+                        <a href="{{ album.get_absolute_url }}"><img src='{{ album.cover_photo.image.url }}'
+                                                                  class="img-responsive"/></a>
+                    {% endif %}
+                    <div class="caption">
+                        {% if album.draft %}<h5 style="color:red">Draft</h5> {% endif %}
 
-                                        {% if album.author %}
-                                            <small>{% trans 'Author' %}: {{ album.author | full_name_or_username }}</small>
-                                        {% endif %}
-                                    </span>
-                                </p>
-                            </h3>
+                        <h3>
+                            <p style="text-align:left;">
+                                <a href='{{ album.get_absolute_url }}'>{{ album.title }}</a>
+                                <span style="float:right;">
 
-                            <h4>
-                                <small>{% trans 'Created' %}: {{ album.created_time | timesince_threshold }}</small>
-                            </h4>
-
-                            <hr/>
-                            <p>{{ album.description | linebreaks | truncatechars:60 }}</p>
-                            <p><a href="{{ album.get_absolute_url }}" class="btn btn-primary"
-                                  role="button">{% trans 'View' %}</a>
-                                {% if user.is_staff %}<a
-                                        href="{{ album.get_absolute_url_edit }}" class="btn btn-default"
-                                        role="button">{% trans 'Edit' %}</a>
-                                {% endif %}
+                                    {% if album.author %}
+                                        <small>{% trans 'Author' %}: {{ album.author | full_name_or_username }}</small>
+                                    {% endif %}
+                                </span>
                             </p>
-                        </div>
+                        </h3>
+
+                        <h4>
+                            <small>{% trans 'Created' %}: {{ album.created_time | timesince_threshold }}</small>
+                        </h4>
+
+                        <hr/>
+                        <p>{{ album.description | linebreaks | truncatechars:60 }}</p>
+                        <p><a href="{{ album.get_absolute_url }}" class="btn btn-primary"
+                              role="button">{% trans 'View' %}</a>
+                            {% if user.is_staff %}<a
+                                    href="{{ album.get_absolute_url_edit }}" class="btn btn-default"
+                                    role="button">{% trans 'Edit' %}</a>
+                            {% endif %}
+                        </p>
                     </div>
                 </div>
-{#            {% if forloop.counter0 == 2 or forloop.counter0 == 5 or forloop.counter0 == 8 %}#}
-{#                </div>#}
-{#            {% endif %}#}
+
+            </div>
+            {% if forloop.counter0 == 2 or forloop.counter0 == 5 or forloop.counter0 == 8 %}
+                <div class="row"></div>
+            {% endif %}
         {% endfor %}
     </div>
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-03 23:10-0700\n"
+"POT-Creation-Date: 2017-05-04 10:55-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,13 +38,13 @@ msgid "Delete Album"
 msgstr "删除相册"
 
 #: src/templates/album_detail_multiple.html:35
-#: src/templates/album_detail_single.html:81 src/templates/album_list.html:58
+#: src/templates/album_detail_single.html:81 src/templates/album_list.html:56
 #: src/templates/photo_detail.html:83
 msgid "Author"
 msgstr "作者"
 
 #: src/templates/album_detail_multiple.html:37
-#: src/templates/album_detail_single.html:125 src/templates/album_list.html:65
+#: src/templates/album_detail_single.html:125 src/templates/album_list.html:63
 #: src/templates/photo_detail.html:127
 msgid "Created"
 msgstr "创建于"
@@ -55,18 +55,18 @@ msgstr "创建于"
 msgid "Updated"
 msgstr "更新于"
 
-#: src/templates/album_detail_multiple.html:71
+#: src/templates/album_detail_multiple.html:68
 msgid "Set Cover"
 msgstr "设为封面"
 
-#: src/templates/album_detail_multiple.html:99
-#: src/templates/album_detail_single.html:40 src/templates/album_list.html:92
+#: src/templates/album_detail_multiple.html:97
+#: src/templates/album_detail_single.html:40 src/templates/album_list.html:91
 #: src/templates/photo_detail.html:51
 msgid "Prev"
 msgstr "上一页"
 
-#: src/templates/album_detail_multiple.html:109
-#: src/templates/album_detail_single.html:50 src/templates/album_list.html:102
+#: src/templates/album_detail_multiple.html:107
+#: src/templates/album_detail_single.html:50 src/templates/album_list.html:101
 #: src/templates/photo_detail.html:61
 msgid "Next"
 msgstr "下一页"
@@ -131,11 +131,11 @@ msgstr "搜索相册"
 msgid "Search"
 msgstr "搜索"
 
-#: src/templates/album_list.html:71
+#: src/templates/album_list.html:69
 msgid "View"
 msgstr "浏览"
 
-#: src/templates/album_list.html:74
+#: src/templates/album_list.html:72
 msgid "Edit"
 msgstr "编辑"
 

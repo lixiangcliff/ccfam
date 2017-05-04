@@ -24,7 +24,7 @@ from ccfam import views as ccfam_views
 # https://github.com/codingforentrepreneurs/Guides/blob/master/all/common_url_regex.md
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', ccfam_views.home, name='home'),
+    url(r'^', include('albums.urls', namespace='album')),
     url(r'^home/$', ccfam_views.home, name='home'),
     url(r'^about/$', ccfam_views.about, name='about'),
     url(r'^contact/$', ccfam_views.contact, name='contact'),

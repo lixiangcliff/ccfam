@@ -21,13 +21,6 @@
 
                 <div class="text-center">
                     <h4>{{ photo.title }}
-                        <a href="{{ album.get_absolute_url }}?{{ page_request_var }}={{ photos.number | ceil_divide:9 }}"
-                           class="btn btn-primary"
-                           role="button">{% trans 'Multiple Mode' %}</a>
-                        {% if user.is_staff %}
-                            <a href="{{ photo.get_absolute_url }}" class="btn btn-default"
-                               role="button">{% trans 'Edit Mode' %}</a>
-                        {% endif %}
                     </h4>
                 </div>
 
@@ -61,6 +54,15 @@
                     </div>
                 </div>
 
+                <div class="text-center">
+                    <a href="{{ album.get_absolute_url }}?{{ page_request_var }}={{ photos.number | ceil_divide:9 }}"
+                       class="btn btn-primary"
+                       role="button">{% trans 'Multiple Mode' %}</a>
+                    {% if user.is_staff %}
+                        <a href="{{ photo.get_absolute_url }}" class="btn btn-default"
+                           role="button">{% trans 'Edit Mode' %}</a>
+                    {% endif %}
+                </div>
 
                 <table class="table table-striped">
                     <thead>

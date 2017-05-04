@@ -55,6 +55,6 @@ class Album(models.Model):
         return reverse("album:delete", kwargs={"slug": self.slug, "author_username": self.author.username})
 
     class Meta:
-        ordering = ["-title", "-created_time", "-updated_time"]
+        ordering = ["-title", "author", "-created_time", "-updated_time"]
 
 

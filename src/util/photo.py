@@ -144,10 +144,11 @@ def rotate_and_compress_image(img, photo_obj):
 
         tmp = BytesIO()
         img.save(tmp, 'JPEG', quality=settings.IMAGE_QUALITY)
-        tmp.seek(0)
-        output_data = tmp.getvalue()
 
         photo_obj.size = tmp.tell()
+
+        tmp.seek(0)
+        output_data = tmp.getvalue()
 
         headers = dict()
         headers['Content-Type'] = 'image/jpeg'
@@ -155,7 +156,6 @@ def rotate_and_compress_image(img, photo_obj):
         key.set_contents_from_string(output_data, headers=headers, policy='public-read')
 
         tmp.close()
-
 
 
 def get_resized_width_and_height(width, height):

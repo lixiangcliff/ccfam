@@ -62,8 +62,7 @@ class Photo(models.Model):
             exif_data = get_exif_data(pil_image)
             # self.width must be put in post_process()
             # cuz we use this to check whether a photo has been processed in views.post_process_photos()
-            self.width = self.get_width(exif_data)
-            self.height = self.get_height(exif_data)
+
             self.device_make = self.get_device_make(exif_data)
             self.device_model = self.get_device_model(exif_data)
             self.orientation = self.get_orientation(exif_data)
@@ -76,6 +75,9 @@ class Photo(models.Model):
             # rotate image if needed
             rotate_and_compress_image(pil_image, self)
             self.size = self.image.size
+            # below to setter has been done in rotate_and_compress_image() when resizing
+            # self.width = self.get_width(exif_data)
+            # self.height = self.get_height(exif_data)
         else: # not jpeg
             pass
 

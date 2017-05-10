@@ -124,6 +124,16 @@ def rotate_and_compress_image(img, photo_obj):
             elif orientation == 8:
                 img = img.rotate(90, expand=True)
 
+    # https://jargonsummary.wordpress.com/2011/01/08/how-to-resize-images-with-python/
+    # resize
+    orig_width = img.size[0]
+    orig_height = img.size[1]
+    resized_width, resized_height = get_resized_width_and_height(img.size[0], img.size[1])
+    if orig_width != resized_width or orig_height != resized_width:
+        img = img.resize((resized_width, resized_height), PIL.Image.ANTIALIAS)
+    photo_obj.width = resized_width
+    photo_obj.height = resized_height
+
     # compress and write back
     if settings.ENV == 'dev':  # local
         img.save(photo_obj.image.file.name, overwrite=True, optimize=True,
@@ -142,6 +152,22 @@ def rotate_and_compress_image(img, photo_obj):
         key.set_contents_from_string(output_data, headers=headers, policy='public-read')
 
         tmp.close()
+
+
+def get_resized_width_and_height(width, height):
+    larger_dimension = width if width >= height else height
+    smaller_dimension = width if width <= height else height
+    if larger_dimension <= settings.IMAGE_LARGER_DIMENSION_PIXEL_COUNT: # do not need to resize
+        return width, height
+    resize_ratio = float(settings.IMAGE_LARGER_DIMENSION_PIXEL_COUNT) / float(larger_dimension)
+    print('resize_ratio:', resize_ratio)
+    resized_larger_dimension = settings.IMAGE_LARGER_DIMENSION_PIXEL_COUNT
+    resized_smaller_dimension = int((float(smaller_dimension) * float(resize_ratio)))
+
+    if width >= height:
+        return resized_larger_dimension, resized_smaller_dimension
+    else:
+        return resized_smaller_dimension, resized_larger_dimension
 
 
 def is_jpeg(image):

@@ -159,7 +159,8 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 
 # image quality by Pillow compress
-IMAGE_QUALITY = 25
+IMAGE_QUALITY = 40
+IMAGE_LARGER_DIMENSION_PIXEL_COUNT = 1280
 
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, "locale"),

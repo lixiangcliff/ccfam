@@ -74,8 +74,8 @@ class Photo(models.Model):
 
             # rotate image if needed
             rotate_and_compress_image(pil_image, self)
-            self.size = self.image.size
-            # below to setter has been done in rotate_and_compress_image() when resizing
+            # below setters have been done in rotate_and_compress_image() when resizing
+            # self.size = self.image.size
             # self.width = self.get_width(exif_data)
             # self.height = self.get_height(exif_data)
         else: # not jpeg

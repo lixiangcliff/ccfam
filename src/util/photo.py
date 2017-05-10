@@ -138,6 +138,7 @@ def rotate_and_compress_image(img, photo_obj):
     if settings.ENV == 'dev':  # local
         img.save(photo_obj.image.file.name, overwrite=True, optimize=True,
                  quality=settings.IMAGE_QUALITY) # photo_obj.image.file.name is a full path of local file
+        photo_obj.size = photo_obj.image.size
     elif settings.ENV == 'prod':  # on s3
         key = get_s3_image_file_key(photo_obj.image_path)
 
@@ -146,12 +147,15 @@ def rotate_and_compress_image(img, photo_obj):
         tmp.seek(0)
         output_data = tmp.getvalue()
 
+        photo_obj.size = tmp.tell()
+
         headers = dict()
         headers['Content-Type'] = 'image/jpeg'
         headers['Content-Length'] = str(len(output_data))
         key.set_contents_from_string(output_data, headers=headers, policy='public-read')
 
         tmp.close()
+
 
 
 def get_resized_width_and_height(width, height):
